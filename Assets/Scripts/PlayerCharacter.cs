@@ -11,16 +11,13 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] float staminaRegen;
     [SerializeField] float sprintStaminaCost;
 
-    [Header("References")]    
-    [SerializeField] PlayerHUD hud;
+    [SerializeField] int money;
 
-    float currentHealth;
-    float currentStamina;
+    float currentHealth; float currentStamina; bool regenStamina;
 
-    bool regenStamina;
-    public bool exhausted;
+    PlayerController controller; PlayerHUD hud;
 
-    PlayerController controller;
+    [HideInInspector] public bool exhausted;
 
     void StaminaHandling()
     {
@@ -57,6 +54,12 @@ public class PlayerCharacter : MonoBehaviour
         hud.staminaSlider.value = currentStamina;
     }
 
+    public void GetMoney(int amount)
+    {
+        money += amount;
+        hud.moneyCounter.text = money.ToString();
+    }
+
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
@@ -69,15 +72,19 @@ public class PlayerCharacter : MonoBehaviour
         StaminaHandling();
     }
 
-    private void Awake()
+    private void Start()
     {
         controller = GetComponent<PlayerController>();
 
         currentHealth = health;
         currentStamina = stamina;
 
+        hud = GameManager.Instance.playerHUD;
+
         hud.healthSlider.maxValue = health;
         hud.healthSlider.value = currentHealth;
         hud.staminaSlider.maxValue = stamina;
+
+        GetMoney(0);
     }
 }
