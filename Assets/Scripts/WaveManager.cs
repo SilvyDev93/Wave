@@ -24,7 +24,6 @@ public class WaveManager : MonoBehaviour
         if (enemiesToSpawn > 0)
         {
             Instantiate(enemy, transform.position, Quaternion.identity, enemyParent);
-            Debug.Log("Enemy spawn");
             enemiesToSpawn--;            
             StartCoroutine(SpawnCooldown());
         }             
