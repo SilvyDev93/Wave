@@ -1,3 +1,4 @@
+using System.Collections;
 using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,44 +10,66 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float runSpeed;
     [SerializeField] float jumpForce;
 
-    [Header("Gravity")]
-    public bool gravity = true;
-    public float gravityScale = 1.0f;
-    public static float globalGravity = -9.81f;
+    [Header("Dash")]
+    [SerializeField] float dashStrength;
+    [SerializeField] float dashCooldown;
+    [SerializeField] float dashDuration;
+    [SerializeField] bool canDash = true;
+
+    [Header("Gravity")]   
+    [SerializeField] float fallSpeed;   
     [SerializeField] float groundCheckDistance;
     [SerializeField] LayerMask groundMask;
+    [SerializeField] bool gravityEnabled = true;
 
     [Header("References")]
     [SerializeField] Transform groundCheck;
 
-    float movementSpeed; public bool isGrounded;
-  
-    Rigidbody rb; PlayerCharacter character; 
+    float movementSpeed; bool isGrounded; 
 
-    void PlayerInputUpdate() // Player inputs handled in Update
+
+    Rigidbody rb; PlayerCharacter character; PlayerInput input;
+
+    public void Jump()
     {
-        Jump();
-        Sprint();
-
-        void Jump()
+        if (isGrounded)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                rb.AddForce(transform.up * jumpForce, ForceMode.VelocityChange);
-            }
+            rb.AddForce(transform.up * jumpForce, ForceMode.VelocityChange);
+        }
+    }
+
+    public void Dash()
+    {
+        if (canDash && !character.exhausted)
+        {
+            StartCoroutine(PlayerDashState());
         }
 
-        void Sprint()
+        IEnumerator PlayerDashState()
         {
-            if (Input.GetKey(KeyCode.LeftShift) && !character.exhausted)
-            {
-                movementSpeed = runSpeed;
-            }
-            else
-            {
-                movementSpeed = walkSpeed;
-            }
+            canDash = false;
+
+            gravityEnabled = false;
+
+            rb.AddForce(transform.forward * dashStrength, ForceMode.Impulse);
+
+            yield return new WaitForSeconds(dashDuration);
+
+            gravityEnabled = true;
+
+            StartCoroutine(DashCooldown());
         }
+
+        IEnumerator DashCooldown()
+        {
+            yield return new WaitForSeconds(dashDuration);
+            canDash = true;
+        }
+    }
+
+    void PlayerInputFixed() // Player inputs handled in FixedUpdate
+    {
+        rb.MovePosition(transform.position + (input.GetVerticalAxis() + input.GetHorizontalAxis()) * movementSpeed * Time.deltaTime);
     }
 
     void GroundCheck()
@@ -54,19 +77,11 @@ public class PlayerController : MonoBehaviour
         isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckDistance, groundMask);
     }
 
-    void PlayerInputFixed() // Player inputs handled in FixedUpdate
-    {
-        Vector3 forward = transform.forward * Input.GetAxis("Vertical");
-        Vector3 horizontal = transform.right * Input.GetAxis("Horizontal");
-        rb.MovePosition(transform.position + (forward + horizontal) * movementSpeed * Time.deltaTime);
-        //rb.AddForce((forward + horizontal), ForceMode.VelocityChange);        
-    }
-
     void PlayerGravity()
     {
-        if (gravity)
+        if (!isGrounded && gravityEnabled)
         {
-            Vector3 gravity = globalGravity * gravityScale * Vector3.up;
+            Vector3 gravity = GameManager.Instance.globalGravity * fallSpeed * Vector3.up;
             rb.AddForce(gravity, ForceMode.Acceleration);
         }
     }
@@ -83,24 +98,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public bool IsPlayerRunning() // Used by other scripts to know if player is running
-    {
-        if (movementSpeed == runSpeed)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
     void Update()
     {
-        PlayerInputUpdate();
-        GroundCheck();
-        //Vector3 eulerAngles = transform.eulerAngles;
-        //transform.eulerAngles = new Vector3(0, eulerAngles.y, 0);        
+        GroundCheck();        
     }
 
     void FixedUpdate()
@@ -113,7 +113,9 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         character = GetComponent<PlayerCharacter>();
+        input = transform.parent.GetComponent<PlayerInput>();
         rb.freezeRotation = true; // If rotation is not freezed it leads to collision glitches
+        movementSpeed = walkSpeed;
     }
 
     void OnDrawGizmosSelected()

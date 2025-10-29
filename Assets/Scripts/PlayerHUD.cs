@@ -18,10 +18,8 @@ public class PlayerHUD : MonoBehaviour
     public TextMeshProUGUI waveCounter;
     public TextMeshProUGUI enemyCounter;
 
-    public void UpdateText(string text, TextMeshProUGUI tmp)
-    {
-        tmp.text = text;
-    }
+    [Header("Captions")]
+    public TextMeshProUGUI shopCaption;
 
     public void ReduceEnemyCounter()
     {

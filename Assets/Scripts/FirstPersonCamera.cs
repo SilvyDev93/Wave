@@ -25,10 +25,9 @@ public class FirstPersonCamera : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * smooth);
     }
 
-    public void FireRecoil(float verticalRecoil, float horizontalRecoil)
+    public void FireRecoil(float recoil)
     {
-        float verticalAngle = transform.eulerAngles.x - verticalRecoil * Random.Range(0.25f, 1);
-        //float horizontalAngle = transform.eulerAngles.y + horizontalRecoil * Random.Range(-1, 1); Glitched, fix later
+        float verticalAngle = transform.eulerAngles.x - recoil * Random.Range(0.25f, 1);
         Quaternion target = Quaternion.Euler(verticalAngle, transform.eulerAngles.y, transform.eulerAngles.z);
         transform.rotation = target;
     }

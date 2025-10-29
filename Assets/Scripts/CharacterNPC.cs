@@ -18,6 +18,7 @@ public class CharacterNPC : MonoBehaviour
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, health);
         healthSlider.value = currentHealth;
+        healthSlider.gameObject.SetActive(true);
 
         if (currentHealth <= 0)
         {
@@ -32,5 +33,6 @@ public class CharacterNPC : MonoBehaviour
         currentHealth = health;
         healthSlider.maxValue = health;
         healthSlider.value = currentHealth;
+        healthSlider.gameObject.SetActive(false);
     }
 }

@@ -17,7 +17,7 @@ public class PlayerCharacter : MonoBehaviour
 
     PlayerController controller; PlayerHUD hud;
 
-    [HideInInspector] public bool exhausted;
+    public Weapon currentWeapon; [HideInInspector] public bool exhausted; [HideInInspector] public bool shopAvailable; 
 
     void StaminaHandling()
     {
@@ -30,19 +30,6 @@ public class PlayerCharacter : MonoBehaviour
         if (currentStamina >= stamina)
         {
             exhausted = false;
-        }
-
-        if (!exhausted)
-        {
-            if (controller.IsPlayerRunning() && controller.IsPlayerMoving())
-            {
-                currentStamina -= sprintStaminaCost * Time.deltaTime;
-                regenStamina = false;
-            }
-            else
-            {
-                regenStamina = true;
-            }
         }
 
         if (regenStamina)

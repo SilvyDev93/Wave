@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3739792223788306713}
   - component: {fileID: 3091549335721529224}
   m_Layer: 6
-  m_Name: Slider
+  m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -253,12 +253,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6116785159275950674}
+  - component: {fileID: 1353186527797485900}
   - component: {fileID: 4519342686622045037}
   - component: {fileID: 5984995492756571425}
   - component: {fileID: 6437374667020849371}
   - component: {fileID: 3364121235471057731}
   m_Layer: 6
-  m_Name: Canvas
+  m_Name: Billboard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -284,6 +285,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 1.301}
   m_SizeDelta: {x: 2, y: 0.5}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1353186527797485900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2180673329089607921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f651f8ed71c27f41b512643a99a171f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!223 &4519342686622045037
 Canvas:
   m_ObjectHideFlags: 0
