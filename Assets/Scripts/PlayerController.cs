@@ -25,14 +25,13 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     [SerializeField] Transform groundCheck;
 
-    float movementSpeed; bool isGrounded; 
-
+    float movementSpeed;
 
     Rigidbody rb; PlayerCharacter character; PlayerInput input;
 
     public void Jump()
     {
-        if (isGrounded)
+        if (OnGround())
         {
             rb.AddForce(transform.up * jumpForce, ForceMode.VelocityChange);
         }
@@ -72,14 +71,14 @@ public class PlayerController : MonoBehaviour
         rb.MovePosition(transform.position + (input.GetVerticalAxis() + input.GetHorizontalAxis()) * movementSpeed * Time.deltaTime);
     }
 
-    void GroundCheck()
+    public bool OnGround()
     {
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckDistance, groundMask);
+        return Physics.CheckSphere(groundCheck.position, groundCheckDistance, groundMask);
     }
 
     void PlayerGravity()
     {
-        if (!isGrounded && gravityEnabled)
+        if (!OnGround() && gravityEnabled)
         {
             Vector3 gravity = GameManager.Instance.globalGravity * fallSpeed * Vector3.up;
             rb.AddForce(gravity, ForceMode.Acceleration);
@@ -96,11 +95,6 @@ public class PlayerController : MonoBehaviour
         {
             return false;
         }
-    }
-
-    void Update()
-    {
-        GroundCheck();        
     }
 
     void FixedUpdate()

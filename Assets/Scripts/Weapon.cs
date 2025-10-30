@@ -4,25 +4,44 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [Header("Weapon Configuration")]
+    [SerializeField] GameObject proyectile;
     public AmmoMode ammoMode;
     public FireMode fireMode;
 
     [Header("Weapon Parameters")]
     [SerializeField] float damage;
-    [SerializeField] float fireRate;
+    [SerializeField] float rateOfFire;
     [SerializeField] int totalAmmo;   
     [SerializeField] int range;
     [SerializeField] float recoil;
-    [SerializeField] float spread;
+    [SerializeField] [Range(1, 16)] int numberOfProyectiles;
+
+    [Header("Spread")]
+    [SerializeField] bool hasSpread;
+    [SerializeField] float baseSpread;   
+    [SerializeField] float spreadFireIncrease;
+    [SerializeField] float spreadFireDecrease;
+    [SerializeField] float spreadAirborneIncrease;
+    [SerializeField] float spreadAirborneDecrease;
+    [SerializeField] float spreadMultiplier;
+    [SerializeField] float maxSpread;
 
     [Header("Ammo Mode: Mag")]
     [SerializeField] int magSize;
+
+    [Header("Fire Mode: Manual")]
+    [SerializeField] float boltActionTime;
+
+    [Header("Camera Shake")]
+    [SerializeField] float strenght;
+    [SerializeField] float initialSpeed;
+    [SerializeField] float smoothTime;
 
     public enum FireMode
     {
         Automatic,
         Semiautomatic,
-        Manual,
+        Manual
     }
 
     public enum AmmoMode
@@ -34,15 +53,32 @@ public class Weapon : MonoBehaviour
     [Header("References")]    
     [SerializeField] CameraShake cameraShake;
 
-    int currentAmmo; int ammoInMag; float fireCooldown; bool shooting;
+    int currentAmmo; int ammoInMag; float fireCooldown;
+    float spread; float targetSpread; float currentFireSpread; float currentAirborneSpread;
 
-    AudioSource audioSource; PlayerHUD hud;
+    [HideInInspector] public bool shooting;
+
+    FirstPersonCamera fpsCam; AudioSource audioSource; PlayerHUD hud;
 
     public void PlayerTriggerPush()
     {
         if (!shooting && GetCurrentAmmoMode() > 0)
         {
             StartCoroutine(Shoot());
+        }
+
+        int GetCurrentAmmoMode()
+        {
+            switch (ammoMode.ToString())
+            {
+                case "Total":
+                    return currentAmmo;
+
+                case "Mag":
+                    return ammoInMag;
+            }
+
+            return 0;
         }
     }
 
@@ -51,36 +87,61 @@ public class Weapon : MonoBehaviour
         shooting = true;
 
         yield return new WaitForSeconds(fireCooldown);
-        BulletSpread();
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, range))
+        for (int i = 0; i < numberOfProyectiles; i++)
         {
-            CharacterNPC character = hit.transform.GetComponent<CharacterNPC>();
+            Ray ray = Camera.main.ScreenPointToRay(MousePositionSpreadOffset());
+            RaycastHit hit;
 
-            if (character != null)
+            if (Physics.Raycast(ray, out hit, range))
             {
-                character.TakeDamage(damage);
+                CharacterNPC character = hit.transform.GetComponent<CharacterNPC>();
+
+                if (character != null)
+                {
+                    character.TakeDamage(damage);
+                }
             }
         }
-
-        transform.parent.parent.GetComponent<FirstPersonCamera>().FireRecoil(recoil);
-        cameraShake.StartShake(1, 1, 0.2f);
+        
+        fpsCam.FireRecoil(recoil);
+        cameraShake.StartShake(strenght, initialSpeed, smoothTime);
         GameManager.Instance.audioManager.PlayAudioPitch(audioSource, Random.Range(0.8f, 1.2f));
 
         ConsumeAmmo();
         DisplayToHUD();
-        fireCooldown = fireRate;
+        fireCooldown = rateOfFire;
 
-        shooting = false;
-    }
+        StartCoroutine(ManualBoltAction());
 
-    void BulletSpread()
-    {
-        GameObject mouseTest = GameManager.Instance.debugManager.mousePosition;
-        mouseTest.transform.position = Input.mousePosition + new Vector3(Random.Range(-spread, spread), Random.Range(-spread, spread), 0);
-        GameManager.Instance.crosshairHandler.SetCrosshairSpread(spread);
+        IEnumerator ManualBoltAction()
+        {
+            switch (fireMode.ToString())
+            {
+                case "Manual":
+                    yield return new WaitForSeconds(boltActionTime);
+                    shooting = false;
+                    break;
+
+                default:
+                    shooting = false;
+                    break;
+            }
+        }
+
+        void ConsumeAmmo()
+        {
+            switch (ammoMode.ToString())
+            {
+                case "Total":
+                    currentAmmo--;
+                    break;
+
+                case "Mag":
+                    ammoInMag--;
+                    break;
+            }
+        }
     }
 
     void DisplayToHUD()
@@ -104,57 +165,94 @@ public class Weapon : MonoBehaviour
 
     void ScriptReload()
     {
-        if (ammoInMag != magSize && currentAmmo > 0)
+        if (ammoMode.ToString() == "Mag")
         {
-            currentAmmo += ammoInMag;
-            ammoInMag = 0;
+            if (ammoInMag != magSize && currentAmmo > 0)
+            {
+                currentAmmo += ammoInMag;
+                ammoInMag = 0;
 
-            int ammo = currentAmmo - magSize;
-            ammo = Mathf.Clamp(ammo, 0, magSize);
-            int ammoToMag = currentAmmo - ammo;
+                int ammo = currentAmmo - magSize;
+                ammo = Mathf.Clamp(ammo, 0, magSize);
+                int ammoToMag = currentAmmo - ammo;
 
-            ammoInMag = ammoToMag;
-            currentAmmo -= ammoToMag;
-        }
-
-        DisplayToHUD();
+                ammoInMag = ammoToMag;
+                currentAmmo -= ammoToMag;
+            }
+        }               
     }
 
-
-    void ConsumeAmmo()
+    void BulletSpreadControl()
     {
-        switch (ammoMode.ToString())
-        {
-            case "Total":
-                currentAmmo--;
-                break;
+        targetSpread = baseSpread + FireSpread() + AirborneSpread();
+        spread = Mathf.Lerp(spread, targetSpread, spreadMultiplier);
+        spread = Mathf.Clamp(spread, 0, maxSpread);
 
-            case "Mag":
-                ammoInMag--;
-                break;
+        MousePositionDebug();
+        GameManager.Instance.crosshairHandler.SetCrosshairSpread(spread);
+
+        float FireSpread()
+        {
+            if (shooting)
+            {
+                currentFireSpread += spreadFireIncrease;
+                currentFireSpread = Mathf.Clamp(currentFireSpread, 0, maxSpread);
+                return currentFireSpread;
+            }
+            else
+            {
+                currentFireSpread -= spreadFireDecrease;
+                currentFireSpread = Mathf.Clamp(currentFireSpread, 0, maxSpread);
+                return currentFireSpread;
+            }
+        }
+
+        float AirborneSpread()
+        {
+            if (!GameManager.Instance.playerController.OnGround())
+            {
+                currentAirborneSpread += spreadAirborneIncrease;
+                currentAirborneSpread = Mathf.Clamp(currentAirborneSpread, 0, maxSpread);
+                return currentAirborneSpread;
+            }
+            else
+            {
+                currentAirborneSpread -= spreadAirborneDecrease;
+                currentAirborneSpread = Mathf.Clamp(currentAirborneSpread, 0, maxSpread);
+                return currentAirborneSpread;
+            }
         }
     }
 
-    int GetCurrentAmmoMode()
+    Vector3 MousePositionSpreadOffset()
     {
-        switch (ammoMode.ToString())
-        {
-            case "Total":
-                return currentAmmo;
+        return Input.mousePosition + new Vector3(Random.Range(-spread, spread), Random.Range(-spread, spread), 0);
+    }
 
-            case "Mag":
-                return ammoInMag;
-        }
+    void MousePositionDebug()
+    {
+        GameObject mouseTest = GameManager.Instance.debugManager.mousePosition;
+        mouseTest.transform.position = MousePositionSpreadOffset();
+    }
 
-        return 0;
+    void Update()
+    {
+        BulletSpreadControl();
     }
 
     void Start()
     {
+        currentAmmo = totalAmmo;
+        DisplayToHUD();
+    }
+
+    void OnEnable()
+    {
         audioSource = GetComponent<AudioSource>();
         hud = GameManager.Instance.playerHUD;
-        currentAmmo = totalAmmo;
-        ScriptReload();      
+        fpsCam = transform.parent.parent.GetComponent<FirstPersonCamera>();        
+        ScriptReload();
+        DisplayToHUD();
     }
 }
  

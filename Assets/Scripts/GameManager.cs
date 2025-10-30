@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public PauseMenu pauseMenu;
     [HideInInspector] public DebugManager debugManager;
     [HideInInspector] public CrosshairHandler crosshairHandler;
+    [HideInInspector] public PlayerController playerController;
+    [HideInInspector] public WeaponHandler weaponHandler;
 
     public void PauseGame()
     {
@@ -85,10 +87,12 @@ public class GameManager : MonoBehaviour
 
         Transform playerTransform = GameObject.Find("Player").transform;
         playerCharacter = playerTransform.GetChild(0).GetComponent<PlayerCharacter>();
+        playerController = playerTransform.GetChild(0).GetComponent<PlayerController>();
         playerHUD = playerTransform.GetChild(1).GetComponent<PlayerHUD>();
         shopMenu = playerTransform.GetChild(1).GetComponent<ShopMenu>();
         pauseMenu = playerTransform.GetChild(1).GetComponent<PauseMenu>();
         crosshairHandler = playerTransform.GetChild(1).GetComponent<CrosshairHandler>();
+        weaponHandler = GameObject.Find("WeaponHandler").GetComponent<WeaponHandler>();
     }
 
     private void OnEnable()

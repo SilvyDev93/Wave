@@ -17,7 +17,7 @@ public class PlayerCharacter : MonoBehaviour
 
     PlayerController controller; PlayerHUD hud;
 
-    public Weapon currentWeapon; [HideInInspector] public bool exhausted; [HideInInspector] public bool shopAvailable; 
+    [HideInInspector] public bool exhausted; [HideInInspector] public bool shopAvailable; 
 
     void StaminaHandling()
     {

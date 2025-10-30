@@ -5,10 +5,11 @@ using static UnityEngine.Android.AndroidGame;
 public class PlayerInput : MonoBehaviour
 {
     [SerializeField] PlayerController controller;
+    public bool lockedInput;
 
     void PlayerInputUpdate()
     {
-        if (!GameManager.Instance.gamePaused)
+        if (!GameManager.Instance.gamePaused && !lockedInput)
         {
             JumpInput();
 
@@ -19,6 +20,8 @@ public class PlayerInput : MonoBehaviour
             FireInput();
 
             ReloadInput();
+
+            WeaponChangeInput();
         }
 
         PauseInput();
@@ -58,7 +61,7 @@ public class PlayerInput : MonoBehaviour
 
     void FireInput()
     {
-        Weapon currentWeapon = GameManager.Instance.playerCharacter.currentWeapon;
+        Weapon currentWeapon = GameManager.Instance.weaponHandler.currentWeapon;
 
         switch (currentWeapon.fireMode.ToString())
         {
@@ -71,16 +74,7 @@ public class PlayerInput : MonoBehaviour
 
                 break;
 
-            case "Semiautomatic":
-
-                if (Input.GetMouseButtonDown(0))
-                {
-                    currentWeapon.PlayerTriggerPush();
-                }
-
-                break;
-
-            case "Manual":
+            default:
 
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -95,7 +89,25 @@ public class PlayerInput : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            GameManager.Instance.playerCharacter.currentWeapon.PlayerReload();
+            GameManager.Instance.weaponHandler.currentWeapon.PlayerReload();
+        }
+    }
+
+    void WeaponChangeInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            GameManager.Instance.weaponHandler.ChangeWeapon(0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            GameManager.Instance.weaponHandler.ChangeWeapon(1);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            GameManager.Instance.weaponHandler.ChangeWeapon(2);
         }
     }
 
