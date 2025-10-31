@@ -7,6 +7,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] GameObject proyectile;
     public AmmoMode ammoMode;
     public FireMode fireMode;
+    public PointerType pointerType;
 
     [Header("Weapon Parameters")]
     [SerializeField] float damage;
@@ -15,6 +16,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] int range;
     [SerializeField] float recoil;
     [SerializeField] [Range(1, 16)] int numberOfProyectiles;
+    [SerializeField] [Range(1, 16)] int bulletPenetration;
 
     [Header("Spread")]
     [SerializeField] bool hasSpread;
@@ -29,6 +31,9 @@ public class Weapon : MonoBehaviour
     [Header("Ammo Mode: Mag")]
     [SerializeField] int magSize;
 
+    [Header("Fire Mode: Burst")]
+    [Range(1, 16)] [SerializeField] int numberOfBurstShots;
+
     [Header("Fire Mode: Manual")]
     [SerializeField] float boltActionTime;
 
@@ -41,14 +46,21 @@ public class Weapon : MonoBehaviour
     {
         Automatic,
         Semiautomatic,
-        Manual
+        Manual,
+        Burst
     }
 
     public enum AmmoMode
     {
         Total,
         Mag
-    }   
+    }
+    
+    public enum PointerType
+    {
+        Point,
+        Crosshair
+    }
 
     [Header("References")]    
     [SerializeField] CameraShake cameraShake;
@@ -88,44 +100,62 @@ public class Weapon : MonoBehaviour
 
         yield return new WaitForSeconds(fireCooldown);
 
-        for (int i = 0; i < numberOfProyectiles; i++)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(MousePositionSpreadOffset());
-            RaycastHit hit;
+        float burstShots = GetBurstFireShots();
 
-            if (Physics.Raycast(ray, out hit, range))
-            {
-                CharacterNPC character = hit.transform.GetComponent<CharacterNPC>();
-
-                if (character != null)
-                {
-                    character.TakeDamage(damage);
-                }
-            }
-        }
+        StartCoroutine(ShootLogic());
         
-        fpsCam.FireRecoil(recoil);
-        cameraShake.StartShake(strenght, initialSpeed, smoothTime);
-        GameManager.Instance.audioManager.PlayAudioPitch(audioSource, Random.Range(0.8f, 1.2f));
-
-        ConsumeAmmo();
-        DisplayToHUD();
         fireCooldown = rateOfFire;
 
         StartCoroutine(ManualBoltAction());
 
-        IEnumerator ManualBoltAction()
+        IEnumerator ShootLogic()
         {
-            switch (fireMode.ToString())
+            for (int i = 0; i < burstShots; i++)
             {
-                case "Manual":
-                    yield return new WaitForSeconds(boltActionTime);
-                    shooting = false;
-                    break;
+                if (proyectile == null)
+                {
+                    ShootBullet();
+                }
+                else
+                {
+                    ShootProyectile();
+                }
 
-                default:
-                    shooting = false;
-                    break;
+                fpsCam.FireRecoil(recoil);
+                cameraShake.StartShake(strenght, initialSpeed, smoothTime);
+                GameManager.Instance.audioManager.PlayAudioPitch(audioSource, Random.Range(0.8f, 1.2f));
+
+                ConsumeAmmo();
+                DisplayToHUD();
+
+                yield return new WaitForSeconds(0.05f);
+            }
+        }
+
+        void ShootBullet()
+        {
+            for (int i = 0; i < numberOfProyectiles; i++)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(MousePositionSpreadOffset());
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit, range))
+                {
+                    CharacterNPC character = hit.transform.GetComponent<CharacterNPC>();
+
+                    if (character != null)
+                    {
+                        character.TakeDamage(damage);
+                    }
+                }
+            }
+        }
+
+        void ShootProyectile()
+        {
+            for (int i = 0; i < numberOfProyectiles; i++)
+            {
+                Instantiate(proyectile, Camera.main.ScreenToWorldPoint(Input.mousePosition), Camera.main.transform.rotation);               
             }
         }
 
@@ -142,6 +172,21 @@ public class Weapon : MonoBehaviour
                     break;
             }
         }
+
+        IEnumerator ManualBoltAction()
+        {
+            switch (fireMode.ToString())
+            {
+                case "Manual":
+                    yield return new WaitForSeconds(boltActionTime);
+                    shooting = false;
+                    break;
+
+                default:
+                    shooting = false;
+                    break;
+            }
+        }       
     }
 
     void DisplayToHUD()
@@ -179,7 +224,9 @@ public class Weapon : MonoBehaviour
                 ammoInMag = ammoToMag;
                 currentAmmo -= ammoToMag;
             }
-        }               
+        }
+
+        DisplayToHUD();
     }
 
     void BulletSpreadControl()
@@ -235,6 +282,18 @@ public class Weapon : MonoBehaviour
         mouseTest.transform.position = MousePositionSpreadOffset();
     }
 
+    int GetBurstFireShots()
+    {
+        if (fireMode.ToString() == "Burst")
+        {
+            return numberOfBurstShots;
+        }
+        else
+        {
+            return 1;
+        }
+    }
+
     void Update()
     {
         BulletSpreadControl();
@@ -243,6 +302,7 @@ public class Weapon : MonoBehaviour
     void Start()
     {
         currentAmmo = totalAmmo;
+        ScriptReload();
         DisplayToHUD();
     }
 
@@ -253,6 +313,17 @@ public class Weapon : MonoBehaviour
         fpsCam = transform.parent.parent.GetComponent<FirstPersonCamera>();        
         ScriptReload();
         DisplayToHUD();
+
+        switch (pointerType.ToString())
+        {
+            case "Crosshair":
+                GameManager.Instance.crosshairHandler.SetCrosshairActive(true);
+                break;
+
+            default:
+                GameManager.Instance.crosshairHandler.SetCrosshairActive(false);
+                break;
+        }
     }
 }
  

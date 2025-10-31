@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem.HID;
 
@@ -9,7 +10,7 @@ public class PlayerCharacter : MonoBehaviour
     [Header("Stamina")]
     [SerializeField] float stamina;
     [SerializeField] float staminaRegen;
-    [SerializeField] float sprintStaminaCost;
+    [SerializeField] float staminaCooldown;
 
     [SerializeField] int money;
 
@@ -54,6 +55,23 @@ public class PlayerCharacter : MonoBehaviour
         hud.healthSlider.value = currentHealth;
     }
 
+    public void ConsumeStamina(float consumption)
+    {
+        regenStamina = false;
+
+        currentStamina -= consumption;
+        currentStamina = Mathf.Clamp(currentStamina, 0, stamina);
+        hud.staminaSlider.value = currentStamina;
+
+        StartCoroutine(RestartRegen());
+
+        IEnumerator RestartRegen()
+        {
+            yield return new WaitForSeconds(staminaCooldown);
+            regenStamina = true;
+        }
+    }
+
     private void Update()
     {
         StaminaHandling();
@@ -71,6 +89,8 @@ public class PlayerCharacter : MonoBehaviour
         hud.healthSlider.maxValue = health;
         hud.healthSlider.value = currentHealth;
         hud.staminaSlider.maxValue = stamina;
+
+        regenStamina = true;
 
         GetMoney(0);
     }

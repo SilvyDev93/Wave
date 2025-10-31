@@ -23,6 +23,11 @@ public class CrosshairHandler : MonoBehaviour
         }
     }
 
+    public void SetCrosshairActive(bool activeState)
+    {
+        crosshair.gameObject.SetActive(activeState);
+    }
+
     private void Awake()
     {
         GetPins();

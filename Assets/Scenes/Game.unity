@@ -1968,8 +1968,9 @@ MonoBehaviour:
   dashStrength: 100
   dashCooldown: 1
   dashDuration: 0.3
+  dashStaminaCost: 50
   canDash: 1
-  fallSpeed: 2.25
+  fallSpeed: 1
   groundCheckDistance: 0.125
   groundMask:
     serializedVersion: 2
@@ -1991,9 +1992,8 @@ MonoBehaviour:
   health: 100
   stamina: 100
   staminaRegen: 50
-  sprintStaminaCost: 5
+  staminaCooldown: 0.5
   money: 0
-  currentWeapon: {fileID: 1778585741}
   exhausted: 0
   shopAvailable: 0
 --- !u!1001 &886297751
@@ -4203,6 +4203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1514a77491e7db946a1c30bf7263c99e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentWeapon: {fileID: 0}
 --- !u!1 &1778585739
 GameObject:
   m_ObjectHideFlags: 0
@@ -4249,14 +4250,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   proyectile: {fileID: 0}
-  ammoMode: 0
+  ammoMode: 1
   fireMode: 0
+  pointerType: 1
   damage: 5
   rateOfFire: 0.1
   totalAmmo: 100
   range: 60
   recoil: 1.25
   numberOfProyectiles: 1
+  bulletPenetration: 1
   hasSpread: 0
   baseSpread: 5
   spreadFireIncrease: 3
@@ -4266,6 +4269,7 @@ MonoBehaviour:
   spreadMultiplier: 2
   maxSpread: 50
   magSize: 20
+  numberOfBurstShots: 1
   boltActionTime: 0
   strenght: 1
   initialSpeed: 1
@@ -5152,12 +5156,14 @@ MonoBehaviour:
   proyectile: {fileID: 0}
   ammoMode: 0
   fireMode: 0
+  pointerType: 0
   damage: 5
   rateOfFire: 0.1
   totalAmmo: 300
   range: 60
   recoil: 1.25
   numberOfProyectiles: 1
+  bulletPenetration: 0
   hasSpread: 0
   baseSpread: 5
   spreadFireIncrease: 3
@@ -5167,6 +5173,7 @@ MonoBehaviour:
   spreadMultiplier: 2
   maxSpread: 50
   magSize: 20
+  numberOfBurstShots: 0
   boltActionTime: 0
   strenght: 1
   initialSpeed: 1
@@ -5317,13 +5324,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   proyectile: {fileID: 0}
   ammoMode: 0
-  fireMode: 0
+  fireMode: 3
+  pointerType: 1
   damage: 5
   rateOfFire: 0.1
   totalAmmo: 200
   range: 60
   recoil: 1.25
   numberOfProyectiles: 1
+  bulletPenetration: 1
   hasSpread: 0
   baseSpread: 5
   spreadFireIncrease: 3
@@ -5333,6 +5342,7 @@ MonoBehaviour:
   spreadMultiplier: 2
   maxSpread: 50
   magSize: 20
+  numberOfBurstShots: 3
   boltActionTime: 0
   strenght: 1
   initialSpeed: 1

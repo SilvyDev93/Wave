@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float dashStrength;
     [SerializeField] float dashCooldown;
     [SerializeField] float dashDuration;
+    [SerializeField] float dashStaminaCost;
     [SerializeField] bool canDash = true;
 
     [Header("Gravity")]   
@@ -50,7 +51,10 @@ public class PlayerController : MonoBehaviour
 
             gravityEnabled = false;
 
-            rb.AddForce(transform.forward * dashStrength, ForceMode.Impulse);
+            //rb.AddForce(transform.forward * dashStrength, ForceMode.Impulse);
+            rb.AddForce(transform.forward * dashStrength, ForceMode.Impulse); ///////////////////////
+
+            character.ConsumeStamina(dashStaminaCost);
 
             yield return new WaitForSeconds(dashDuration);
 
