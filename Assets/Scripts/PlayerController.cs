@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] float walkSpeed;
-    [SerializeField] float runSpeed;
     [SerializeField] float jumpForce;
 
     [Header("Dash")]
@@ -18,7 +17,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] bool canDash = true;
 
     [Header("Gravity")]   
-    [SerializeField] float fallSpeed;   
+    [SerializeField] float fallSpeed;
+    [SerializeField] float gravityIncreaseSpeed;
     [SerializeField] float groundCheckDistance;
     [SerializeField] LayerMask groundMask;
     [SerializeField] bool gravityEnabled = true;
@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     [SerializeField] Transform groundCheck;
 
-    float movementSpeed;
+    float movementSpeed; float currentGravity = 0;
 
     Rigidbody rb; PlayerCharacter character; PlayerInput input;
 
@@ -84,8 +84,14 @@ public class PlayerController : MonoBehaviour
     {
         if (!OnGround() && gravityEnabled)
         {
-            Vector3 gravity = GameManager.Instance.globalGravity * fallSpeed * Vector3.up;
+            currentGravity += gravityIncreaseSpeed;
+            Vector3 gravity = GameManager.Instance.globalGravity * fallSpeed * currentGravity * Vector3.up;           
             rb.AddForce(gravity, ForceMode.Acceleration);
+        }
+
+        if (OnGround())
+        {
+            currentGravity = 0;
         }
     }
 

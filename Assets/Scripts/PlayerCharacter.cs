@@ -39,7 +39,8 @@ public class PlayerCharacter : MonoBehaviour
         }
 
         currentStamina = Mathf.Clamp(currentStamina, 0, stamina);
-        hud.staminaSlider.value = currentStamina;
+
+        hud.SetStaminaSliderValue(currentStamina);
     }
 
     public void GetMoney(int amount)
@@ -52,7 +53,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, health);
-        hud.healthSlider.value = currentHealth;
+        hud.SetHealthValue((int) currentHealth);
     }
 
     public void ConsumeStamina(float consumption)
@@ -61,7 +62,9 @@ public class PlayerCharacter : MonoBehaviour
 
         currentStamina -= consumption;
         currentStamina = Mathf.Clamp(currentStamina, 0, stamina);
-        hud.staminaSlider.value = currentStamina;
+
+        hud.SetStaminaSliderValue(currentStamina);
+        hud.SetStaminaSliderActive(true);
 
         StartCoroutine(RestartRegen());
 
@@ -87,8 +90,11 @@ public class PlayerCharacter : MonoBehaviour
         hud = GameManager.Instance.playerHUD;
 
         hud.healthSlider.maxValue = health;
-        hud.healthSlider.value = currentHealth;
-        hud.staminaSlider.maxValue = stamina;
+
+        hud.SetHealthValue((int)currentHealth);
+
+        hud.leftStaminaSlider.maxValue = stamina;
+        hud.rightStaminaSlider.maxValue = stamina;
 
         regenStamina = true;
 

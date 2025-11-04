@@ -18,6 +18,15 @@ public class Weapon : MonoBehaviour
     [SerializeField] [Range(1, 16)] int numberOfProyectiles;
     [SerializeField] [Range(1, 16)] int bulletPenetration;
 
+    [Header("Ammo Mode: Mag")]
+    [SerializeField] int magSize;
+
+    [Header("Fire Mode: Burst")]
+    [Range(1, 16)][SerializeField] int numberOfBurstShots;
+
+    [Header("Fire Mode: Manual")]
+    [SerializeField] float boltActionTime;
+
     [Header("Spread")]
     [SerializeField] bool hasSpread;
     [SerializeField] float baseSpread;   
@@ -26,21 +35,22 @@ public class Weapon : MonoBehaviour
     [SerializeField] float spreadAirborneIncrease;
     [SerializeField] float spreadAirborneDecrease;
     [SerializeField] float spreadMultiplier;
-    [SerializeField] float maxSpread;
-
-    [Header("Ammo Mode: Mag")]
-    [SerializeField] int magSize;
-
-    [Header("Fire Mode: Burst")]
-    [Range(1, 16)] [SerializeField] int numberOfBurstShots;
-
-    [Header("Fire Mode: Manual")]
-    [SerializeField] float boltActionTime;
+    [SerializeField] float maxSpread;   
 
     [Header("Camera Shake")]
     [SerializeField] float strenght;
     [SerializeField] float initialSpeed;
     [SerializeField] float smoothTime;
+
+    [Header("References")]    
+    [SerializeField] CameraShake cameraShake;
+
+    int currentAmmo; int ammoInMag; float fireCooldown;
+    float spread; float targetSpread; float currentFireSpread; float currentAirborneSpread;
+
+    [HideInInspector] public bool shooting;
+
+    FirstPersonCamera fpsCam; AudioSource audioSource; PlayerHUD hud; WeaponHandler weaponHandler;
 
     public enum FireMode
     {
@@ -55,22 +65,12 @@ public class Weapon : MonoBehaviour
         Total,
         Mag
     }
-    
+
     public enum PointerType
     {
         Point,
         Crosshair
     }
-
-    [Header("References")]    
-    [SerializeField] CameraShake cameraShake;
-
-    int currentAmmo; int ammoInMag; float fireCooldown;
-    float spread; float targetSpread; float currentFireSpread; float currentAirborneSpread;
-
-    [HideInInspector] public bool shooting;
-
-    FirstPersonCamera fpsCam; AudioSource audioSource; PlayerHUD hud;
 
     public void PlayerTriggerPush()
     {
@@ -126,7 +126,7 @@ public class Weapon : MonoBehaviour
                 GameManager.Instance.audioManager.PlayAudioPitch(audioSource, Random.Range(0.8f, 1.2f));
 
                 ConsumeAmmo();
-                DisplayToHUD();
+                weaponHandler.DisplayAmmo();
 
                 yield return new WaitForSeconds(0.05f);
             }
@@ -189,18 +189,18 @@ public class Weapon : MonoBehaviour
         }       
     }
 
-    void DisplayToHUD()
+    public string GetAmmoString()
     {
         switch (ammoMode.ToString())
         {
             case "Total":
-                hud.ammoCounter.text = currentAmmo.ToString();
-                break;
+                return currentAmmo.ToString();
 
             case "Mag":
-                hud.ammoCounter.text = ammoInMag.ToString() + " / " + currentAmmo.ToString();
-                break;
+                return ammoInMag.ToString() + " / " + currentAmmo.ToString();
         }
+
+        return null;
     }
 
     public void PlayerReload()
@@ -219,24 +219,28 @@ public class Weapon : MonoBehaviour
 
                 int ammo = currentAmmo - magSize;
                 ammo = Mathf.Clamp(ammo, 0, magSize);
+
                 int ammoToMag = currentAmmo - ammo;
+                ammoToMag = Mathf.Clamp(ammoToMag, 0, magSize);
 
                 ammoInMag = ammoToMag;
                 currentAmmo -= ammoToMag;
             }
         }
-
-        DisplayToHUD();
     }
 
     void BulletSpreadControl()
     {
-        targetSpread = baseSpread + FireSpread() + AirborneSpread();
-        spread = Mathf.Lerp(spread, targetSpread, spreadMultiplier);
-        spread = Mathf.Clamp(spread, 0, maxSpread);
+        if (hasSpread)
+        {
+            targetSpread = baseSpread + FireSpread() + AirborneSpread();
+            spread = Mathf.Lerp(spread, targetSpread, spreadMultiplier);
+            spread = Mathf.Clamp(spread, 0, maxSpread);
+            
+            GameManager.Instance.crosshairHandler.SetCrosshairSpread(spread);
+        }
 
         MousePositionDebug();
-        GameManager.Instance.crosshairHandler.SetCrosshairSpread(spread);
 
         float FireSpread()
         {
@@ -302,17 +306,18 @@ public class Weapon : MonoBehaviour
     void Start()
     {
         currentAmmo = totalAmmo;
+        weaponHandler = transform.parent.GetComponent<WeaponHandler>();
         ScriptReload();
-        DisplayToHUD();
     }
 
     void OnEnable()
     {
         audioSource = GetComponent<AudioSource>();
         hud = GameManager.Instance.playerHUD;
-        fpsCam = transform.parent.parent.GetComponent<FirstPersonCamera>();        
-        ScriptReload();
-        DisplayToHUD();
+        fpsCam = transform.parent.parent.GetComponent<FirstPersonCamera>();
+        weaponHandler = transform.parent.GetComponent<WeaponHandler>();
+        //ScriptReload();
+        //DisplayToHUD();
 
         switch (pointerType.ToString())
         {

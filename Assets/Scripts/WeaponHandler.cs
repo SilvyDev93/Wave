@@ -4,7 +4,7 @@ using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class WeaponHandler : MonoBehaviour
 {
-    GameObject[] playerWeapons; [HideInInspector] public Weapon currentWeapon;
+    GameObject[] playerWeapons; [HideInInspector] public WeaponSlot currentSlot; [HideInInspector] public Weapon currentWeapon;
 
     public void ChangeWeapon(int weaponID)
     {
@@ -24,6 +24,14 @@ public class WeaponHandler : MonoBehaviour
 
             playerWeapons[weaponID].SetActive(true);
             currentWeapon = playerWeapons[weaponID].GetComponent<Weapon>();
+
+            if (currentSlot != null)
+            {
+                currentSlot.Selection();
+            }
+
+            currentSlot = GameManager.Instance.playerHUD.GetWeaponSlot(weaponID);
+            currentSlot.Selection();
         }
     }
     
@@ -40,10 +48,26 @@ public class WeaponHandler : MonoBehaviour
         }
 
         currentWeapon = playerWeapons[0].GetComponent<Weapon>();
+        currentSlot = GameManager.Instance.playerHUD.GetWeaponSlot(0);
+        currentSlot.Selection();
+    }
+
+    public void DisplayAmmo()
+    {
+        Transform weaponSlots = GameManager.Instance.playerHUD.weaponSlots;
+
+        weaponSlots.GetChild(0).GetComponent<WeaponSlot>().SetAmmoString(playerWeapons[0].GetComponent<Weapon>().GetAmmoString());
+        weaponSlots.GetChild(1).GetComponent<WeaponSlot>().SetAmmoString(playerWeapons[1].GetComponent<Weapon>().GetAmmoString());
+        weaponSlots.GetChild(2).GetComponent<WeaponSlot>().SetAmmoString(playerWeapons[2].GetComponent<Weapon>().GetAmmoString());
+    }
+
+    void Update()
+    {
+        DisplayAmmo();
     }
 
     void Start()
     {
-        GetWeapons();
+        GetWeapons();       
     }
 }
