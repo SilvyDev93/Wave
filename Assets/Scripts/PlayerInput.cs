@@ -22,6 +22,8 @@ public class PlayerInput : MonoBehaviour
             ReloadInput();
 
             WeaponChangeInput();
+
+            KickInput();
         }
 
         PauseInput();
@@ -108,6 +110,14 @@ public class PlayerInput : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             GameManager.Instance.weaponHandler.ChangeWeapon(2);
+        }
+    }
+
+    void KickInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            GameManager.Instance.playerAbilities.Kick();
         }
     }
 

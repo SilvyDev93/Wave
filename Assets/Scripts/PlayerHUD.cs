@@ -23,6 +23,7 @@ public class PlayerHUD : MonoBehaviour
     public TextMeshProUGUI shopCaption;
 
     public Transform weaponSlots;
+    public GameObject reloadText;
 
     [HideInInspector] public Slider leftStaminaSlider;
     [HideInInspector] public Slider rightStaminaSlider;

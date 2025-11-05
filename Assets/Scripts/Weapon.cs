@@ -18,8 +18,10 @@ public class Weapon : MonoBehaviour
     [SerializeField] [Range(1, 16)] int numberOfProyectiles;
     [SerializeField] [Range(1, 16)] int bulletPenetration;
 
-    [Header("Ammo Mode: Mag")]
+    [Header("Ammo Mode: Reload")]
+    [SerializeField] ReloadType reloadType;
     [SerializeField] int magSize;
+    [SerializeField] float reloadSpeed;
 
     [Header("Fire Mode: Burst")]
     [Range(1, 16)][SerializeField] int numberOfBurstShots;
@@ -63,13 +65,19 @@ public class Weapon : MonoBehaviour
     public enum AmmoMode
     {
         Total,
-        Mag
+        Reload
     }
 
     public enum PointerType
     {
         Point,
         Crosshair
+    }
+
+    public enum ReloadType
+    {
+        Magazine,
+        SingleLoading
     }
 
     public void PlayerTriggerPush()
@@ -86,7 +94,7 @@ public class Weapon : MonoBehaviour
                 case "Total":
                     return currentAmmo;
 
-                case "Mag":
+                case "Reload":
                     return ammoInMag;
             }
 
@@ -126,7 +134,7 @@ public class Weapon : MonoBehaviour
                 GameManager.Instance.audioManager.PlayAudioPitch(audioSource, Random.Range(0.8f, 1.2f));
 
                 ConsumeAmmo();
-                weaponHandler.DisplayAmmo();
+                StartCoroutine(weaponHandler.DisplayAmmo());
 
                 yield return new WaitForSeconds(0.05f);
             }
@@ -141,6 +149,8 @@ public class Weapon : MonoBehaviour
 
                 if (Physics.Raycast(ray, out hit, range))
                 {
+                    Debug.Log(hit.transform.gameObject.name);
+
                     CharacterNPC character = hit.transform.GetComponent<CharacterNPC>();
 
                     if (character != null)
@@ -167,7 +177,7 @@ public class Weapon : MonoBehaviour
                     currentAmmo--;
                     break;
 
-                case "Mag":
+                case "Reload":
                     ammoInMag--;
                     break;
             }
@@ -196,7 +206,7 @@ public class Weapon : MonoBehaviour
             case "Total":
                 return currentAmmo.ToString();
 
-            case "Mag":
+            case "Reload":
                 return ammoInMag.ToString() + " / " + currentAmmo.ToString();
         }
 
@@ -205,28 +215,73 @@ public class Weapon : MonoBehaviour
 
     public void PlayerReload()
     {
-        ScriptReload();
+        if (ammoMode.ToString() == "Reload")
+        {
+            if (ammoInMag != magSize && currentAmmo > 0)
+            {
+                switch (reloadType.ToString())
+                {
+                    case "Magazine":
+                        MagReload();
+                        break;
+
+                    case "SingleLoading":
+                        StartCoroutine(SingleReload());
+                        break;
+                }
+            }
+
+            weaponHandler.DisplayAmmo();
+        }
+
+        void MagReload()
+        {
+            currentAmmo += ammoInMag;
+            ammoInMag = 0;
+
+            int ammo = currentAmmo - magSize;
+            ammo = Mathf.Clamp(ammo, 0, magSize);
+
+            int ammoToMag = currentAmmo - ammo;
+            ammoToMag = Mathf.Clamp(ammoToMag, 0, magSize);
+
+            ammoInMag = ammoToMag;
+            currentAmmo -= ammoToMag;
+        }
+
+        IEnumerator SingleReload()
+        {
+            GameManager.Instance.playerHUD.reloadText.SetActive(true);
+
+            Debug.Log(magSize - ammoInMag);
+
+            int bulletsToReload = magSize - ammoInMag;
+
+            for (int i = 0; i < bulletsToReload; i++)
+            {
+                ammoInMag++;
+                totalAmmo--;
+                weaponHandler.DisplayAmmo();
+                yield return new WaitForSeconds(reloadSpeed);
+            }
+
+            GameManager.Instance.playerHUD.reloadText.SetActive(false);
+        }
     }
 
     void ScriptReload()
     {
-        if (ammoMode.ToString() == "Mag")
-        {
-            if (ammoInMag != magSize && currentAmmo > 0)
-            {
-                currentAmmo += ammoInMag;
-                ammoInMag = 0;
+        currentAmmo += ammoInMag;
+        ammoInMag = 0;
 
-                int ammo = currentAmmo - magSize;
-                ammo = Mathf.Clamp(ammo, 0, magSize);
+        int ammo = currentAmmo - magSize;
+        ammo = Mathf.Clamp(ammo, 0, magSize);
 
-                int ammoToMag = currentAmmo - ammo;
-                ammoToMag = Mathf.Clamp(ammoToMag, 0, magSize);
+        int ammoToMag = currentAmmo - ammo;
+        ammoToMag = Mathf.Clamp(ammoToMag, 0, magSize);
 
-                ammoInMag = ammoToMag;
-                currentAmmo -= ammoToMag;
-            }
-        }
+        ammoInMag = ammoToMag;
+        currentAmmo -= ammoToMag;
     }
 
     void BulletSpreadControl()
@@ -298,27 +353,8 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    void Update()
+    void SetCrosshairVisibility()
     {
-        BulletSpreadControl();
-    }
-
-    void Start()
-    {
-        currentAmmo = totalAmmo;
-        weaponHandler = transform.parent.GetComponent<WeaponHandler>();
-        ScriptReload();
-    }
-
-    void OnEnable()
-    {
-        audioSource = GetComponent<AudioSource>();
-        hud = GameManager.Instance.playerHUD;
-        fpsCam = transform.parent.parent.GetComponent<FirstPersonCamera>();
-        weaponHandler = transform.parent.GetComponent<WeaponHandler>();
-        //ScriptReload();
-        //DisplayToHUD();
-
         switch (pointerType.ToString())
         {
             case "Crosshair":
@@ -329,6 +365,34 @@ public class Weapon : MonoBehaviour
                 GameManager.Instance.crosshairHandler.SetCrosshairActive(false);
                 break;
         }
+    }
+
+    void GetReferences()
+    {
+        weaponHandler = transform.parent.GetComponent<WeaponHandler>();
+        fpsCam = transform.parent.parent.GetComponent<FirstPersonCamera>();
+        audioSource = GetComponent<AudioSource>();
+        hud = GameManager.Instance.playerHUD;       
+    }
+
+    void Update()
+    {
+        BulletSpreadControl();
+    }
+
+    void Start()
+    {
+        currentAmmo = totalAmmo;
+        ScriptReload();
+    }
+
+    void OnEnable()
+    {        
+        GetReferences();
+
+        SetCrosshairVisibility();
+
+        weaponHandler.DisplayAmmo();
     }
 }
  

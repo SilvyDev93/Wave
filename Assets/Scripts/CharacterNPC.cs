@@ -11,6 +11,8 @@ public class CharacterNPC : MonoBehaviour
     [Header("References")]
     [SerializeField] Slider healthSlider;
 
+    Rigidbody rb; CharacterNavigation characterNavigation;
+
     float currentHealth;
 
     public void TakeDamage(float damage)
@@ -21,11 +23,23 @@ public class CharacterNPC : MonoBehaviour
         healthSlider.gameObject.SetActive(true);
 
         if (currentHealth <= 0)
-        {
-            GameManager.Instance.playerCharacter.GetMoney(reward);
-            GameManager.Instance.playerHUD.ReduceEnemyCounter();           
-            Destroy(gameObject);
+        {           
+            KillEntity();
         }
+    }
+
+    public void TakeKnockback(float force)
+    {
+        characterNavigation.DisableAgent();
+        rb.AddForce(force * Camera.main.transform.forward, ForceMode.Impulse);
+        rb.AddForce(force * transform.up, ForceMode.Impulse);
+    }
+
+    public void KillEntity()
+    {
+        GameManager.Instance.playerCharacter.GetMoney(reward);
+        GameManager.Instance.playerHUD.ReduceEnemyCounter();
+        Destroy(gameObject);
     }
 
     void Start()
@@ -34,5 +48,7 @@ public class CharacterNPC : MonoBehaviour
         healthSlider.maxValue = health;
         healthSlider.value = currentHealth;
         healthSlider.gameObject.SetActive(false);
+        rb = GetComponent<Rigidbody>();
+        characterNavigation = GetComponent<CharacterNavigation>();
     }
 }

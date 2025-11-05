@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem.HID;
+using UnityEngine.SceneManagement;
 
 public class PlayerCharacter : MonoBehaviour
 {
@@ -54,6 +55,16 @@ public class PlayerCharacter : MonoBehaviour
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, health);
         hud.SetHealthValue((int) currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            KillEntity();
+        }
+    }
+
+    public void KillEntity()
+    {
+        SceneManager.LoadScene(1);
     }
 
     public void ConsumeStamina(float consumption)

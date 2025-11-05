@@ -4,7 +4,7 @@ using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class WeaponHandler : MonoBehaviour
 {
-    GameObject[] playerWeapons; [HideInInspector] public WeaponSlot currentSlot; [HideInInspector] public Weapon currentWeapon;
+    [HideInInspector] public GameObject[] playerWeapons; [HideInInspector] public WeaponSlot currentSlot; [HideInInspector] public Weapon currentWeapon; [HideInInspector] public bool slotsReady;
 
     public void ChangeWeapon(int weaponID)
     {
@@ -35,7 +35,7 @@ public class WeaponHandler : MonoBehaviour
         }
     }
     
-    void GetWeapons()
+    IEnumerator GetWeapons()
     {
         playerWeapons = new GameObject[3];
 
@@ -48,26 +48,28 @@ public class WeaponHandler : MonoBehaviour
         }
 
         currentWeapon = playerWeapons[0].GetComponent<Weapon>();
+
+        yield return new WaitUntil(() => slotsReady);
+
         currentSlot = GameManager.Instance.playerHUD.GetWeaponSlot(0);
         currentSlot.Selection();
     }
 
-    public void DisplayAmmo()
+
+    public IEnumerator DisplayAmmo()
     {
+        yield return new WaitUntil(() => slotsReady);
+
         Transform weaponSlots = GameManager.Instance.playerHUD.weaponSlots;
 
-        weaponSlots.GetChild(0).GetComponent<WeaponSlot>().SetAmmoString(playerWeapons[0].GetComponent<Weapon>().GetAmmoString());
-        weaponSlots.GetChild(1).GetComponent<WeaponSlot>().SetAmmoString(playerWeapons[1].GetComponent<Weapon>().GetAmmoString());
-        weaponSlots.GetChild(2).GetComponent<WeaponSlot>().SetAmmoString(playerWeapons[2].GetComponent<Weapon>().GetAmmoString());
-    }
-
-    void Update()
-    {
-        DisplayAmmo();
+        for (int i = 0; i < playerWeapons.Length; i++)
+        {
+            weaponSlots.GetChild(i).GetComponent<WeaponSlot>().SetAmmoString(playerWeapons[i].GetComponent<Weapon>().GetAmmoString());
+        }
     }
 
     void Start()
     {
-        GetWeapons();       
+        StartCoroutine(GetWeapons());       
     }
 }

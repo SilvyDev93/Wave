@@ -3,9 +3,13 @@ using UnityEngine;
 
 public class WeaponSlot : MonoBehaviour
 {
+    [Header("Parameters")]
+    [SerializeField] Vector2 selectedScale;
+    [SerializeField] Vector2 reducedScale;
+
+    [Header("References")]
     [SerializeField] TextMeshProUGUI ammoCounter;
-    [SerializeField] Vector2 unselectedSize;
-    Vector2 originalSize;
+
     bool selected = true;
 
     public void Selection()
@@ -13,12 +17,12 @@ public class WeaponSlot : MonoBehaviour
         switch (selected)
         {
             case true:
-                transform.localScale = unselectedSize;
+                transform.localScale = reducedScale;
                 selected = false;
                 break;
 
             case false:
-                transform.localScale = originalSize;
+                transform.localScale = selectedScale;
                 selected = true;
                 break;
         }
@@ -31,8 +35,6 @@ public class WeaponSlot : MonoBehaviour
 
     private void Start()
     {
-        originalSize = transform.localScale;
-
         Selection();
     }
 }
