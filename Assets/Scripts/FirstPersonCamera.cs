@@ -15,7 +15,20 @@ public class FirstPersonCamera : MonoBehaviour
         float mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
 
         transform.parent.Rotate(transform.parent.up * mouseX);
-        transform.Rotate(new Vector3(1, 0, 0) * -mouseY);
+
+        Vector3 rot = transform.rotation.eulerAngles;
+        rot.x += -mouseY;
+
+        if (rot.x > 180)
+        {
+            rot.x = rot.x < 270f ? 270f : rot.x;
+        }
+        else
+        {
+            rot.x = rot.x > 90f ? 90f : rot.x;
+        }
+
+        transform.rotation = Quaternion.Euler(rot);
     }
 
     void MovementTilt()

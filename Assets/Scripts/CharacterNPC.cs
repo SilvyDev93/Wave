@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,13 +8,18 @@ public class CharacterNPC : MonoBehaviour
     [Header("Character Parameters")]
     [SerializeField] float health;
     [SerializeField] int reward;
-    
-    [Header("References")]
+
+    [Header("Ground Check")]
+    [SerializeField] Transform groundCheck;
+    [SerializeField] float groundCheckDistance;
+    [SerializeField] LayerMask groundMask;
+
+    [Header("References")]  
     [SerializeField] Slider healthSlider;
 
     Rigidbody rb; CharacterNavigation characterNavigation;
 
-    float currentHealth;
+    float currentHealth; bool groundCheckEnabled = true;
 
     public void TakeDamage(float damage)
     {
@@ -30,7 +36,10 @@ public class CharacterNPC : MonoBehaviour
 
     public void TakeKnockback(float force)
     {
-        characterNavigation.DisableAgent();
+        rb.isKinematic = false;
+        characterNavigation.SetAgentActive(false);
+        groundCheckEnabled = false;
+
         rb.AddForce(force * Camera.main.transform.forward, ForceMode.Impulse);
         rb.AddForce(force * transform.up, ForceMode.Impulse);
     }
@@ -42,6 +51,40 @@ public class CharacterNPC : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public bool OnGround()
+    {
+        return Physics.CheckSphere(groundCheck.position, groundCheckDistance, groundMask);
+    }
+
+    IEnumerator GroundCheckCoroutine()
+    {
+        switch (groundCheckEnabled)
+        {
+            case true:
+
+                if (OnGround())
+                {
+                    rb.isKinematic = true;
+                    characterNavigation.SetAgentActive(true);
+                }
+                
+                break;
+
+            case false:
+                StartCoroutine(GroundCheckWait());
+                break;
+
+                IEnumerator GroundCheckWait()
+                {
+                    yield return new WaitForSeconds(0.1f);
+                    groundCheckEnabled = true;
+                }
+        }
+
+        yield return new WaitForSeconds(0.1f);
+        StartCoroutine(GroundCheckCoroutine());        
+    }
+
     void Start()
     {
         currentHealth = health;
@@ -49,6 +92,8 @@ public class CharacterNPC : MonoBehaviour
         healthSlider.value = currentHealth;
         healthSlider.gameObject.SetActive(false);
         rb = GetComponent<Rigidbody>();
+        rb.isKinematic = true;
         characterNavigation = GetComponent<CharacterNavigation>();
+        StartCoroutine(GroundCheckCoroutine());
     }
 }

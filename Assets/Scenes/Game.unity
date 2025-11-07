@@ -2056,6 +2056,7 @@ MonoBehaviour:
   kickDamage: 3
   kickRadius: 1
   kickKnockback: 15
+  kickStaminaCost: 25
   kickOrigin: {fileID: 1739906124}
   entityLayer:
     serializedVersion: 2
@@ -4430,6 +4431,7 @@ MonoBehaviour:
   totalAmmo: 100
   range: 60
   recoil: 1.25
+  muzzleOffset: 0
   numberOfProyectiles: 1
   bulletPenetration: 1
   reloadType: 0
@@ -4448,6 +4450,9 @@ MonoBehaviour:
   strenght: 1
   initialSpeed: 1
   smoothTime: 0.2
+  entityLayer:
+    serializedVersion: 2
+    m_Bits: 128
   cameraShake: {fileID: 2001889174}
   shooting: 0
 --- !u!82 &1778585742
@@ -5347,6 +5352,7 @@ MonoBehaviour:
   totalAmmo: 300
   range: 60
   recoil: 1.25
+  muzzleOffset: 0
   numberOfProyectiles: 1
   bulletPenetration: 1
   reloadType: 0
@@ -5365,6 +5371,9 @@ MonoBehaviour:
   strenght: 1
   initialSpeed: 1
   smoothTime: 0.2
+  entityLayer:
+    serializedVersion: 2
+    m_Bits: 0
   cameraShake: {fileID: 2001889174}
   shooting: 0
 --- !u!1 &2094011145
@@ -5518,6 +5527,7 @@ MonoBehaviour:
   totalAmmo: 200
   range: 60
   recoil: 1.25
+  muzzleOffset: 0
   numberOfProyectiles: 1
   bulletPenetration: 1
   reloadType: 1
@@ -5536,6 +5546,9 @@ MonoBehaviour:
   strenght: 1
   initialSpeed: 1
   smoothTime: 0.2
+  entityLayer:
+    serializedVersion: 2
+    m_Bits: 0
   cameraShake: {fileID: 2001889174}
   shooting: 0
 --- !u!1 &2119486032

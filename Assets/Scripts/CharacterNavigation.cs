@@ -5,9 +5,9 @@ public class CharacterNavigation : MonoBehaviour
 {
     NavMeshAgent agent;
 
-    public void DisableAgent()
+    public void SetAgentActive(bool active)
     {
-        agent.enabled = false;
+        agent.enabled = active;
     }
 
     private void Update()
@@ -18,7 +18,7 @@ public class CharacterNavigation : MonoBehaviour
         }
     }
 
-    void Start()
+    void Awake()
     {
         agent = GetComponent<NavMeshAgent>();        
     }

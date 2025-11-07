@@ -15,6 +15,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] int totalAmmo;   
     [SerializeField] int range;
     [SerializeField] float recoil;
+    [SerializeField] float muzzleOffset;
     [SerializeField] [Range(1, 16)] int numberOfProyectiles;
     [SerializeField] [Range(1, 16)] int bulletPenetration;
 
@@ -44,7 +45,8 @@ public class Weapon : MonoBehaviour
     [SerializeField] float initialSpeed;
     [SerializeField] float smoothTime;
 
-    [Header("References")]    
+    [Header("References")]
+    [SerializeField] LayerMask entityLayer;
     [SerializeField] CameraShake cameraShake;
 
     int currentAmmo; int ammoInMag; float fireCooldown;
@@ -148,15 +150,17 @@ public class Weapon : MonoBehaviour
                 RaycastHit hit;
 
                 if (Physics.Raycast(ray, out hit, range))
-                {
-                    Debug.Log(hit.transform.gameObject.name);
-
+                {                    
                     CharacterNPC character = hit.transform.GetComponent<CharacterNPC>();
 
                     if (character != null)
                     {
                         character.TakeDamage(damage);
                     }
+
+                    //Debug
+                    Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), hit.point, Quaternion.identity);
+                    //
                 }
             }
         }
@@ -252,8 +256,6 @@ public class Weapon : MonoBehaviour
         IEnumerator SingleReload()
         {
             GameManager.Instance.playerHUD.reloadText.SetActive(true);
-
-            Debug.Log(magSize - ammoInMag);
 
             int bulletsToReload = magSize - ammoInMag;
 
@@ -393,6 +395,14 @@ public class Weapon : MonoBehaviour
         SetCrosshairVisibility();
 
         weaponHandler.DisplayAmmo();
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        Ray ray = Camera.main.ScreenPointToRay(MousePositionSpreadOffset());
+        Gizmos.DrawRay(ray);
     }
 }
  
