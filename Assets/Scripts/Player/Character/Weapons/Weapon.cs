@@ -164,6 +164,11 @@ public class Weapon : MonoBehaviour
                     }
                     else
                     {
+                        if (hit.transform.gameObject.layer == 7)
+                        {
+                            hit.transform.gameObject.SendMessage("TakeDamage", damage);
+                        }
+                        
                         Instantiate(bulletHoleDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
                     }                   
                 }

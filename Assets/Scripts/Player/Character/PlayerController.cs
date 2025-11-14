@@ -23,12 +23,62 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask groundMask;
     [SerializeField] bool gravityEnabled = true;
 
+    [Header("Snapping")]
+    [SerializeField] bool snap;
+    [SerializeField] float snapDistance;
+    [SerializeField] float snapOffset;
+
     [Header("References")]
     [SerializeField] Transform groundCheck;
+
+    [Header("Debug")]
+    [SerializeField] bool showCheckSphere;
+    [SerializeField] bool showSnapRay;
 
     float movementSpeed; float currentGravity = 0;
 
     Rigidbody rb; PlayerCharacter character; PlayerInput input;
+
+    void PlayerInputFixed() // Player inputs handled in FixedUpdate
+    {
+        rb.MovePosition(transform.position + (input.GetVerticalAxis() + input.GetHorizontalAxis()) * movementSpeed * Time.deltaTime);
+    }
+
+    void PlayerGravity()
+    {
+        if (!OnGround() && gravityEnabled)
+        {
+            currentGravity += gravityIncreaseSpeed;
+            Vector3 gravity = GameManager.Instance.globalGravity * fallSpeed * currentGravity * Vector3.up;           
+            rb.AddForce(gravity, ForceMode.Acceleration);
+        }
+
+        if (OnGround())
+        {
+            currentGravity = 0;
+        }
+    }
+
+    void PlayerSnapping()
+    {
+        if (!OnGround() && snap) 
+        {
+            Ray ray = new Ray();
+
+            ray.origin = groundCheck.position;
+            ray.direction = -transform.up;
+
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, snapDistance))
+            {
+                if (hit.transform.gameObject.layer == 3)
+                {
+                    rb.MovePosition(new Vector3(transform.position.x, hit.point.y + snapOffset, transform.position.z));
+                }
+            }
+        }      
+    }
 
     public void Jump()
     {
@@ -70,29 +120,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void PlayerInputFixed() // Player inputs handled in FixedUpdate
-    {
-        rb.MovePosition(transform.position + (input.GetVerticalAxis() + input.GetHorizontalAxis()) * movementSpeed * Time.deltaTime);
-    }
-
     public bool OnGround()
     {
         return Physics.CheckSphere(groundCheck.position, groundCheckDistance, groundMask);
-    }
-
-    void PlayerGravity()
-    {
-        if (!OnGround() && gravityEnabled)
-        {
-            currentGravity += gravityIncreaseSpeed;
-            Vector3 gravity = GameManager.Instance.globalGravity * fallSpeed * currentGravity * Vector3.up;           
-            rb.AddForce(gravity, ForceMode.Acceleration);
-        }
-
-        if (OnGround())
-        {
-            currentGravity = 0;
-        }
     }
 
     public bool IsPlayerMoving() // Used by other scripts to know if player is moving
@@ -111,6 +141,7 @@ public class PlayerController : MonoBehaviour
     {
         PlayerInputFixed();       
         PlayerGravity();
+        PlayerSnapping();
     }
 
     void Awake()
@@ -124,7 +155,16 @@ public class PlayerController : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(groundCheck.position, groundCheckDistance);
+        if (showCheckSphere)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(groundCheck.position, groundCheckDistance);
+        }
+  
+        if (showSnapRay) 
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawRay(groundCheck.position, -transform.up * snapDistance);
+        }      
     }
 }
