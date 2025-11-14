@@ -9,6 +9,10 @@ public class FirstPersonCamera : MonoBehaviour
     [SerializeField] float tiltAngle;
     [SerializeField] float smooth;
 
+    float shakeStrength; float shakeSpeed; float shakeSmooth;
+
+    [HideInInspector] public bool shake;
+
     void MouseLook()
     {
         float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
@@ -38,6 +42,23 @@ public class FirstPersonCamera : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * smooth);
     }
 
+    void Shake()
+    {
+        if (shake)
+        {
+            float randomZ = Random.value - 0.5f;
+
+            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, transform.localEulerAngles.z + randomZ * shakeStrength);
+            shakeStrength = Mathf.SmoothDamp(shakeStrength, 0f, ref shakeSpeed, shakeSmooth);
+            shakeStrength = Mathf.Clamp(shakeStrength, 0f, 50f);
+
+            if (shakeStrength <= 0.1f)
+            {
+                shake = false;
+            }
+        }
+    }
+
     public void FireRecoil(float recoil)
     {
         float verticalAngle = transform.eulerAngles.x - recoil * Random.Range(0.25f, 1);
@@ -45,12 +66,23 @@ public class FirstPersonCamera : MonoBehaviour
         transform.rotation = target;
     }
 
-    // Move CameraShake.cs functions to here
+    public void StartShake(float strength, float initialSpeed, float smoothTime)
+    {
+        if (!shake)
+        {
+            shakeStrength = strength;
+            shakeSpeed = initialSpeed;
+            shakeSmooth = smoothTime;
+
+            shake = true;
+        }
+    }
 
     void Update()
     {
         MouseLook();
         MovementTilt();
+        Shake();
     }
 
     private void Awake()

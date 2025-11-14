@@ -91,7 +91,9 @@ public class PlayerInput : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            GameManager.Instance.weaponHandler.currentWeapon.PlayerReload();
+            WeaponHandler weaponHandler = GameManager.Instance.weaponHandler;
+            weaponHandler.currentWeapon.PlayerReload();
+            weaponHandler.DisplayAmmo();
         }
     }
 
@@ -99,17 +101,23 @@ public class PlayerInput : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            GameManager.Instance.weaponHandler.ChangeWeapon(0);
+            WeaponHandler weaponHandler = GameManager.Instance.weaponHandler;
+            weaponHandler.ChangeWeapon(0);
+            StartCoroutine(weaponHandler.DisplayAmmo());
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            GameManager.Instance.weaponHandler.ChangeWeapon(1);
+            WeaponHandler weaponHandler = GameManager.Instance.weaponHandler;
+            weaponHandler.ChangeWeapon(1);
+            StartCoroutine(weaponHandler.DisplayAmmo());
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            GameManager.Instance.weaponHandler.ChangeWeapon(2);
+            WeaponHandler weaponHandler = GameManager.Instance.weaponHandler;
+            weaponHandler.ChangeWeapon(2);
+            StartCoroutine(weaponHandler.DisplayAmmo());
         }
     }
 

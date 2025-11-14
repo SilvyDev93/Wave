@@ -15,7 +15,6 @@ public class Weapon : MonoBehaviour
     [SerializeField] int totalAmmo;   
     [SerializeField] int range;
     [SerializeField] float recoil;
-    [SerializeField] float muzzleOffset;
     [SerializeField] [Range(1, 16)] int numberOfProyectiles;
     [SerializeField] [Range(1, 16)] int bulletPenetration;
 
@@ -45,10 +44,13 @@ public class Weapon : MonoBehaviour
     [SerializeField] float initialSpeed;
     [SerializeField] float smoothTime;
 
+    [Header("Decals")]
+    [SerializeField] GameObject bulletHoleDecal;
+    [SerializeField] GameObject bloodSplatterDecal;
+
     [Header("References")]
     [SerializeField] LayerMask entityLayer;
-    [SerializeField] CameraShake cameraShake;
-
+    
     int currentAmmo; int ammoInMag; float fireCooldown;
     float spread; float targetSpread; float currentFireSpread; float currentAirborneSpread;
 
@@ -84,6 +86,8 @@ public class Weapon : MonoBehaviour
 
     public void PlayerTriggerPush()
     {
+        StopCoroutine(SingleReload());
+
         if (!shooting && GetCurrentAmmoMode() > 0)
         {
             StartCoroutine(Shoot());
@@ -108,13 +112,13 @@ public class Weapon : MonoBehaviour
     {
         shooting = true;
 
-        yield return new WaitForSeconds(fireCooldown);
-
         float burstShots = GetBurstFireShots();
 
         StartCoroutine(ShootLogic());
         
         fireCooldown = rateOfFire;
+
+        yield return new WaitForSeconds(fireCooldown);
 
         StartCoroutine(ManualBoltAction());
 
@@ -132,7 +136,7 @@ public class Weapon : MonoBehaviour
                 }
 
                 fpsCam.FireRecoil(recoil);
-                cameraShake.StartShake(strenght, initialSpeed, smoothTime);
+                fpsCam.StartShake(strenght, initialSpeed, smoothTime);
                 GameManager.Instance.audioManager.PlayAudioPitch(audioSource, Random.Range(0.8f, 1.2f));
 
                 ConsumeAmmo();
@@ -156,11 +160,12 @@ public class Weapon : MonoBehaviour
                     if (character != null)
                     {
                         character.TakeDamage(damage);
+                        Instantiate(bloodSplatterDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
                     }
-
-                    //Debug
-                    Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), hit.point, Quaternion.identity);
-                    //
+                    else
+                    {
+                        Instantiate(bulletHoleDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
+                    }                   
                 }
             }
         }
@@ -221,7 +226,7 @@ public class Weapon : MonoBehaviour
     {
         if (ammoMode.ToString() == "Reload")
         {
-            if (ammoInMag != magSize && currentAmmo > 0)
+            if (ammoInMag != magSize && currentAmmo > 0 && !shooting)
             {
                 switch (reloadType.ToString())
                 {
@@ -235,7 +240,7 @@ public class Weapon : MonoBehaviour
                 }
             }
 
-            weaponHandler.DisplayAmmo();
+            StartCoroutine(weaponHandler.DisplayAmmo());
         }
 
         void MagReload()
@@ -251,39 +256,44 @@ public class Weapon : MonoBehaviour
 
             ammoInMag = ammoToMag;
             currentAmmo -= ammoToMag;
-        }
+        }        
+    }
 
-        IEnumerator SingleReload()
+    IEnumerator SingleReload()
+    {
+        GameManager.Instance.playerHUD.reloadText.SetActive(true);
+
+        int bulletsToReload = magSize - ammoInMag;
+
+        for (int i = 0; i < bulletsToReload; i++)
         {
-            GameManager.Instance.playerHUD.reloadText.SetActive(true);
-
-            int bulletsToReload = magSize - ammoInMag;
-
-            for (int i = 0; i < bulletsToReload; i++)
-            {
-                ammoInMag++;
-                totalAmmo--;
-                weaponHandler.DisplayAmmo();
-                yield return new WaitForSeconds(reloadSpeed);
-            }
-
-            GameManager.Instance.playerHUD.reloadText.SetActive(false);
+            ammoInMag++;
+            totalAmmo--;
+            StartCoroutine(weaponHandler.DisplayAmmo());
+            yield return new WaitForSeconds(reloadSpeed);
         }
+
+        GameManager.Instance.playerHUD.reloadText.SetActive(false);
     }
 
     void ScriptReload()
     {
-        currentAmmo += ammoInMag;
-        ammoInMag = 0;
+        if (ammoMode.ToString() == "Reload")
+        {
+            currentAmmo += ammoInMag;
+            ammoInMag = 0;
 
-        int ammo = currentAmmo - magSize;
-        ammo = Mathf.Clamp(ammo, 0, magSize);
+            int ammo = currentAmmo - magSize;
+            ammo = Mathf.Clamp(ammo, 0, magSize);
 
-        int ammoToMag = currentAmmo - ammo;
-        ammoToMag = Mathf.Clamp(ammoToMag, 0, magSize);
+            int ammoToMag = currentAmmo - ammo;
+            ammoToMag = Mathf.Clamp(ammoToMag, 0, magSize);
 
-        ammoInMag = ammoToMag;
-        currentAmmo -= ammoToMag;
+            ammoInMag = ammoToMag;
+            currentAmmo -= ammoToMag;
+
+            StartCoroutine(weaponHandler.DisplayAmmo());
+        }      
     }
 
     void BulletSpreadControl()
@@ -334,7 +344,7 @@ public class Weapon : MonoBehaviour
 
     Vector3 MousePositionSpreadOffset()
     {
-        return Input.mousePosition + new Vector3(Random.Range(-spread, spread), Random.Range(-spread, spread), 0);
+        return (Vector2) Input.mousePosition + Random.insideUnitCircle * spread;
     }
 
     void MousePositionDebug()
@@ -394,7 +404,7 @@ public class Weapon : MonoBehaviour
 
         SetCrosshairVisibility();
 
-        weaponHandler.DisplayAmmo();
+        StartCoroutine(weaponHandler.DisplayAmmo());
     }
 
     void OnDrawGizmos()

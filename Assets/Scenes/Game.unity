@@ -1595,8 +1595,8 @@ RectTransform:
   - {fileID: 1916462678}
   - {fileID: 1575968656}
   - {fileID: 511839497}
-  - {fileID: 1543476614}
   - {fileID: 1230957765}
+  - {fileID: 1543476614}
   m_Father: {fileID: 1467394916}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4389,7 +4389,7 @@ GameObject:
   - component: {fileID: 1778585741}
   - component: {fileID: 1778585742}
   m_Layer: 0
-  m_Name: Pistol
+  m_Name: Sub
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4426,12 +4426,11 @@ MonoBehaviour:
   ammoMode: 1
   fireMode: 0
   pointerType: 1
-  damage: 5
+  damage: 1
   rateOfFire: 0.1
   totalAmmo: 100
   range: 60
   recoil: 1.25
-  muzzleOffset: 0
   numberOfProyectiles: 1
   bulletPenetration: 1
   reloadType: 0
@@ -4450,10 +4449,11 @@ MonoBehaviour:
   strenght: 1
   initialSpeed: 1
   smoothTime: 0.2
+  bulletHoleDecal: {fileID: 2922058503853703424, guid: 3acd74e360702ba418bb0e73f3793d30, type: 3}
+  bloodSplatterDecal: {fileID: 2922058503853703424, guid: e9100f3f5401af54d8061eac23eafb60, type: 3}
   entityLayer:
     serializedVersion: 2
     m_Bits: 128
-  cameraShake: {fileID: 2001889174}
   shooting: 0
 --- !u!82 &1778585742
 AudioSource:
@@ -4875,7 +4875,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2001889169}
   - component: {fileID: 2001889173}
-  - component: {fileID: 2001889174}
   - component: {fileID: 2001889172}
   - component: {fileID: 2001889171}
   - component: {fileID: 2001889170}
@@ -5023,18 +5022,6 @@ MonoBehaviour:
   sensitivity: 50
   tiltAngle: 5
   smooth: 5
---- !u!114 &2001889174
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2001889168}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be8bbd9ac2f9a6e428b12532faa04246, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   shake: 0
 --- !u!1 &2026918948
 GameObject:
@@ -5218,7 +5205,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2076934747
 Transform:
   m_ObjectHideFlags: 0
@@ -5345,14 +5332,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   proyectile: {fileID: 0}
   ammoMode: 0
-  fireMode: 2
+  fireMode: 1
   pointerType: 0
   damage: 20
-  rateOfFire: 0.1
-  totalAmmo: 300
-  range: 60
-  recoil: 1.25
-  muzzleOffset: 0
+  rateOfFire: 0.5
+  totalAmmo: 5
+  range: 120
+  recoil: 4
   numberOfProyectiles: 1
   bulletPenetration: 1
   reloadType: 0
@@ -5371,10 +5357,11 @@ MonoBehaviour:
   strenght: 1
   initialSpeed: 1
   smoothTime: 0.2
+  bulletHoleDecal: {fileID: 2922058503853703424, guid: 3acd74e360702ba418bb0e73f3793d30, type: 3}
+  bloodSplatterDecal: {fileID: 2922058503853703424, guid: e9100f3f5401af54d8061eac23eafb60, type: 3}
   entityLayer:
     serializedVersion: 2
-    m_Bits: 0
-  cameraShake: {fileID: 2001889174}
+    m_Bits: 128
   shooting: 0
 --- !u!1 &2094011145
 GameObject:
@@ -5388,12 +5375,12 @@ GameObject:
   - component: {fileID: 2094011148}
   - component: {fileID: 2094011147}
   m_Layer: 0
-  m_Name: Pistol (1)
+  m_Name: Shotgun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2094011146
 Transform:
   m_ObjectHideFlags: 0
@@ -5522,34 +5509,34 @@ MonoBehaviour:
   ammoMode: 1
   fireMode: 1
   pointerType: 1
-  damage: 5
-  rateOfFire: 0.1
-  totalAmmo: 200
+  damage: 1
+  rateOfFire: 0.35
+  totalAmmo: 50
   range: 60
-  recoil: 1.25
-  muzzleOffset: 0
-  numberOfProyectiles: 1
+  recoil: 15
+  numberOfProyectiles: 6
   bulletPenetration: 1
   reloadType: 1
   magSize: 6
   reloadSpeed: 0.5
   numberOfBurstShots: 3
   boltActionTime: 0
-  hasSpread: 0
-  baseSpread: 5
-  spreadFireIncrease: 3
-  spreadFireDecrease: 2.5
+  hasSpread: 1
+  baseSpread: 10
+  spreadFireIncrease: 10
+  spreadFireDecrease: 1
   spreadAirborneIncrease: 5
   spreadAirborneDecrease: 5
   spreadMultiplier: 2
-  maxSpread: 50
+  maxSpread: 70
   strenght: 1
   initialSpeed: 1
   smoothTime: 0.2
+  bulletHoleDecal: {fileID: 2922058503853703424, guid: 3acd74e360702ba418bb0e73f3793d30, type: 3}
+  bloodSplatterDecal: {fileID: 2922058503853703424, guid: e9100f3f5401af54d8061eac23eafb60, type: 3}
   entityLayer:
     serializedVersion: 2
-    m_Bits: 0
-  cameraShake: {fileID: 2001889174}
+    m_Bits: 128
   shooting: 0
 --- !u!1 &2119486032
 GameObject:

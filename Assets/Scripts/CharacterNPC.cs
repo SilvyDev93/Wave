@@ -8,6 +8,7 @@ public class CharacterNPC : MonoBehaviour
     [Header("Character Parameters")]
     [SerializeField] float health;
     [SerializeField] int reward;
+    [SerializeField] float healthBarTime;
 
     [Header("Ground Check")]
     [SerializeField] Transform groundCheck;
@@ -26,22 +27,26 @@ public class CharacterNPC : MonoBehaviour
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, health);
         healthSlider.value = currentHealth;
+
+        StopCoroutine(HideHealthBar());
         healthSlider.gameObject.SetActive(true);
 
         if (currentHealth <= 0)
         {           
             KillEntity();
         }
+
+        StartCoroutine(HideHealthBar());
     }
 
-    public void TakeKnockback(float force)
+    public void TakeKnockback(float force, Vector3 direction)
     {
         rb.isKinematic = false;
         characterNavigation.SetAgentActive(false);
         groundCheckEnabled = false;
 
-        rb.AddForce(force * Camera.main.transform.forward, ForceMode.Impulse);
-        rb.AddForce(force * transform.up, ForceMode.Impulse);
+        rb.AddForce(force * direction, ForceMode.Impulse);
+        rb.AddForce(force * transform.up, ForceMode.Impulse); // quitar
     }
 
     public void KillEntity()
@@ -83,6 +88,12 @@ public class CharacterNPC : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
         StartCoroutine(GroundCheckCoroutine());        
+    }
+
+    IEnumerator HideHealthBar()
+    {
+        yield return new WaitForSeconds(healthBarTime);
+        healthSlider.gameObject.SetActive(false);
     }
 
     void Start()

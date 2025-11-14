@@ -32,6 +32,7 @@ public class WeaponHandler : MonoBehaviour
 
             currentSlot = GameManager.Instance.playerHUD.GetWeaponSlot(weaponID);
             currentSlot.Selection();
+            StartCoroutine(DisplayAmmo());
         }
     }
     
@@ -53,13 +54,19 @@ public class WeaponHandler : MonoBehaviour
 
         currentSlot = GameManager.Instance.playerHUD.GetWeaponSlot(0);
         currentSlot.Selection();
-    }
 
+        foreach (GameObject weapon in playerWeapons)
+        {
+            weapon.SetActive(false);
+        }
+
+        playerWeapons[0].SetActive(true);
+    }
 
     public IEnumerator DisplayAmmo()
     {
         yield return new WaitUntil(() => slotsReady);
-
+        
         Transform weaponSlots = GameManager.Instance.playerHUD.weaponSlots;
 
         for (int i = 0; i < playerWeapons.Length; i++)

@@ -25,8 +25,15 @@ public class PlayerAbilities : MonoBehaviour
             {
                 if (hitCollider.gameObject.tag != "Player")
                 {
-                    hitCollider.SendMessage("TakeDamage", kickDamage);
-                    hitCollider.SendMessage("TakeKnockback", kickKnockback);
+                    CharacterNPC character = hitCollider.gameObject.GetComponent<CharacterNPC>();
+
+                    if (character != null) 
+                    {
+                        //hitCollider.SendMessage("TakeDamage", kickDamage);
+                        //hitCollider.SendMessage("TakeKnockback", kickKnockback);
+                        character.TakeDamage(kickDamage);
+                        character.TakeKnockback(kickKnockback, Camera.main.transform.forward);
+                    }                   
                 }
             }
 

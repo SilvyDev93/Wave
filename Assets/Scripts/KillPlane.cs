@@ -9,12 +9,8 @@ public class KillPlane : MonoBehaviour
         if (other.gameObject.layer == entityLayer)
         {
             other.SendMessage("KillEntity"); 
-            Debug.Log("Entity Killed");
         }
 
         other.SendMessage("KillEntity");
-        Debug.Log("Entity Killed");
-
-        Debug.Log("Trigger Event");
     }
 }
