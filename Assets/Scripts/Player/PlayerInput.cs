@@ -35,15 +35,7 @@ public class PlayerInput : MonoBehaviour
         {
             controller.Jump();
         }
-    }
-
-    void DashInput()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            controller.Dash();
-        }
-    }
+    }   
 
     void PauseInput()
     {
@@ -118,6 +110,14 @@ public class PlayerInput : MonoBehaviour
             WeaponHandler weaponHandler = GameManager.Instance.weaponHandler;
             weaponHandler.ChangeWeapon(2);
             StartCoroutine(weaponHandler.DisplayAmmo());
+        }
+    }
+
+    void DashInput()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            GameManager.Instance.playerAbilities.Dash();
         }
     }
 

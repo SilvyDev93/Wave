@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public PlayerController playerController;
     [HideInInspector] public WeaponHandler weaponHandler;
     [HideInInspector] public PlayerAbilities playerAbilities;
+    [HideInInspector] public PlayerInput playerInput;
 
     public void PauseGame()
     {
@@ -95,6 +96,7 @@ public class GameManager : MonoBehaviour
         pauseMenu = playerTransform.GetChild(1).GetComponent<PauseMenu>();
         crosshairHandler = playerTransform.GetChild(1).GetComponent<CrosshairHandler>();
         weaponHandler = GameObject.Find("WeaponHandler").GetComponent<WeaponHandler>();
+        playerInput = playerTransform.gameObject.GetComponent<PlayerInput>();
     }
 
     private void OnEnable()

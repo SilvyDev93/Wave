@@ -1,9 +1,18 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
 public class PlayerAbilities : MonoBehaviour
 {
-    [Header("Parameters")]
+    [Header("Dash")]
+    [SerializeField] float dashStrength;
+    [SerializeField] float dashCooldown;
+    [SerializeField] float dashDuration;
+    [SerializeField] float dashStaminaCost;
+    [SerializeField] float dashFOVspeed;
+    [SerializeField] bool canDash = true;
+
+    [Header("Kick")]
     [SerializeField] float kickDamage;
     [SerializeField] float kickRadius;
     [SerializeField] float kickKnockback;
@@ -13,11 +22,52 @@ public class PlayerAbilities : MonoBehaviour
     [SerializeField] Transform kickOrigin;
     [SerializeField] LayerMask entityLayer;
 
-    PlayerCharacter character;
+    PlayerCharacter playerCharacter;
+    PlayerController playerController;
+    PlayerInput playerInput;
+
+    public void Dash()
+    {
+        if (canDash && !playerCharacter.exhausted)
+        {
+            StartCoroutine(PlayerDashState());
+        }
+
+        IEnumerator PlayerDashState()
+        {
+            canDash = false;
+
+            GameManager.Instance.playerInput.lockedInput = true;
+
+            Camera.main.fieldOfView = Camera.main.fieldOfView + 20;
+
+            playerController.gravityEnabled = false;
+
+            playerController.GetComponent<Rigidbody>().AddForce((playerInput.GetVerticalAxis().normalized + playerInput.GetHorizontalAxis().normalized) * dashStrength, ForceMode.Impulse);
+
+            playerCharacter.ConsumeStamina(dashStaminaCost);
+
+            yield return new WaitForSeconds(dashDuration);
+
+            GameManager.Instance.playerInput.lockedInput = false;
+
+            Camera.main.fieldOfView = Camera.main.fieldOfView - 20;
+
+            playerController.gravityEnabled = true;
+
+            StartCoroutine(DashCooldown());
+        }
+
+        IEnumerator DashCooldown()
+        {
+            yield return new WaitForSeconds(dashDuration);
+            canDash = true;
+        }
+    }
 
     public void Kick()
     {
-        if (!character.exhausted) 
+        if (!playerCharacter.exhausted) 
         {
             Collider[] hitColliders = Physics.OverlapSphere(kickOrigin.position, kickRadius, entityLayer);
 
@@ -37,13 +87,15 @@ public class PlayerAbilities : MonoBehaviour
                 }
             }
 
-            character.ConsumeStamina(kickStaminaCost);
+            playerCharacter.ConsumeStamina(kickStaminaCost);
         }        
     }
 
-    private void Awake()
+    private void Start()
     {
-        character = GetComponent<PlayerCharacter>();
+        playerCharacter = GetComponent<PlayerCharacter>();
+        playerController = GetComponent<PlayerController>();
+        playerInput = GameManager.Instance.playerInput;
     }
 
     void OnDrawGizmosSelected()

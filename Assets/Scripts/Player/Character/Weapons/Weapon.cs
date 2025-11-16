@@ -1,5 +1,7 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.UI.Image;
 
 public class Weapon : MonoBehaviour
 {
@@ -50,13 +52,14 @@ public class Weapon : MonoBehaviour
 
     [Header("References")]
     [SerializeField] LayerMask entityLayer;
+    [SerializeField] GameObject bulletTracer;
     
     int currentAmmo; int ammoInMag; float fireCooldown;
     float spread; float targetSpread; float currentFireSpread; float currentAirborneSpread;
+    
+    FirstPersonCamera fpsCam; AudioSource audioSource; PlayerHUD hud; WeaponHandler weaponHandler;
 
     [HideInInspector] public bool shooting;
-
-    FirstPersonCamera fpsCam; AudioSource audioSource; PlayerHUD hud; WeaponHandler weaponHandler;
 
     public enum FireMode
     {
@@ -150,27 +153,43 @@ public class Weapon : MonoBehaviour
         {
             for (int i = 0; i < numberOfProyectiles; i++)
             {
-                Ray ray = Camera.main.ScreenPointToRay(MousePositionSpreadOffset());
-                RaycastHit hit;
+                Vector3 shotOrigin = MousePositionSpreadOffset(); Quaternion cameraRotation = Camera.main.transform.rotation;
+                Ray ray = Camera.main.ScreenPointToRay(shotOrigin); RaycastHit hit;
 
-                if (Physics.Raycast(ray, out hit, range))
-                {                    
-                    CharacterNPC character = hit.transform.GetComponent<CharacterNPC>();
+                ShootRaycast();
+                SpawnBulletTracer();
 
-                    if (character != null)
+                void ShootRaycast()
+                {
+                    if (Physics.Raycast(ray, out hit, range))
                     {
-                        character.TakeDamage(damage);
-                        Instantiate(bloodSplatterDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
-                    }
-                    else
-                    {
-                        if (hit.transform.gameObject.layer == 7)
+                        CharacterNPC character = hit.transform.GetComponent<CharacterNPC>();
+
+                        if (character != null)
                         {
-                            hit.transform.gameObject.SendMessage("TakeDamage", damage);
+                            character.TakeDamage(damage);
+                            Instantiate(bloodSplatterDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
                         }
-                        
-                        Instantiate(bulletHoleDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
-                    }                   
+                        else
+                        {
+                            if (hit.transform.gameObject.layer == 7)
+                            {
+                                hit.transform.gameObject.SendMessage("TakeDamage", damage);
+                            }
+
+                            Instantiate(bulletHoleDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
+                        }
+                    }
+                }
+
+                void SpawnBulletTracer()
+                {
+                    if (bulletTracer != null)
+                    {
+                        GameObject tracer = Instantiate(bulletTracer, Camera.main.ScreenToWorldPoint(shotOrigin), cameraRotation);
+                        Vector3 hitPoint = ray.origin + (ray.direction.normalized * range);
+                        tracer.GetComponent<BulletTracer>().SetDestination(hitPoint);
+                    }
                 }
             }
         }

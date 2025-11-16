@@ -9,19 +9,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float walkSpeed;
     [SerializeField] float jumpForce;
 
-    [Header("Dash")]
-    [SerializeField] float dashStrength;
-    [SerializeField] float dashCooldown;
-    [SerializeField] float dashDuration;
-    [SerializeField] float dashStaminaCost;
-    [SerializeField] bool canDash = true;
-
     [Header("Gravity")]   
     [SerializeField] float fallSpeed;
     [SerializeField] float gravityIncreaseSpeed;
     [SerializeField] float groundCheckDistance;
     [SerializeField] LayerMask groundMask;
-    [SerializeField] bool gravityEnabled = true;
+    public bool gravityEnabled = true;
 
     [Header("Snapping")]
     [SerializeField] bool snap;
@@ -37,7 +30,9 @@ public class PlayerController : MonoBehaviour
 
     float movementSpeed; float currentGravity = 0;
 
-    Rigidbody rb; PlayerCharacter character; PlayerInput input;
+    PlayerCharacter character; PlayerInput input;
+
+    [HideInInspector] public Rigidbody rb;
 
     void PlayerInputFixed() // Player inputs handled in FixedUpdate
     {
@@ -49,7 +44,7 @@ public class PlayerController : MonoBehaviour
         if (!OnGround() && gravityEnabled)
         {
             currentGravity += gravityIncreaseSpeed;
-            Vector3 gravity = GameManager.Instance.globalGravity * fallSpeed * currentGravity * Vector3.up;           
+            Vector3 gravity = GameManager.Instance.globalGravity * fallSpeed * currentGravity * Vector3.up;
             rb.AddForce(gravity, ForceMode.Acceleration);
         }
 
@@ -85,38 +80,6 @@ public class PlayerController : MonoBehaviour
         if (OnGround())
         {
             rb.AddForce(transform.up * jumpForce, ForceMode.VelocityChange);
-        }
-    }
-
-    public void Dash()
-    {
-        if (canDash && !character.exhausted)
-        {
-            StartCoroutine(PlayerDashState());
-        }
-
-        IEnumerator PlayerDashState()
-        {
-            canDash = false;
-
-            gravityEnabled = false;
-
-            //rb.AddForce(transform.forward * dashStrength, ForceMode.Impulse);
-            rb.AddForce(transform.forward * dashStrength, ForceMode.Impulse); ///////////////////////
-
-            character.ConsumeStamina(dashStaminaCost);
-
-            yield return new WaitForSeconds(dashDuration);
-
-            gravityEnabled = true;
-
-            StartCoroutine(DashCooldown());
-        }
-
-        IEnumerator DashCooldown()
-        {
-            yield return new WaitForSeconds(dashDuration);
-            canDash = true;
         }
     }
 

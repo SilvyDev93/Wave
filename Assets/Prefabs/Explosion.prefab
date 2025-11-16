@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionDamage: 20
+  explosionForce: 20
   targetSize: 10
   sizeIncreaseFactor: 0.75
   entityLayer:

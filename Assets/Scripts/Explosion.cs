@@ -4,6 +4,7 @@ using UnityEngine;
 public class Explosion : MonoBehaviour
 {
     [SerializeField] float explosionDamage;
+    [SerializeField] float explosionForce;
     [SerializeField] float targetSize;
     [SerializeField] float sizeIncreaseFactor;
     [SerializeField] LayerMask entityLayer;
@@ -24,6 +25,11 @@ public class Explosion : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        other.SendMessage("TakeDamage", explosionDamage);
+        if ((1 << other.gameObject.layer) == entityLayer)
+        {
+            Debug.Log("y esto tambien");
+            other.SendMessage("TakeDamage", explosionDamage);
+            //other.GetComponent<Rigidbody>().AddExplosionForce(explosionForce, transform.position, currentSize); TakeExplosionKnockback
+        }       
     }
 }
