@@ -3,11 +3,20 @@ using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
-    [SerializeField] float explosionDamage;
-    [SerializeField] float explosionForce;
+    [Header("Explosion")]
     [SerializeField] float targetSize;
     [SerializeField] float sizeIncreaseFactor;
     [SerializeField] LayerMask entityLayer;
+
+    [Header("Player Interaction")]
+    [SerializeField] float playerDamage;
+    [SerializeField] float playerForce;
+    [SerializeField] float playerUpwardsForce;
+
+    [Header("NPC Interaction")]
+    [SerializeField] float npcDamage;
+    [SerializeField] float npcForce;
+    [SerializeField] float npcUpwardsForce;
 
     float currentSize;
 
@@ -27,9 +36,27 @@ public class Explosion : MonoBehaviour
     {
         if ((1 << other.gameObject.layer) == entityLayer)
         {
-            Debug.Log("y esto tambien");
-            other.SendMessage("TakeDamage", explosionDamage);
-            //other.GetComponent<Rigidbody>().AddExplosionForce(explosionForce, transform.position, currentSize); TakeExplosionKnockback
+            switch (other.tag)
+            {
+                case "Player":
+                    other.SendMessage("TakeDamage", playerDamage);
+                    other.GetComponent<Rigidbody>().AddExplosionForce(playerForce, transform.position, currentSize, playerUpwardsForce, ForceMode.Impulse);
+                    Debug.Log("Hit player");
+                    break;
+
+                case "Enemy":
+
+                    if (!other.GetComponent<CharacterNPC>().onExplosionCooldown)
+                    {
+                        other.SendMessage("TakeDamage", npcDamage);
+                        other.GetComponent<CharacterNPC>().SeparateFromGround();
+                        other.GetComponent<Rigidbody>().AddExplosionForce(npcForce, transform.position, currentSize, npcUpwardsForce, ForceMode.Impulse);
+                        StartCoroutine(other.GetComponent<CharacterNPC>().ExplosionDamageCooldown(0.5f));
+                        Debug.Log("Hit npc");
+                    }
+                    
+                    break;
+            }  
         }       
     }
 }

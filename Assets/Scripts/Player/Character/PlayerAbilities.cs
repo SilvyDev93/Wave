@@ -25,6 +25,7 @@ public class PlayerAbilities : MonoBehaviour
     PlayerCharacter playerCharacter;
     PlayerController playerController;
     PlayerInput playerInput;
+    FirstPersonCamera firstPersonCamera;
 
     public void Dash()
     {
@@ -39,7 +40,8 @@ public class PlayerAbilities : MonoBehaviour
 
             GameManager.Instance.playerInput.lockedInput = true;
 
-            Camera.main.fieldOfView = Camera.main.fieldOfView + 20;
+            firstPersonCamera.StopChangeFov();
+            firstPersonCamera.ChangeFov(firstPersonCamera.fov + 20, 100);
 
             playerController.gravityEnabled = false;
 
@@ -51,7 +53,8 @@ public class PlayerAbilities : MonoBehaviour
 
             GameManager.Instance.playerInput.lockedInput = false;
 
-            Camera.main.fieldOfView = Camera.main.fieldOfView - 20;
+            firstPersonCamera.StopChangeFov();
+            firstPersonCamera.ChangeFov(firstPersonCamera.fov, -100);
 
             playerController.gravityEnabled = true;
 
@@ -96,6 +99,7 @@ public class PlayerAbilities : MonoBehaviour
         playerCharacter = GetComponent<PlayerCharacter>();
         playerController = GetComponent<PlayerController>();
         playerInput = GameManager.Instance.playerInput;
+        firstPersonCamera = Camera.main.GetComponent<FirstPersonCamera>();
     }
 
     void OnDrawGizmosSelected()

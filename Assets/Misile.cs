@@ -18,7 +18,13 @@ public class Misile : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        Instantiate(explosion, transform.position, Quaternion.identity);
-        Destroy(gameObject);
+        if (collision.gameObject.layer == 3 || collision.gameObject.layer == 7)
+        {
+            if (collision.gameObject.tag != "Player")
+            {
+                Instantiate(explosion, transform.position, Quaternion.identity);
+                Destroy(gameObject);
+            }
+        }        
     }
 }

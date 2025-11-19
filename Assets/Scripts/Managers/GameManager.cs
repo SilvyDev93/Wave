@@ -32,14 +32,14 @@ public class GameManager : MonoBehaviour
     public void PauseGame()
     {
         Time.timeScale = 0;
-        
+        MouseLockedState(false);
         gamePaused = true;
     }
 
     public void UnPauseGame()
     {
         Time.timeScale = 1;
-        
+        MouseLockedState(true);
         gamePaused = false;
     }
 
@@ -79,6 +79,11 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public IEnumerator WaitForSeconds(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
     }
 
     void GetReferences()

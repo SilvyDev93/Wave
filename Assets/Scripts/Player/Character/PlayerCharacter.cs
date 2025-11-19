@@ -17,7 +17,7 @@ public class PlayerCharacter : MonoBehaviour
 
     float currentHealth; float currentStamina; bool regenStamina;
 
-    PlayerController controller; PlayerHUD hud;
+    PlayerController controller; PlayerHUD hud; Rigidbody rb;
 
     [HideInInspector] public bool exhausted; [HideInInspector] public bool shopAvailable; 
 
@@ -62,6 +62,12 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
 
+    public void RecoverHealth(int health)
+    {
+        currentHealth += health;
+        currentHealth = Mathf.Clamp(currentHealth, 0, health);
+    }
+
     public void KillEntity()
     {
         SceneManager.LoadScene(1);
@@ -94,6 +100,7 @@ public class PlayerCharacter : MonoBehaviour
     private void Start()
     {
         controller = GetComponent<PlayerController>();
+        rb = GetComponent<Rigidbody>();
 
         currentHealth = health;
         currentStamina = stamina;

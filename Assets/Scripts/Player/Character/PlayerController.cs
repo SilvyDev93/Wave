@@ -2,6 +2,7 @@ using System.Collections;
 using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
@@ -56,23 +57,28 @@ public class PlayerController : MonoBehaviour
 
     void PlayerSnapping()
     {
-        if (!OnGround() && snap) 
+        if (OnGround() && snap) 
         {
             Ray ray = new Ray();
 
-            ray.origin = groundCheck.position;
+            ray.origin = groundCheck.position + Vector3.up * snapOffset;
             ray.direction = -transform.up;
 
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, snapDistance))
             {
-                if (hit.transform.gameObject.layer == 3)
-                {
-                    rb.MovePosition(new Vector3(transform.position.x, hit.point.y + snapOffset, transform.position.z));
-                }
-            }
-        }      
+                float slopeAngle = Vector3.Angle(hit.normal, Vector3.up);
+                Debug.Log(slopeAngle);
+                slopeAngle = Mathf.Clamp(slopeAngle, 0, 45);
+                SetCharacterRotationX(-slopeAngle);
+            }           
+        }
+    }
+
+    void SetCharacterRotationX(float slopeAngle)
+    {
+        transform.localEulerAngles = new Vector3(slopeAngle, transform.localEulerAngles.y, transform.localEulerAngles.z);
     }
 
     public void Jump()
@@ -127,7 +133,7 @@ public class PlayerController : MonoBehaviour
         if (showSnapRay) 
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawRay(groundCheck.position, -transform.up * snapDistance);
+            Gizmos.DrawRay(groundCheck.position + Vector3.up * snapOffset, -transform.up * snapDistance);
         }      
     }
 }

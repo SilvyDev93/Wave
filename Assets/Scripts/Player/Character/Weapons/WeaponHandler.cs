@@ -8,11 +8,14 @@ public class WeaponHandler : MonoBehaviour
 
     public void ChangeWeapon(int weaponID)
     {
-        if (weaponID <= playerWeapons.Length)
+        if (!currentWeapon.reloading)
         {
-            StartCoroutine(ChangeCoroutine());
+            if (weaponID <= playerWeapons.Length)
+            {
+                StartCoroutine(ChangeCoroutine());
+            }
         }
-        
+               
         IEnumerator ChangeCoroutine()
         {
             yield return new WaitUntil(() => currentWeapon.shooting == false);

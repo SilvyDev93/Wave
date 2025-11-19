@@ -9,15 +9,17 @@ public class FirstPersonCamera : MonoBehaviour
     [SerializeField] float tiltAngle;
     [SerializeField] float smooth;
 
-    float shakeStrength; float shakeSpeed; float shakeSmooth;
+    float shakeStrength; float shakeSpeed; float shakeSmooth; float targetFov; float changeSpeed; bool changeFov;
 
-    [HideInInspector] public bool shake;
+    Camera cam;
+
+    [HideInInspector] public bool shake; [HideInInspector] public float fov;
 
     void MouseLook()
     {
         float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
-
+       
         transform.parent.Rotate(transform.parent.up * mouseX);
 
         Vector3 rot = transform.rotation.eulerAngles;
@@ -42,10 +44,18 @@ public class FirstPersonCamera : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * smooth);
     }
 
+    public void FireRecoil(float recoil)
+    {
+        float verticalAngle = transform.eulerAngles.x - recoil * Random.Range(0.25f, 1);
+        Quaternion target = Quaternion.Euler(verticalAngle, transform.eulerAngles.y, transform.eulerAngles.z);
+        transform.rotation = target;
+    }
+
     void Shake()
     {
         if (shake)
         {
+            shakeStrength = Mathf.Clamp(shakeStrength, 0f, 50f);
             float randomZ = Random.value - 0.5f;
 
             transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, transform.localEulerAngles.z + randomZ * shakeStrength);
@@ -59,29 +69,68 @@ public class FirstPersonCamera : MonoBehaviour
         }
     }
 
-    public void FireRecoil(float recoil)
+    void FovModifier()
     {
-        float verticalAngle = transform.eulerAngles.x - recoil * Random.Range(0.25f, 1);
-        Quaternion target = Quaternion.Euler(verticalAngle, transform.eulerAngles.y, transform.eulerAngles.z);
-        transform.rotation = target;
+        if (changeFov)
+        {
+            cam.fieldOfView += changeSpeed * Time.deltaTime;
+
+            switch (changeSpeed > 0)
+            {
+                case true: // Positive
+
+                    if (cam.fieldOfView >= targetFov)
+                    {
+                        cam.fieldOfView = targetFov;
+                        changeFov = false;
+                    }
+
+                    break;
+
+                case false: // Negative
+
+                    if (cam.fieldOfView <= targetFov)
+                    {
+                        cam.fieldOfView = targetFov;
+                        changeFov = false;
+                    }
+
+                    break;
+            }           
+        }       
+    }
+
+    public void ChangeFov(float targetFov, float changeSpeed)
+    {
+        if (!changeFov)
+        {
+            this.targetFov = targetFov;
+            this.changeSpeed = changeSpeed;
+            changeFov = true;
+        }       
+    }
+
+    public void StopChangeFov()
+    {
+        changeFov = false;
     }
 
     public void StartShake(float strength, float initialSpeed, float smoothTime)
     {
-        if (!shake)
-        {
-            shakeStrength = strength;
-            shakeSpeed = initialSpeed;
-            shakeSmooth = smoothTime;
+        shake = false;
 
-            shake = true;
-        }
+        shakeStrength = strength;
+        shakeSpeed = initialSpeed;
+        shakeSmooth = smoothTime;
+
+        shake = true;
     }
 
     void Update()
     {
         MouseLook();
         MovementTilt();
+        FovModifier();
         Shake();
     }
 
@@ -89,5 +138,7 @@ public class FirstPersonCamera : MonoBehaviour
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        cam = GetComponent<Camera>();
+        fov = cam.fieldOfView;
     }
 }

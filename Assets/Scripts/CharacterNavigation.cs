@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public class CharacterNavigation : MonoBehaviour
 {
-    NavMeshAgent agent;
+    [HideInInspector] public NavMeshAgent agent;
 
     public void SetAgentActive(bool active)
     {
