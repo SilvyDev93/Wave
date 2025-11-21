@@ -52,6 +52,9 @@ public class PlayerController : MonoBehaviour
         if (OnGround())
         {
             currentGravity = 0;
+            Vector3 velocity = rb.linearVelocity;
+            velocity.y = 0; // si se jode en y es por esto
+            rb.linearVelocity = velocity;
         }
     }
 

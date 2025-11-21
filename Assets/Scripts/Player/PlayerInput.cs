@@ -7,6 +7,14 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] PlayerController controller;
     public bool lockedInput;
 
+    void PlayerInputFixedUpdate()
+    {
+        if (!GameManager.Instance.gamePaused && !lockedInput)
+        {
+            MoveInput();
+        }
+    }
+
     void PlayerInputUpdate()
     {
         if (!GameManager.Instance.gamePaused && !lockedInput)
@@ -26,16 +34,8 @@ public class PlayerInput : MonoBehaviour
             KickInput();
         }
 
-        PauseInput();
-    }
-
-    void PlayerInputFixedUpdate()
-    {
-        if (!GameManager.Instance.gamePaused && !lockedInput)
-        {
-            MoveInput();
-        }
-    }
+        EscapeInput();
+    }   
 
     void MoveInput()
     {
@@ -48,22 +48,13 @@ public class PlayerInput : MonoBehaviour
         {
             controller.Jump();
         }
-    }   
+    }
 
-    void PauseInput()
+    void DashInput()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            switch (GameManager.Instance.shopMenu.IsShopActive())
-            {
-                case true:
-                    GameManager.Instance.shopMenu.ShopInteraction();
-                    break;
-
-                case false:
-                    GameManager.Instance.pauseMenu.PauseMenuHandler();
-                    break;
-            }            
+            GameManager.Instance.playerAbilities.Dash();
         }
     }
 
@@ -100,7 +91,7 @@ public class PlayerInput : MonoBehaviour
                 break;
         }
     }
-    
+
     void ReloadInput()
     {
         if (Input.GetKeyDown(KeyCode.R))
@@ -135,14 +126,6 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    void DashInput()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            GameManager.Instance.playerAbilities.Dash();
-        }
-    }
-
     void KickInput()
     {
         if (Input.GetKeyDown(KeyCode.Q))
@@ -150,6 +133,23 @@ public class PlayerInput : MonoBehaviour
             GameManager.Instance.playerAbilities.Kick();
         }
     }
+
+    void EscapeInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            switch (GameManager.Instance.shopMenu.IsShopActive())
+            {
+                case true:
+                    GameManager.Instance.shopMenu.ShopInteraction();
+                    break;
+
+                case false:
+                    GameManager.Instance.pauseMenu.PauseMenuHandler();
+                    break;
+            }            
+        }
+    }    
 
     public Vector3 GetHorizontalAxis()
     {

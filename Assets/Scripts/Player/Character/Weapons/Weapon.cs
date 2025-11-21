@@ -363,7 +363,7 @@ public class Weapon : MonoBehaviour
             GameManager.Instance.crosshairHandler.SetCrosshairSpread(spread);
         }
 
-        MousePositionDebug();
+        //MousePositionDebug();
 
         float FireSpread()
         {
@@ -403,11 +403,13 @@ public class Weapon : MonoBehaviour
         return (Vector2) Input.mousePosition + Random.insideUnitCircle * spread;
     }
 
+    /*
     void MousePositionDebug()
     {
         GameObject mouseTest = GameManager.Instance.debugManager.mousePosition;
         mouseTest.transform.position = MousePositionSpreadOffset();
     }
+    */
 
     int GetBurstFireShots()
     {

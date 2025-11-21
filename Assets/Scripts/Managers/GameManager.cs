@@ -18,17 +18,20 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector] public WaveManager waveManager;
     [HideInInspector] public AudioManager audioManager;
-    [HideInInspector] public PlayerCharacter playerCharacter;
-    [HideInInspector] public PlayerHUD playerHUD;
-    [HideInInspector] public ShopMenu shopMenu;
-    [HideInInspector] public PauseMenu pauseMenu;
     [HideInInspector] public DebugManager debugManager;
-    [HideInInspector] public CrosshairHandler crosshairHandler;
-    [HideInInspector] public PlayerController playerController;
-    [HideInInspector] public WeaponHandler weaponHandler;
-    [HideInInspector] public PlayerAbilities playerAbilities;
-    [HideInInspector] public PlayerInput playerInput;
 
+    [HideInInspector] public PlayerInput playerInput;
+    [HideInInspector] public PlayerCharacter playerCharacter;
+    [HideInInspector] public PlayerController playerController;
+    [HideInInspector] public PlayerAbilities playerAbilities;    
+    [HideInInspector] public PlayerHUD playerHUD;
+
+    [HideInInspector] public WeaponHandler weaponHandler;
+
+    [HideInInspector] public PauseMenu pauseMenu;
+    [HideInInspector] public ShopMenu shopMenu;       
+    [HideInInspector] public CrosshairHandler crosshairHandler;
+    
     public void PauseGame()
     {
         Time.timeScale = 0;
@@ -107,11 +110,13 @@ public class GameManager : MonoBehaviour
         playerController = playerTransform.GetChild(0).GetComponent<PlayerController>();
         playerAbilities = playerTransform.GetChild(0).GetComponent<PlayerAbilities>();
         playerHUD = playerTransform.GetChild(1).GetComponent<PlayerHUD>();
-        shopMenu = playerTransform.GetChild(1).GetComponent<ShopMenu>();
-        pauseMenu = playerTransform.GetChild(1).GetComponent<PauseMenu>();
-        crosshairHandler = playerTransform.GetChild(1).GetComponent<CrosshairHandler>();
-        weaponHandler = GameObject.Find("WeaponHandler").GetComponent<WeaponHandler>();
         playerInput = playerTransform.gameObject.GetComponent<PlayerInput>();
+
+        weaponHandler = GameObject.Find("WeaponHandler").GetComponent<WeaponHandler>();
+
+        pauseMenu = playerTransform.GetChild(1).GetComponent<PauseMenu>();
+        shopMenu = playerTransform.GetChild(1).GetComponent<ShopMenu>();        
+        crosshairHandler = playerTransform.GetChild(1).GetComponent<CrosshairHandler>();        
     }
 
     private void OnEnable()

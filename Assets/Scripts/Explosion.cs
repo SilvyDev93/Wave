@@ -41,7 +41,6 @@ public class Explosion : MonoBehaviour
                 case "Player":
                     other.SendMessage("TakeDamage", playerDamage);
                     other.GetComponent<Rigidbody>().AddExplosionForce(playerForce, transform.position, currentSize, playerUpwardsForce, ForceMode.Impulse);
-                    Debug.Log("Hit player");
                     break;
 
                 case "Enemy":
@@ -52,7 +51,6 @@ public class Explosion : MonoBehaviour
                         other.GetComponent<CharacterNPC>().SeparateFromGround();
                         other.GetComponent<Rigidbody>().AddExplosionForce(npcForce, transform.position, currentSize, npcUpwardsForce, ForceMode.Impulse);
                         StartCoroutine(other.GetComponent<CharacterNPC>().ExplosionDamageCooldown(0.5f));
-                        Debug.Log("Hit npc");
                     }
                     
                     break;
