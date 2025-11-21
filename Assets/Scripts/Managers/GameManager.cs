@@ -86,6 +86,16 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(seconds);
     }
 
+    public bool ProbabilityCalculation(float chance)
+    {
+        if (chance >= UnityEngine.Random.Range(1, 101))
+        {
+            return true;
+        }
+
+        return false;
+    } 
+
     void GetReferences()
     {
         waveManager = transform.GetChild(0).GetComponent<WaveManager>();

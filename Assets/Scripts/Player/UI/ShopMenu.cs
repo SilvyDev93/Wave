@@ -21,16 +21,28 @@ public class ShopMenu : MonoBehaviour
         }            
     }
 
+    public bool IsShopActive()
+    {
+        if (shopMenu.activeSelf == true)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     void OpenShop()
     {
         shopMenu.SetActive(true);
         GameManager.Instance.MouseLockedState(false);
+        GameManager.Instance.playerInput.lockedInput = true;
     }
 
     void CloseShop()
     {
         shopMenu.SetActive(false);
         GameManager.Instance.MouseLockedState(true);
+        GameManager.Instance.playerInput.lockedInput = false;
     }
 
     void Awake()

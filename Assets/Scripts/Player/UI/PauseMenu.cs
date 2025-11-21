@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class PauseMenu : MonoBehaviour
             case true:
                 playerHUD.SetActive(true);
                 pauseMenu.SetActive(false);
-                GameManager.Instance.UnPauseGame();
+                GameManager.Instance.UnPauseGame();                
                 break;
 
             case false:

@@ -12,6 +12,10 @@ public class CharacterNPC : MonoBehaviour
     [SerializeField] int reward;
     [SerializeField] float healthBarTime;
 
+    [Header("Drops")]
+    [SerializeField] float dropChance;
+    [SerializeField] GameObject drop;
+
     [Header("Ground Check")]
     [SerializeField] Transform groundCheck;
     [SerializeField] float groundCheckDistance;
@@ -64,7 +68,16 @@ public class CharacterNPC : MonoBehaviour
         GameManager.Instance.playerCharacter.GetMoney(reward);
         GameManager.Instance.playerHUD.ReduceEnemyCounter();
         GameObject corpseObject = Instantiate(corpse, transform.position, transform.rotation);
+        DropItem();
         Destroy(gameObject);
+    }
+
+    void DropItem()
+    {
+        if (GameManager.Instance.ProbabilityCalculation(dropChance))
+        {
+            Instantiate(drop, transform.position, Quaternion.identity);
+        }
     }
 
     public bool OnGround()

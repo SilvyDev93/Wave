@@ -59,9 +59,9 @@ public class Weapon : MonoBehaviour
     [SerializeField] Transform muzzle;
     [SerializeField] LayerMask hitLayer;
         
-    int currentAmmo; int ammoInMag; float fireCooldown;
-    float spread; float targetSpread; float currentFireSpread; float currentAirborneSpread;
-    
+    int currentAmmo; int ammoInMag; 
+    float spread; float targetSpread; float currentFireSpread; float currentAirborneSpread; float fireCooldown;
+
     FirstPersonCamera fpsCam; AudioSource audioSource; PlayerHUD hud; WeaponHandler weaponHandler;
 
     [HideInInspector] public bool shooting; [HideInInspector] public bool reloading;
@@ -120,14 +120,10 @@ public class Weapon : MonoBehaviour
     {
         shooting = true;
 
-        // stop reloading
-
         reloading = false;
         StopCoroutine(MagReload());
         StopCoroutine(SingleReload());        
         GameManager.Instance.playerHUD.reloadText.SetActive(false);
-
-        // stop reloading
 
         float burstShots = GetBurstFireShots();
 

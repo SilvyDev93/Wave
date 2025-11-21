@@ -17,31 +17,37 @@ public class FirstPersonCamera : MonoBehaviour
 
     void MouseLook()
     {
-        float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
-       
-        transform.parent.Rotate(transform.parent.up * mouseX);
-
-        Vector3 rot = transform.rotation.eulerAngles;
-        rot.x += -mouseY;
-
-        if (rot.x > 180)
+        if (!GameManager.Instance.playerInput.lockedInput)
         {
-            rot.x = rot.x < 270f ? 270f : rot.x;
-        }
-        else
-        {
-            rot.x = rot.x > 90f ? 90f : rot.x;
-        }
+            float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
+            float mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
 
-        transform.rotation = Quaternion.Euler(rot);
+            transform.parent.Rotate(transform.parent.up * mouseX);
+
+            Vector3 rot = transform.rotation.eulerAngles;
+            rot.x += -mouseY;
+
+            if (rot.x > 180)
+            {
+                rot.x = rot.x < 270f ? 270f : rot.x;
+            }
+            else
+            {
+                rot.x = rot.x > 90f ? 90f : rot.x;
+            }
+
+            transform.rotation = Quaternion.Euler(rot);
+        }       
     }
 
     void MovementTilt()
     {
-        float tiltAroundX = Input.GetAxis("Horizontal") * tiltAngle;
-        Quaternion target = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, -tiltAroundX);
-        transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * smooth);
+        if (!GameManager.Instance.playerInput.lockedInput)
+        {
+            float tiltAroundX = Input.GetAxis("Horizontal") * tiltAngle;
+            Quaternion target = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, -tiltAroundX);
+            transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * smooth);
+        }            
     }
 
     public void FireRecoil(float recoil)

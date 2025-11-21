@@ -62,10 +62,11 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
 
-    public void RecoverHealth(int health)
+    public void RecoverHealth(int healthRecovery)
     {
-        currentHealth += health;
+        currentHealth += healthRecovery;
         currentHealth = Mathf.Clamp(currentHealth, 0, health);
+        hud.SetHealthValue((int) currentHealth);
     }
 
     public void KillEntity()

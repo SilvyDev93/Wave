@@ -6,6 +6,9 @@ public class Teleporter : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        other.gameObject.transform.position = destination.position;
+        if (other.gameObject.tag == "Player")
+        {
+            other.gameObject.transform.position = destination.position;
+        }        
     }
 }

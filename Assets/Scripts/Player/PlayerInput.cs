@@ -29,6 +29,19 @@ public class PlayerInput : MonoBehaviour
         PauseInput();
     }
 
+    void PlayerInputFixedUpdate()
+    {
+        if (!GameManager.Instance.gamePaused && !lockedInput)
+        {
+            MoveInput();
+        }
+    }
+
+    void MoveInput()
+    {
+        controller.MovePlayer();
+    }
+
     void JumpInput()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -41,7 +54,16 @@ public class PlayerInput : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            GameManager.Instance.pauseMenu.PauseMenuHandler();
+            switch (GameManager.Instance.shopMenu.IsShopActive())
+            {
+                case true:
+                    GameManager.Instance.shopMenu.ShopInteraction();
+                    break;
+
+                case false:
+                    GameManager.Instance.pauseMenu.PauseMenuHandler();
+                    break;
+            }            
         }
     }
 
@@ -146,5 +168,10 @@ public class PlayerInput : MonoBehaviour
     void Update()
     {
         PlayerInputUpdate();
+    }
+
+    private void FixedUpdate()
+    {       
+        PlayerInputFixedUpdate();
     }
 }

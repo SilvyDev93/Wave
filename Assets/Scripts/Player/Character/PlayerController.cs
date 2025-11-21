@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector] public Rigidbody rb;
 
-    void PlayerInputFixed() // Player inputs handled in FixedUpdate
+    public void MovePlayer() // Player inputs handled in FixedUpdate
     {
         rb.MovePosition(transform.position + (input.GetVerticalAxis() + input.GetHorizontalAxis()) * movementSpeed * Time.deltaTime);
     }
@@ -107,8 +107,7 @@ public class PlayerController : MonoBehaviour
     }
 
     void FixedUpdate()
-    {
-        PlayerInputFixed();       
+    {      
         PlayerGravity();
         PlayerSnapping();
     }
