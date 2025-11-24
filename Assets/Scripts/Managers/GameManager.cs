@@ -97,7 +97,17 @@ public class GameManager : MonoBehaviour
         }
 
         return false;
-    } 
+    }
+    
+    public int GetPlayerMoney()
+    {
+        if (playerCharacter != null)
+        {
+            return playerCharacter.money;
+        }
+
+        return 0;
+    }
 
     void GetReferences()
     {

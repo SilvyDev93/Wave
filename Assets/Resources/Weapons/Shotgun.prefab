@@ -133,6 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db846bd3247650d4bb01521adab8398f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponName: Shotgun
   proyectile: {fileID: 0}
   ammoMode: 1
   fireMode: 1

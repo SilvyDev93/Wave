@@ -197,6 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db846bd3247650d4bb01521adab8398f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponName: Rocket Launcher
   proyectile: {fileID: 2114620549754147125, guid: d0f8f6d0056ad7444952e6c2f3a15a1e, type: 3}
   ammoMode: 0
   fireMode: 1
@@ -234,6 +235,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   shooting: 0
+  reloading: 0
 --- !u!82 &7887886174149409443
 AudioSource:
   m_ObjectHideFlags: 0

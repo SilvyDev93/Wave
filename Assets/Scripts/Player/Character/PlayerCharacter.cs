@@ -13,7 +13,7 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] float staminaRegen;
     [SerializeField] float staminaCooldown;
 
-    [SerializeField] int money;
+    public int money;
 
     float currentHealth; float currentStamina; bool regenStamina;
 

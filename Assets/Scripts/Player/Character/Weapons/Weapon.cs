@@ -5,6 +5,11 @@ using static UnityEngine.UI.Image;
 
 public class Weapon : MonoBehaviour
 {
+    [Header("Weapon Information")]
+    public string weaponName;
+    public int price;
+    public int weight;
+
     [Header("Weapon Configuration")]
     [SerializeField] GameObject proyectile;
     public AmmoMode ammoMode;
@@ -425,16 +430,20 @@ public class Weapon : MonoBehaviour
 
     void SetCrosshairVisibility()
     {
-        switch (pointerType.ToString())
+        try
         {
-            case "Crosshair":
-                GameManager.Instance.crosshairHandler.SetCrosshairActive(true);
-                break;
+            switch (pointerType.ToString())
+            {
+                case "Crosshair":
+                    GameManager.Instance.crosshairHandler.SetCrosshairActive(true);
+                    break;
 
-            default:
-                GameManager.Instance.crosshairHandler.SetCrosshairActive(false);
-                break;
+                default:
+                    GameManager.Instance.crosshairHandler.SetCrosshairActive(false);
+                    break;
+            }
         }
+        catch { }
     }
 
     void GetReferences()

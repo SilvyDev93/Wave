@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 
 public class ShopMenu : MonoBehaviour
 {
     [SerializeField] GameObject shopMenu;
+    [SerializeField] GameObject hud;
 
     public void ShopInteraction()
     {
@@ -34,6 +36,7 @@ public class ShopMenu : MonoBehaviour
     void OpenShop()
     {
         shopMenu.SetActive(true);
+        hud.SetActive(false);
         GameManager.Instance.MouseLockedState(false);
         GameManager.Instance.playerInput.lockedInput = true;
     }
@@ -41,6 +44,7 @@ public class ShopMenu : MonoBehaviour
     void CloseShop()
     {
         shopMenu.SetActive(false);
+        hud.SetActive(true);
         GameManager.Instance.MouseLockedState(true);
         GameManager.Instance.playerInput.lockedInput = false;
     }
