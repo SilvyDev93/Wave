@@ -11,6 +11,7 @@ public class CharacterNPC : MonoBehaviour
     [SerializeField] float movementSpeed;
     [SerializeField] int reward;
     [SerializeField] float healthBarTime;
+    [SerializeField] float explosionCooldown;
 
     [Header("Drops")]
     [SerializeField] float dropChance;
@@ -29,7 +30,7 @@ public class CharacterNPC : MonoBehaviour
 
     float currentHealth; bool groundCheckEnabled = true;
 
-    [HideInInspector] public bool onExplosionCooldown;
+    public bool onExplosionCooldown;
 
     public void TakeDamage(float damage)
     {
@@ -68,6 +69,8 @@ public class CharacterNPC : MonoBehaviour
         GameManager.Instance.playerCharacter.GetMoney(reward);
         GameManager.Instance.playerHUD.ReduceEnemyCounter();
         GameObject corpseObject = Instantiate(corpse, transform.position, transform.rotation);
+        corpseObject.GetComponent<Rigidbody>().linearVelocity = rb.linearVelocity;
+        corpseObject.GetComponent<Rigidbody>().angularVelocity = rb.angularVelocity;
         DropItem();
         Destroy(gameObject);
     }
@@ -85,10 +88,10 @@ public class CharacterNPC : MonoBehaviour
         return Physics.CheckSphere(groundCheck.position, groundCheckDistance, groundMask);
     }
 
-    public IEnumerator ExplosionDamageCooldown(float cooldown)
+    public IEnumerator ExplosionDamageCooldown()
     {
         onExplosionCooldown = true;
-        yield return new WaitForSeconds(cooldown);
+        yield return new WaitForSeconds(explosionCooldown);
         onExplosionCooldown = false;
     }
 
@@ -141,6 +144,14 @@ public class CharacterNPC : MonoBehaviour
     void SetCharacterParameters()
     {
         characterNavigation.agent.speed = movementSpeed;
+    }
+
+    private void Update()
+    {        
+        if (onExplosionCooldown)
+        {
+            StartCoroutine(ExplosionDamageCooldown());
+        }
     }
 
     void Start()

@@ -30,6 +30,15 @@ public class WeaponStore : MonoBehaviour
 
     public void BuyWeapon()
     {
-        Debug.Log("Bought " + weapon.name);
+        if (GameManager.Instance.playerManager.GetPlayerMoney() >= weapon.price)
+        {
+            Debug.Log("Bought " + weapon.name);
+            GameManager.Instance.playerManager.ManagePlayerMoney(-weapon.price);
+            transform.parent.parent.GetComponent<ShopHandling>().ShopRefresh();
+        }
+        else
+        {
+            Debug.Log("Not enought money to buy: " + weapon.name);
+        }
     }
 }

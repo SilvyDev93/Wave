@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7524653595113212612}
   - component: {fileID: 7040813563025026837}
   - component: {fileID: 2245347554563258800}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Corpse
   m_TagString: Untagged
   m_Icon: {fileID: 0}

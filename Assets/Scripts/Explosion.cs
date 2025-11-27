@@ -50,7 +50,8 @@ public class Explosion : MonoBehaviour
                         other.SendMessage("TakeDamage", npcDamage);
                         other.GetComponent<CharacterNPC>().SeparateFromGround();
                         other.GetComponent<Rigidbody>().AddExplosionForce(npcForce, transform.position, currentSize, npcUpwardsForce, ForceMode.Impulse);
-                        StartCoroutine(other.GetComponent<CharacterNPC>().ExplosionDamageCooldown(0.5f));
+                        //StartCoroutine(other.GetComponent<CharacterNPC>().ExplosionDamageCooldown());
+                        other.GetComponent<CharacterNPC>().onExplosionCooldown = true;
                     }
                     
                     break;

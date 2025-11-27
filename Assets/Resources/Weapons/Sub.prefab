@@ -198,6 +198,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponName: Machine
+  price: 200
+  weight: 2
   proyectile: {fileID: 0}
   ammoMode: 1
   fireMode: 0

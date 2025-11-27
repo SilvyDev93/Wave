@@ -134,6 +134,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponName: Shotgun
+  price: 600
+  weight: 3
   proyectile: {fileID: 0}
   ammoMode: 1
   fireMode: 1

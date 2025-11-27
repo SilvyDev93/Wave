@@ -1,10 +1,12 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WaveManager : MonoBehaviour
 {
     [Header("Wave Parameters")]
     [SerializeField] int waveCount;
+    [SerializeField] int initialWaveTimer;
     [SerializeField] int waveTimer;
     [SerializeField] int enemyCooldown;
 
@@ -15,7 +17,7 @@ public class WaveManager : MonoBehaviour
     [Header("References")]
     [SerializeField] GameObject enemy;
     
-    int wave; int enemiesToSpawn; int previousReward; int[] waveList; bool gameStarted;
+    int wave; int enemiesToSpawn; int previousReward; int[] waveList; bool gameStarted; bool startNextWave; float timer;
 
     PlayerHUD hud; Transform enemyParent;
 
@@ -35,9 +37,8 @@ public class WaveManager : MonoBehaviour
         SpawnEnemies();
     }
 
-    IEnumerator NextWave()
+    void NextWave()
     {        
-        yield return new WaitForSeconds(waveTimer);
         wave++;
         hud.waveCounter.text = "Wave " + wave.ToString();
         enemiesToSpawn = waveList[wave];
@@ -68,7 +69,27 @@ public class WaveManager : MonoBehaviour
             waveList[i] = 10;
         }
 
-        StartCoroutine(NextWave());
+        timer = initialWaveTimer;
+        startNextWave = true;        
+    }
+
+    public void DestroyAllEntities()
+    {
+        if (enemyParent != null)
+        {
+            foreach (Transform child in enemyParent)
+            {
+                Destroy(child.gameObject);
+            }
+        }       
+    }
+
+    public void StartWaving()
+    {
+        DestroyAllEntities();
+        GetReferences();
+        WavesSetUp();
+        previousReward = baseReward;
     }
 
     void Update()
@@ -77,14 +98,24 @@ public class WaveManager : MonoBehaviour
         {
             gameStarted = false;
             WaveReward();
-            StartCoroutine(NextWave());
+            GameManager.Instance.shopManager.SpawnShop();
+            timer = waveTimer;
+            startNextWave = true;
         }
-    }
 
-    void Start()
-    {
-        GetReferences();
-        WavesSetUp();
-        previousReward = baseReward;
+        if (startNextWave)
+        {
+            if (timer < 0)
+            {
+                startNextWave = false;
+                GameManager.Instance.shopManager.DestroyShop();
+                NextWave();
+            }
+            else
+            {
+                timer = timer - 1 * Time.deltaTime;
+                hud.enemyCounter.text = ((int)timer).ToString();
+            }            
+        }
     }   
 }

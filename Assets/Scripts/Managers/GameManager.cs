@@ -16,9 +16,11 @@ public class GameManager : MonoBehaviour
     public float globalGravity = -9.81f;
     public bool gamePaused;
 
-    [HideInInspector] public WaveManager waveManager;
-    [HideInInspector] public AudioManager audioManager;
-    [HideInInspector] public DebugManager debugManager;
+    public WaveManager waveManager;
+    public AudioManager audioManager;
+    public DebugManager debugManager;
+    public PlayerManager playerManager;
+    public ShopManager shopManager;
 
     [HideInInspector] public PlayerInput playerInput;
     [HideInInspector] public PlayerCharacter playerCharacter;
@@ -97,24 +99,10 @@ public class GameManager : MonoBehaviour
         }
 
         return false;
-    }
-    
-    public int GetPlayerMoney()
-    {
-        if (playerCharacter != null)
-        {
-            return playerCharacter.money;
-        }
-
-        return 0;
-    }
+    }   
 
     void GetReferences()
     {
-        waveManager = transform.GetChild(0).GetComponent<WaveManager>();
-        audioManager = transform.GetChild(1).GetComponent<AudioManager>();
-        debugManager = transform.GetChild(3).GetComponent<DebugManager>();
-
         Transform playerTransform = GameObject.Find("Player").transform;
         playerCharacter = playerTransform.GetChild(0).GetComponent<PlayerCharacter>();
         playerController = playerTransform.GetChild(0).GetComponent<PlayerController>();
@@ -141,7 +129,9 @@ public class GameManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        
+        ManagerInstancing();
+        GetReferences();
+        waveManager.StartWaving();
     }
 
     void Awake()

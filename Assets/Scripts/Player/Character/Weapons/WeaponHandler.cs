@@ -38,6 +38,18 @@ public class WeaponHandler : MonoBehaviour
             StartCoroutine(DisplayAmmo());
         }
     }
+
+    public Weapon[] GetAllPlayerWeapons()
+    {
+        Weapon[] weapons = new Weapon[playerWeapons.Length];
+
+        for (int i = 0; i < playerWeapons.Length; i++)
+        {
+            weapons[i] = playerWeapons[i].GetComponent<Weapon>();
+        }
+
+        return weapons;
+    }
     
     IEnumerator GetWeapons()
     {

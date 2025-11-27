@@ -206,11 +206,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   playerDamage: 10
-  playerForce: 200
-  playerUpwardsForce: 1
+  playerForce: 150
+  playerUpwardsForce: 0.8
   npcDamage: 2
-  npcForce: 25
-  npcUpwardsForce: 0.8
+  npcForce: 15
+  npcUpwardsForce: 2
 --- !u!114 &3600735942597743485
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ public class ShopMoneyDisplay : MonoBehaviour
     {
         try
         {
-            money.text = GameManager.Instance.GetPlayerMoney().ToString();
+            money.text = GameManager.Instance.playerManager.GetPlayerMoney().ToString();
         }
         catch { }
     }

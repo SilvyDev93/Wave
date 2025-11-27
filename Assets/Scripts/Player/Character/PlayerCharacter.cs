@@ -47,6 +47,7 @@ public class PlayerCharacter : MonoBehaviour
     public void GetMoney(int amount)
     {
         money += amount;
+        money = Mathf.Clamp(money, 0, 999999);
         hud.moneyCounter.text = money.ToString();
     }
 

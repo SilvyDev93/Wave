@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class ShopHandling : MonoBehaviour
 {
+    [Header("UI Configuration")]
     [SerializeField] float uiOffset;
-    [SerializeField] int weaponCount;
 
     [Header("References")]
     [SerializeField] Transform inventoryTransform;
@@ -14,24 +14,22 @@ public class ShopHandling : MonoBehaviour
     [SerializeField] GameObject weaponStore;
     [SerializeField] GameObject weaponInventory;
 
+    WeaponHandler weaponHandler;
+
     void CreateWeaponInventoryArray()
     {
         foreach (Transform child in inventoryTransform)
         {
             Destroy(child.gameObject);
         }
-        
-        /*
-        for (int i = 0; i < weaponCount; i++)
-        {
-            GameObject uiObject = Instantiate(weaponInventory, inventoryTransform);
-            Vector2 pos = inventoryTransform.position;
-            pos.y -= i * uiOffset;
-            uiObject.transform.position = pos;  
-        }
-        */
 
-        CreateObjects(weaponInventory, inventoryTransform, weaponCount);
+        InventoryList list = inventoryTransform.GetComponent<InventoryList>();
+
+        list.weapons = weaponHandler.GetAllPlayerWeapons();
+
+        CreateObjects(weaponInventory, inventoryTransform, weaponHandler.transform.childCount);
+
+        list.GiveChildrenWeapons();
     }
 
     void CreateWeaponShopArray()
@@ -56,14 +54,20 @@ public class ShopHandling : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    public void ShopRefresh()
     {
         CreateWeaponInventoryArray();
-        shopMoneyDisplay.SetPlayerMoney();       
+        shopMoneyDisplay.SetPlayerMoney();
     }
 
-    private void Start()
+    private void OnEnable()
     {
+        ShopRefresh();      
+    }
+
+    private void Awake()
+    {
+        weaponHandler = GameManager.Instance.weaponHandler;
         CreateWeaponShopArray();
     }
 }
