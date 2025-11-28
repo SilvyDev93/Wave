@@ -17,7 +17,7 @@ public class FirstPersonCamera : MonoBehaviour
 
     void MouseLook()
     {
-        if (!GameManager.Instance.playerInput.lockedInput)
+        if (!GameManager.Instance.playerInput.lockedMouse)
         {
             float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
             float mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;

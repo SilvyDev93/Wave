@@ -6,6 +6,9 @@ public class PlayerInput : MonoBehaviour
 {
     [SerializeField] PlayerController controller;
     public bool lockedInput;
+    public bool lockedMouse;
+
+    int currentWeaponIndex = 0;
 
     void PlayerInputFixedUpdate()
     {
@@ -22,9 +25,7 @@ public class PlayerInput : MonoBehaviour
             JumpInput();
 
             DashInput();
-
-            ShopInput();
-
+            
             FireInput();
 
             ReloadInput();
@@ -33,6 +34,8 @@ public class PlayerInput : MonoBehaviour
 
             KickInput();
         }
+
+        ShopInput();
 
         EscapeInput();
     }   
@@ -106,22 +109,54 @@ public class PlayerInput : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            WeaponHandler weaponHandler = GameManager.Instance.weaponHandler;
-            weaponHandler.ChangeWeapon(0);
-            StartCoroutine(weaponHandler.DisplayAmmo());
+            currentWeaponIndex = 0;
+            WeaponChange(currentWeaponIndex);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            WeaponHandler weaponHandler = GameManager.Instance.weaponHandler;
-            weaponHandler.ChangeWeapon(1);
-            StartCoroutine(weaponHandler.DisplayAmmo());
+            currentWeaponIndex = 1;
+            WeaponChange(currentWeaponIndex);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
+        {            
+            currentWeaponIndex = 2;
+            WeaponChange(currentWeaponIndex);
+        }
+
+        switch (Input.GetAxis("Mouse ScrollWheel"))
+        {
+            case > 0:
+                currentWeaponIndex++;
+                ValueScroll();
+                WeaponChange(currentWeaponIndex);
+                break;
+
+            case < 0:
+                currentWeaponIndex--;
+                ValueScroll();
+                WeaponChange(currentWeaponIndex);
+                break;            
+        }
+
+        void ValueScroll()
+        {
+            if (currentWeaponIndex >= GameManager.Instance.weaponHandler.transform.childCount)
+            {
+                currentWeaponIndex = 0;
+            }
+
+            if (currentWeaponIndex < 0)
+            {
+                currentWeaponIndex = GameManager.Instance.weaponHandler.transform.childCount - 1;
+            }
+        }
+
+        void WeaponChange(int weaponIndex)
         {
             WeaponHandler weaponHandler = GameManager.Instance.weaponHandler;
-            weaponHandler.ChangeWeapon(2);
+            weaponHandler.ChangeWeapon(weaponIndex);
             StartCoroutine(weaponHandler.DisplayAmmo());
         }
     }

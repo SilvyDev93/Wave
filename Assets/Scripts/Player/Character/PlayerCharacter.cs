@@ -72,7 +72,7 @@ public class PlayerCharacter : MonoBehaviour
 
     public void KillEntity()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void ConsumeStamina(float consumption)

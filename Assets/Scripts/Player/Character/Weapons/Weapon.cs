@@ -25,6 +25,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] float recoil;
     [SerializeField] [Range(1, 16)] int numberOfProyectiles;
     [SerializeField] [Range(1, 16)] int bulletPenetration;
+    [SerializeField] float knockback;
 
     [Header("Ammo Mode: Reload")]
     [SerializeField] ReloadType reloadType;
@@ -69,7 +70,7 @@ public class Weapon : MonoBehaviour
     int currentAmmo; int ammoInMag; 
     float spread; float targetSpread; float currentFireSpread; float currentAirborneSpread; float fireCooldown;
 
-    FirstPersonCamera fpsCam; AudioSource audioSource; PlayerHUD hud; WeaponHandler weaponHandler;
+    FirstPersonCamera fpsCam; AudioSource audioSource; PlayerHUD hud; WeaponHandler weaponHandler; Rigidbody rb;
 
     [HideInInspector] public bool shooting; [HideInInspector] public bool reloading;
 
@@ -135,13 +136,15 @@ public class Weapon : MonoBehaviour
         float burstShots = GetBurstFireShots();
 
         StartCoroutine(ShootLogic());
-        
+
+        FireKnockback();
+
         fireCooldown = rateOfFire;
 
         yield return new WaitForSeconds(fireCooldown);
 
         StartCoroutine(ManualBoltAction());
-
+       
         IEnumerator ShootLogic()
         {
             for (int i = 0; i < burstShots; i++)
@@ -260,7 +263,13 @@ public class Weapon : MonoBehaviour
                     shooting = false;
                     break;
             }
-        }       
+        }
+        
+        void FireKnockback()
+        {
+            if (!GameManager.Instance.playerController.OnGround())
+            rb.AddForce(-Camera.main.transform.forward * knockback, ForceMode.Impulse);
+        }
     }
 
     public string GetAmmoString()
@@ -381,8 +390,6 @@ public class Weapon : MonoBehaviour
             GameManager.Instance.crosshairHandler.SetCrosshairSpread(spread);
         }
 
-        //MousePositionDebug();
-
         float FireSpread()
         {
             if (shooting)
@@ -421,14 +428,6 @@ public class Weapon : MonoBehaviour
         return (Vector2) Input.mousePosition + Random.insideUnitCircle * spread;
     }
 
-    /*
-    void MousePositionDebug()
-    {
-        GameObject mouseTest = GameManager.Instance.debugManager.mousePosition;
-        mouseTest.transform.position = MousePositionSpreadOffset();
-    }
-    */
-
     int GetBurstFireShots()
     {
         if (fireMode.ToString() == "Burst")
@@ -463,7 +462,8 @@ public class Weapon : MonoBehaviour
     {
         weaponHandler = transform.parent.GetComponent<WeaponHandler>();
         fpsCam = transform.parent.parent.GetComponent<FirstPersonCamera>();
-        audioSource = GetComponent<AudioSource>();       
+        audioSource = GetComponent<AudioSource>();
+        
     }
 
     void Update()
@@ -473,6 +473,7 @@ public class Weapon : MonoBehaviour
 
     void Start()
     {
+        rb = GameManager.Instance.playerController.rb;
         currentAmmo = totalAmmo;
         ScriptReload();
     }
