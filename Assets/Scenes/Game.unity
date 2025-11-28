@@ -8823,7 +8823,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0918efe3fb807ca4a8afba16db61b59c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
 --- !u!43 &1035984569
 Mesh:
   m_ObjectHideFlags: 0
@@ -28353,6 +28353,14 @@ PrefabInstance:
     - target: {fileID: 8664741009291540437, guid: 594875474734cd54e876e9ab20341ab5, type: 3}
       propertyPath: weaponName
       value: Shotgun
+      objectReference: {fileID: 0}
+    - target: {fileID: 8664741009291540437, guid: 594875474734cd54e876e9ab20341ab5, type: 3}
+      propertyPath: bulletPenetration
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8664741009291540437, guid: 594875474734cd54e876e9ab20341ab5, type: 3}
+      propertyPath: doesNotCountPenetration.m_Bits
+      value: 887
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

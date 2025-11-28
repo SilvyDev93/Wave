@@ -15,7 +15,11 @@ public class PlayerSettings : MonoBehaviour
             QualitySettings.SetQualityLevel(PlayerPrefs.GetInt("QualityLevel"));
             Application.targetFrameRate = PlayerPrefs.GetInt("TargetFPS");
             QualitySettings.vSyncCount = PlayerPrefs.GetInt("Vsync");
-        }        
+        }
+        else
+        {
+            Screen.SetResolution(1920, 1080, true, 60);
+        }
     }
 
     void Awake()

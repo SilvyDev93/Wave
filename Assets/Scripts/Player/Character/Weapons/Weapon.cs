@@ -64,7 +64,8 @@ public class Weapon : MonoBehaviour
     [Header("References")]
     [SerializeField] Transform muzzle;
     [SerializeField] LayerMask hitLayer;
-        
+    [SerializeField] LayerMask doesNotCountPenetration;
+
     int currentAmmo; int ammoInMag; 
     float spread; float targetSpread; float currentFireSpread; float currentAirborneSpread; float fireCooldown;
 
@@ -178,33 +179,44 @@ public class Weapon : MonoBehaviour
 
                 void ShootRaycast()
                 {
-                    if (Physics.Raycast(ray, out hit, range, hitLayer, QueryTriggerInteraction.Ignore))
+                    Vector3 rayOrigin = Vector3.zero;
+
+                    for (int i = 0; i < bulletPenetration; i++)
                     {
-                        CharacterNPC character = hit.transform.GetComponent<CharacterNPC>();
-
-                        if (character != null)
+                        if (rayOrigin != Vector3.zero)
                         {
-                            character.TakeDamage(damage);
-                            Instantiate(bloodSplatterDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
+                            ray.origin = rayOrigin;
                         }
-                        else
+
+                        if (Physics.Raycast(ray, out hit, range, hitLayer, QueryTriggerInteraction.Ignore))
                         {
-                            if (hit.transform.gameObject.layer == 7)
+                            CharacterNPC character = hit.transform.GetComponent<CharacterNPC>();
+
+                            if (character != null)
                             {
-                                hit.transform.gameObject.SendMessage("TakeDamage", damage);
+                                character.TakeDamage(damage);
+                                Instantiate(bloodSplatterDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
                             }
+                            else
+                            {
+                                if (hit.transform.gameObject.layer == 7)
+                                {
+                                    hit.transform.gameObject.SendMessage("TakeDamage", damage);
+                                }
 
-                            Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-                            Instantiate(bulletHoleDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
+                                Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                                Instantiate(bulletHoleDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
+                                rayOrigin = hit.point;
+                                Debug.Log("Objeto: " + hit.transform.name + " golpeado por penetracion " + i);
+                            }
                         }
-                    }
+                    }                    
                 }
 
                 void SpawnBulletTracer()
                 {
                     if (bulletTracer != null)
                     {
-                        //GameObject tracer = Instantiate(bulletTracer, Camera.main.ScreenToWorldPoint(shotOrigin), cameraRotation);
                         GameObject tracer = Instantiate(bulletTracer, muzzle.position, cameraRotation);
                         Vector3 hitPoint = ray.origin + (ray.direction.normalized * range);
                         tracer.GetComponent<BulletTracer>().SetDestination(hitPoint);
