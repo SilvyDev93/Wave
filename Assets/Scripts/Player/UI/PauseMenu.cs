@@ -33,8 +33,12 @@ public class PauseMenu : MonoBehaviour
 
     public void Retry()
     {
+<<<<<<< Updated upstream
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         GameManager.Instance.UnPauseGame();
+=======
+        SceneManager.LoadScene(1);
+>>>>>>> Stashed changes
     }
 
     private void Awake()
