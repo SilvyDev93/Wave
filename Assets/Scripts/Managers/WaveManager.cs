@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,6 +16,7 @@ public class WaveManager : MonoBehaviour
     [SerializeField] float rewardIncreaseFactor;
 
     [Header("References")]
+    [SerializeField] Transform spawns;
     [SerializeField] GameObject enemy;
     
     int wave; int enemiesToSpawn; int previousReward; int[] waveList; bool gameStarted; bool startNextWave; float timer;
@@ -25,7 +27,7 @@ public class WaveManager : MonoBehaviour
     {
         if (enemiesToSpawn > 0)
         {
-            Instantiate(enemy, transform.position, Quaternion.identity, enemyParent);
+            Instantiate(enemy, ChooseSpawn().position, Quaternion.identity, enemyParent);
             enemiesToSpawn--;            
             StartCoroutine(SpawnCooldown());
         }             
@@ -90,6 +92,12 @@ public class WaveManager : MonoBehaviour
         GetReferences();
         WavesSetUp();
         previousReward = baseReward;
+    }
+
+    Transform ChooseSpawn()
+    {
+        Transform validSpawns = spawns.GetChild(0);
+        return validSpawns.GetChild(Random.Range(0, validSpawns.childCount));
     }
 
     void Update()

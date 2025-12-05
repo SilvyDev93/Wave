@@ -161,6 +161,7 @@ Transform:
   - {fileID: 5585399259421836369}
   - {fileID: 5251204268502762949}
   - {fileID: 6247693196803253861}
+  - {fileID: 1744473158227687534}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2434570268697203874
@@ -175,11 +176,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c9403a1090ecff4f8598bb5dbef5af4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
-  movementSpeed: 10
+  health: 4
+  movementSpeed: 9.5
   reward: 10
   healthBarTime: 6
   explosionCooldown: 0.1
+  damageNumbers: {fileID: 1685757667064729607, guid: 41d27d3aacc2e594ca1239579d82ea7b, type: 3}
   dropChance: 70
   drop: {fileID: 6931764086985884495, guid: 2cea2d845e1b7274ba888ff250fc36f0, type: 3}
   groundCheck: {fileID: 5585399259421836369}
@@ -189,6 +191,7 @@ MonoBehaviour:
     m_Bits: 8
   healthSlider: {fileID: 3091549335721529224}
   corpse: {fileID: 4378294567563536508, guid: a269da372105f2a4da22f9555bd53a51, type: 3}
+  damageNumbersTransform: {fileID: 1744473158227687534}
   onExplosionCooldown: 0
 --- !u!114 &3579826658876315927
 MonoBehaviour:
@@ -870,6 +873,52 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &5198216714959561910
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1744473158227687534}
+  - component: {fileID: 362871619649464618}
+  m_Layer: 7
+  m_Name: DamageNumbers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1744473158227687534
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5198216714959561910}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8817517509216496202}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &362871619649464618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5198216714959561910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 792054db5423a7e43915e100bef7268d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifeTime: 1
+  destroyFromStart: 0
 --- !u!1 &6269056544356261079
 GameObject:
   m_ObjectHideFlags: 0

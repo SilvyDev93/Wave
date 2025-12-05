@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem.HID;
@@ -22,8 +23,15 @@ public class PlayerHUD : MonoBehaviour
     [Header("Captions")]
     public TextMeshProUGUI shopCaption;
 
+    [Header("Hit Marker")]
+    public GameObject hitMarker;
+    [SerializeField] float markerLifetime;
+
+    [Header("Other")]
     public Transform weaponSlots;
     public GameObject reloadText;
+    public GameObject deathScreen;
+    
 
     [HideInInspector] public Slider leftStaminaSlider;
     [HideInInspector] public Slider rightStaminaSlider;
@@ -56,6 +64,22 @@ public class PlayerHUD : MonoBehaviour
         return weaponSlots.GetChild(index).GetComponent<WeaponSlot>();
     }
 
+    public void HitMarkerActive()
+    {
+        if (!hitMarker.activeSelf)
+        StartCoroutine(MarkerCoroutine());
+        
+        IEnumerator MarkerCoroutine()
+        {
+            hitMarker.SetActive(true);
+
+            AudioManager audioManager = GameManager.Instance.audioManager;
+            audioManager.PlayAudioPitch(audioManager.hitNotifier, 1);
+            yield return new WaitForSeconds(markerLifetime);
+            hitMarker.SetActive(false);
+        }
+    }
+
     void HideStamina()
     {
         if (leftStaminaSlider.value == leftStaminaSlider.maxValue && rightStaminaSlider.value == rightStaminaSlider.maxValue)
@@ -74,5 +98,8 @@ public class PlayerHUD : MonoBehaviour
     {
         leftStaminaSlider = staminaSliders.GetChild(0).GetComponent<Slider>();
         rightStaminaSlider = staminaSliders.GetChild(1).GetComponent<Slider>();
+
+        deathScreen.SetActive(false);
+        hitMarker.SetActive(false);
     }
 }

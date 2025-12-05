@@ -13,6 +13,9 @@ public class CharacterNPC : MonoBehaviour
     [SerializeField] float healthBarTime;
     [SerializeField] float explosionCooldown;
 
+    [Header("Damage Numbers")]
+    [SerializeField] GameObject damageNumbers;
+
     [Header("Drops")]
     [SerializeField] float dropChance;
     [SerializeField] GameObject drop;
@@ -25,12 +28,15 @@ public class CharacterNPC : MonoBehaviour
     [Header("References")]  
     [SerializeField] Slider healthSlider;
     [SerializeField] GameObject corpse;
+    [SerializeField] Transform damageNumbersTransform;
 
     Rigidbody rb; CharacterNavigation characterNavigation;
 
     float currentHealth; bool groundCheckEnabled = true;
 
     public bool onExplosionCooldown;
+
+    Vector3 hitPoint; Vector3 hitNormal; float hitStrenght;
 
     public void TakeDamage(float damage)
     {
@@ -46,6 +52,8 @@ public class CharacterNPC : MonoBehaviour
             KillEntity();
         }
 
+        GameObject damageNumber = Instantiate(damageNumbers, damageNumbersTransform);
+        damageNumber.GetComponent<DamageNumber>().SetDamageNumber((int) damage);
         StartCoroutine(HideHealthBar());
     }
 
@@ -69,10 +77,16 @@ public class CharacterNPC : MonoBehaviour
         GameManager.Instance.playerCharacter.GetMoney(reward);
         GameManager.Instance.playerHUD.ReduceEnemyCounter();
         GameObject corpseObject = Instantiate(corpse, transform.position, transform.rotation);
-        corpseObject.GetComponent<Rigidbody>().linearVelocity = rb.linearVelocity;
-        corpseObject.GetComponent<Rigidbody>().angularVelocity = rb.angularVelocity;
+        corpseObject.GetComponent<CorpseObject>().PushCorpse(hitPoint, hitNormal, hitStrenght);
         DropItem();
         Destroy(gameObject);
+    }
+
+    public void SetLastHitPush(Vector3 point, Vector3 normal, float push)
+    {
+        hitPoint = point;
+        hitNormal = normal;
+        hitStrenght = push;
     }
 
     void DropItem()
@@ -159,5 +173,11 @@ public class CharacterNPC : MonoBehaviour
         GetReferences();
         SetCharacterParameters();
         StartCoroutine(GroundCheckCoroutine());
+    }
+
+    private void OnDestroy()
+    {
+        damageNumbersTransform.SetParent(null);
+        damageNumbersTransform.GetComponent<DestroyAfterTime>().StartObjectDestruction();
     }
 }

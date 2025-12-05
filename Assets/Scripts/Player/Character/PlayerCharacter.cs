@@ -13,11 +13,14 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] float staminaRegen;
     [SerializeField] float staminaCooldown;
 
-    public int money;
+    [Header("References")]
+    [SerializeField] AudioSource damageSound;   
 
     float currentHealth; float currentStamina; bool regenStamina;
 
     PlayerController controller; PlayerHUD hud; Rigidbody rb;
+
+    [HideInInspector] public int money;
 
     [HideInInspector] public bool exhausted; [HideInInspector] public bool shopAvailable; 
 
@@ -56,6 +59,7 @@ public class PlayerCharacter : MonoBehaviour
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, health);
         hud.SetHealthValue((int) currentHealth);
+        GameManager.Instance.audioManager.PlayAudioPitch(damageSound, Random.Range(0.9f, 1.1f));
 
         if (currentHealth <= 0)
         {
@@ -72,7 +76,10 @@ public class PlayerCharacter : MonoBehaviour
 
     public void KillEntity()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        GameManager.Instance.MouseLockedState(false);
+        GameManager.Instance.playerInput.SetAllPlayerInput(true);
+        GameManager.Instance.playerHUD.deathScreen.SetActive(true);
+        GameManager.Instance.PauseGame();
     }
 
     public void ConsumeStamina(float consumption)

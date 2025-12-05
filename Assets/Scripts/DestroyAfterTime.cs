@@ -4,6 +4,7 @@ using UnityEngine;
 public class DestroyAfterTime : MonoBehaviour
 {
     [SerializeField] float lifeTime;
+    [SerializeField] bool destroyFromStart = true;
 
     IEnumerator TimeCountdown()
     {
@@ -11,8 +12,16 @@ public class DestroyAfterTime : MonoBehaviour
         Destroy(gameObject);
     }
 
-    void Start()
-    {
+    public void StartObjectDestruction()
+    {        
         StartCoroutine(TimeCountdown());
+    }
+
+    void Start()
+    {       
+        if (destroyFromStart)
+        {
+            StartObjectDestruction();
+        }
     }
 }

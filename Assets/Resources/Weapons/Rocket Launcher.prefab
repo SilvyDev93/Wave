@@ -200,6 +200,7 @@ MonoBehaviour:
   weaponName: Rocket Launcher
   price: 1000
   weight: 5
+  sellValue: 0
   proyectile: {fileID: 2114620549754147125, guid: d0f8f6d0056ad7444952e6c2f3a15a1e, type: 3}
   ammoMode: 0
   fireMode: 1
@@ -211,6 +212,7 @@ MonoBehaviour:
   recoil: 4
   numberOfProyectiles: 1
   bulletPenetration: 1
+  knockback: 0
   reloadType: 0
   magSize: 20
   reloadSpeed: 0
@@ -230,10 +232,15 @@ MonoBehaviour:
   impactEffect: {fileID: 0}
   bulletTracer: {fileID: 0}
   muzzleFlash: {fileID: 0}
+  ragdollPushStrenght: 3
   bulletHoleDecal: {fileID: 2922058503853703424, guid: 3acd74e360702ba418bb0e73f3793d30, type: 3}
   bloodSplatterDecal: {fileID: 2922058503853703424, guid: e9100f3f5401af54d8061eac23eafb60, type: 3}
   muzzle: {fileID: 4405124259122951381}
   hitLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  visualAnimator: {fileID: 0}
+  doesNotCountPenetration:
     serializedVersion: 2
     m_Bits: 0
   shooting: 0
@@ -249,7 +256,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 522d0bf6f81759948ae4776e69796f2c, type: 3}
+  m_Resource: {fileID: 8300000, guid: 18fcf0e0f57f27a4fab23c086be3f29a, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

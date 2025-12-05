@@ -29,7 +29,7 @@ public class PlayerAbilities : MonoBehaviour
 
     public void Dash()
     {
-        if (canDash && !playerCharacter.exhausted)
+        if (canDash && playerController.IsPlayerMoving() && !playerCharacter.exhausted)
         {
             StartCoroutine(PlayerDashState());
         }

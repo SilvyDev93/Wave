@@ -200,6 +200,12 @@ public class PlayerInput : MonoBehaviour
         else return Vector3.zero;
     }
 
+    public void SetAllPlayerInput(bool active)
+    {
+        lockedInput = active;
+        lockedMouse = active;
+    }
+
     void Update()
     {
         PlayerInputUpdate();

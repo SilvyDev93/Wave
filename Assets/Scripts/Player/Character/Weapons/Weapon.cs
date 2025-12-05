@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using static UnityEngine.UI.Image;
 
 public class Weapon : MonoBehaviour
@@ -57,6 +58,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] GameObject impactEffect;
     [SerializeField] GameObject bulletTracer;
     [SerializeField] GameObject muzzleFlash;
+    [SerializeField] float ragdollPushStrenght;
 
     [Header("Decals")]
     [SerializeField] GameObject bulletHoleDecal;
@@ -65,10 +67,12 @@ public class Weapon : MonoBehaviour
     [Header("References")]
     [SerializeField] Transform muzzle;
     [SerializeField] LayerMask hitLayer;
+    [SerializeField] Animator visualAnimator;
     [SerializeField] LayerMask doesNotCountPenetration;
 
     int currentAmmo; int ammoInMag; 
     float spread; float targetSpread; float currentFireSpread; float currentAirborneSpread; float fireCooldown;
+    bool hitTarget;
 
     FirstPersonCamera fpsCam; AudioSource audioSource; PlayerHUD hud; WeaponHandler weaponHandler; Rigidbody rb;
 
@@ -104,9 +108,16 @@ public class Weapon : MonoBehaviour
     {
         StopCoroutine(SingleReload());
 
-        if (!shooting && GetCurrentAmmoMode() > 0)
+        if (!shooting)
         {
-            StartCoroutine(Shoot());
+            if (GetCurrentAmmoMode() > 0)
+            {
+                StartCoroutine(Shoot());
+            }
+            else
+            {
+                PlayerReload();
+            }
         }
 
         int GetCurrentAmmoMode()
@@ -127,6 +138,7 @@ public class Weapon : MonoBehaviour
     IEnumerator Shoot()
     {
         shooting = true;
+        hitTarget = false;
 
         reloading = false;
         StopCoroutine(MagReload());
@@ -137,11 +149,21 @@ public class Weapon : MonoBehaviour
 
         StartCoroutine(ShootLogic());
 
+        if (visualAnimator != null)
+        {
+            visualAnimator.SetBool("weaponFiring", true);
+        }        
+
         FireKnockback();
 
         fireCooldown = rateOfFire;
 
         yield return new WaitForSeconds(fireCooldown);
+
+        if (visualAnimator != null)
+        {
+            visualAnimator.SetBool("weaponFiring", false);
+        }
 
         StartCoroutine(ManualBoltAction());
        
@@ -179,19 +201,30 @@ public class Weapon : MonoBehaviour
 
                 ShootRaycast();
                 SpawnBulletTracer();
+                HitMarkerHandling();
 
                 void ShootRaycast()
                 {
                     Vector3 rayOrigin = Vector3.zero;
 
-                    for (int i = 0; i < bulletPenetration; i++)
+                    if (rayOrigin != Vector3.zero)
                     {
-                        if (rayOrigin != Vector3.zero)
-                        {
-                            ray.origin = rayOrigin;
-                        }
+                        ray.origin = rayOrigin;
+                    }
 
-                        if (Physics.Raycast(ray, out hit, range, hitLayer, QueryTriggerInteraction.Ignore))
+                    /*
+                    RaycastHit[] hits = Physics.RaycastAll(ray, range, hitLayer, QueryTriggerInteraction.Ignore);
+
+                    RaycastHit[] limitedByPenetration = new RaycastHit[bulletPenetration];
+
+                    for (int e = 0; e < limitedByPenetration.Length; e++)
+                    {
+                        limitedByPenetration[e] = hits[e];
+                    }
+
+                    foreach (RaycastHit hit in limitedByPenetration)
+                    {
+                        if (hit.transform != null)
                         {
                             CharacterNPC character = hit.transform.GetComponent<CharacterNPC>();
 
@@ -199,6 +232,7 @@ public class Weapon : MonoBehaviour
                             {
                                 character.TakeDamage(damage);
                                 Instantiate(bloodSplatterDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
+                                hitTarget = true;
                             }
                             else
                             {
@@ -210,10 +244,34 @@ public class Weapon : MonoBehaviour
                                 Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
                                 Instantiate(bulletHoleDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
                                 rayOrigin = hit.point;
-                                Debug.Log("Objeto: " + hit.transform.name + " golpeado por penetracion " + i);
                             }
+                        }                        
+                    }
+                    */
+
+                    if (Physics.Raycast(ray, out hit, range, hitLayer, QueryTriggerInteraction.Ignore))
+                    {
+                        CharacterNPC character = hit.transform.GetComponent<CharacterNPC>();
+
+                        if (character != null)
+                        {
+                            character.TakeDamage(damage);
+                            character.SetLastHitPush(hit.point, hit.normal, ragdollPushStrenght);
+                            Instantiate(bloodSplatterDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
+                            hitTarget = true;
                         }
-                    }                    
+                        else
+                        {
+                            if (hit.transform.gameObject.layer == 7)
+                            {
+                                hit.transform.gameObject.SendMessage("TakeDamage", damage);
+                            }
+
+                            Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                            Instantiate(bulletHoleDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
+                            rayOrigin = hit.point;
+                        }
+                    }
                 }
 
                 void SpawnBulletTracer()
@@ -223,6 +281,14 @@ public class Weapon : MonoBehaviour
                         GameObject tracer = Instantiate(bulletTracer, muzzle.position, cameraRotation);
                         Vector3 hitPoint = ray.origin + (ray.direction.normalized * range);
                         tracer.GetComponent<BulletTracer>().SetDestination(hitPoint);
+                    }
+                }
+
+                void HitMarkerHandling()
+                {
+                    if (hitTarget)
+                    {
+                        GameManager.Instance.playerHUD.HitMarkerActive();
                     }
                 }
             }
