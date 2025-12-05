@@ -3,6 +3,7 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     [Header("General Audio")]
+    public AudioSource sceneMusic;
     public AudioSource hitNotifier;
 
     public void PlayAudioPitch(AudioSource audio, float newPitch)

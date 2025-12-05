@@ -151,7 +151,7 @@ public class Weapon : MonoBehaviour
 
         if (visualAnimator != null)
         {
-            visualAnimator.SetBool("weaponFiring", true);
+            visualAnimator.SetTrigger("WeaponFire");
         }        
 
         FireKnockback();
@@ -159,11 +159,6 @@ public class Weapon : MonoBehaviour
         fireCooldown = rateOfFire;
 
         yield return new WaitForSeconds(fireCooldown);
-
-        if (visualAnimator != null)
-        {
-            visualAnimator.SetBool("weaponFiring", false);
-        }
 
         StartCoroutine(ManualBoltAction());
        
@@ -256,7 +251,7 @@ public class Weapon : MonoBehaviour
                         if (character != null)
                         {
                             character.TakeDamage(damage);
-                            character.SetLastHitPush(hit.point, hit.normal, ragdollPushStrenght);
+                            character.SetLastHitPush(hit.point, ray.direction, ragdollPushStrenght);
                             Instantiate(bloodSplatterDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
                             hitTarget = true;
                         }
@@ -380,7 +375,17 @@ public class Weapon : MonoBehaviour
 
         GameManager.Instance.playerHUD.reloadText.SetActive(true);
 
+        if (visualAnimator != null)
+        {
+            visualAnimator.SetBool("WeaponReload", true);
+        }
+
         yield return new WaitForSeconds(reloadSpeed);
+
+        if (visualAnimator != null)
+        {
+            visualAnimator.SetBool("WeaponReload", false);
+        }
 
         currentAmmo += ammoInMag;
         ammoInMag = 0;

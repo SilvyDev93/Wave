@@ -4,17 +4,11 @@ using UnityEngine;
 public class WeaponSlotHandler : MonoBehaviour
 {
     [SerializeField] GameObject weaponSlotPrefab;
-    [SerializeField] float yOffset;
-    [SerializeField] float activationDelay;
-
-    IEnumerator WeaponSlotsCreation()
+    void WeaponSlotsCreation()
     {
-        yield return new WaitForSeconds(activationDelay);
-
         for (int i = 0; i < GameManager.Instance.weaponHandler.playerWeapons.Length; i++)
         {
             GameObject slot = Instantiate(weaponSlotPrefab, transform);
-            slot.transform.position = new Vector2(slot.transform.position.x, slot.transform.position.y + (i * yOffset));
             slot.name = "Slot " + i;
         }
 
@@ -23,7 +17,7 @@ public class WeaponSlotHandler : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(WeaponSlotsCreation());
+        WeaponSlotsCreation();
         StartCoroutine(GameManager.Instance.weaponHandler.DisplayAmmo());
     }
 }

@@ -36,7 +36,7 @@ public class CharacterNPC : MonoBehaviour
 
     public bool onExplosionCooldown;
 
-    Vector3 hitPoint; Vector3 hitNormal; float hitStrenght;
+    Vector3 hitPoint; Vector3 hitDirection; float hitStrenght;
 
     public void TakeDamage(float damage)
     {
@@ -77,15 +77,15 @@ public class CharacterNPC : MonoBehaviour
         GameManager.Instance.playerCharacter.GetMoney(reward);
         GameManager.Instance.playerHUD.ReduceEnemyCounter();
         GameObject corpseObject = Instantiate(corpse, transform.position, transform.rotation);
-        corpseObject.GetComponent<CorpseObject>().PushCorpse(hitPoint, hitNormal, hitStrenght);
+        corpseObject.GetComponent<CorpseObject>().PushCorpse(hitPoint, hitDirection, hitStrenght);
         DropItem();
         Destroy(gameObject);
     }
 
-    public void SetLastHitPush(Vector3 point, Vector3 normal, float push)
+    public void SetLastHitPush(Vector3 point, Vector3 direction, float push)
     {
         hitPoint = point;
-        hitNormal = normal;
+        hitDirection = direction;
         hitStrenght = push;
     }
 

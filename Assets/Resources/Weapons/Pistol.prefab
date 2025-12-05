@@ -249,13 +249,13 @@ MonoBehaviour:
   spreadAirborneDecrease: 5
   spreadMultiplier: 2
   maxSpread: 50
-  strenght: 1
+  strenght: 2
   initialSpeed: 1
   smoothTime: 0.2
   impactEffect: {fileID: 6257086598729102694, guid: 1aee2c7bee254094cb9a74e85949c14a, type: 3}
   bulletTracer: {fileID: 4363240378193048525, guid: 128a7fc6374640244b9e0580cf098161, type: 3}
   muzzleFlash: {fileID: 7958085563752842535, guid: 6d6e029fa005d3043a12fddaa492d755, type: 3}
-  ragdollPushStrenght: 6
+  ragdollPushStrenght: 12
   bulletHoleDecal: {fileID: 2922058503853703424, guid: 3acd74e360702ba418bb0e73f3793d30, type: 3}
   bloodSplatterDecal: {fileID: 2922058503853703424, guid: e9100f3f5401af54d8061eac23eafb60, type: 3}
   muzzle: {fileID: 3177223098485572923}

@@ -45,7 +45,7 @@ public class PlayerAbilities : MonoBehaviour
 
             playerController.gravityEnabled = false;
 
-            playerController.GetComponent<Rigidbody>().AddForce((playerInput.GetVerticalAxis().normalized + playerInput.GetHorizontalAxis().normalized) * dashStrength, ForceMode.Impulse);
+            playerController.GetComponent<Rigidbody>().AddForce((playerInput.GetVerticalInput() + playerInput.GetHorizontalInput()) * dashStrength, ForceMode.Impulse);
 
             playerCharacter.ConsumeStamina(dashStaminaCost);
 
@@ -82,8 +82,6 @@ public class PlayerAbilities : MonoBehaviour
 
                     if (character != null) 
                     {
-                        //hitCollider.SendMessage("TakeDamage", kickDamage);
-                        //hitCollider.SendMessage("TakeKnockback", kickKnockback);
                         character.TakeDamage(kickDamage);
                         character.TakeKnockback(kickKnockback, Camera.main.transform.forward);
                     }                   

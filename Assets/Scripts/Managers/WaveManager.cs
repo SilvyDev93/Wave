@@ -40,13 +40,22 @@ public class WaveManager : MonoBehaviour
     }
 
     void NextWave()
-    {        
+    {              
         wave++;
-        hud.waveCounter.text = "Wave " + wave.ToString();
-        enemiesToSpawn = waveList[wave];
-        hud.enemyCounter.text = enemiesToSpawn.ToString();
-        gameStarted = true;
-        SpawnEnemies();
+        GameManager.Instance.shopMenu.ShopInteraction();
+
+        if (wave >= waveCount)
+        {
+            Debug.Log("You won!");
+        }
+        else
+        {
+            hud.waveCounter.text = "Wave " + wave.ToString();
+            enemiesToSpawn = waveList[wave];
+            hud.enemyCounter.text = enemiesToSpawn.ToString();
+            gameStarted = true;
+            SpawnEnemies();
+        }      
     }
 
     void WaveReward()

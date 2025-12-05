@@ -13,4 +13,9 @@ public class ShopArea : MonoBehaviour
         GameManager.Instance.playerHUD.shopCaption.gameObject.SetActive(false);
         GameManager.Instance.playerCharacter.shopAvailable = false;
     }
+
+    private void OnDestroy()
+    {
+        PlayerExitShop();
+    }
 }

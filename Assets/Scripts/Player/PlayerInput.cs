@@ -200,6 +200,46 @@ public class PlayerInput : MonoBehaviour
         else return Vector3.zero;
     }
 
+    public Vector3 GetHorizontalInput()
+    {
+        if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
+        {
+            return Vector3.zero;
+        }
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            return -GameManager.Instance.playerController.transform.right;
+        }
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            return GameManager.Instance.playerController.transform.right;
+        }
+
+        return Vector3.zero;
+    }
+
+    public Vector3 GetVerticalInput()
+    {
+        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S))
+        {
+            return Vector3.zero;
+        }
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            return GameManager.Instance.playerController.transform.forward;
+        }
+
+        if (Input.GetKey(KeyCode.S))
+        {
+            return -GameManager.Instance.playerController.transform.forward;
+        }
+
+        return Vector3.zero;
+    }
+
     public void SetAllPlayerInput(bool active)
     {
         lockedInput = active;

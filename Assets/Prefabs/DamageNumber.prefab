@@ -191,7 +191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scalingEnabled: 1
-  scaleFactor: 0.05
+  scaleFactor: 0.1
 --- !u!114 &2570995284897927719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,6 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifeTime: 1
+  destroyFromStart: 1
 --- !u!223 &977692973505143369
 Canvas:
   m_ObjectHideFlags: 0
