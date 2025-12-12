@@ -50,6 +50,7 @@ public class WaveManager : MonoBehaviour
         }
         else
         {
+            GameManager.Instance.audioManager.PlaySceneMusic();
             hud.waveCounter.text = "Wave " + wave.ToString();
             enemiesToSpawn = waveList[wave];
             hud.enemyCounter.text = enemiesToSpawn.ToString();
@@ -114,6 +115,7 @@ public class WaveManager : MonoBehaviour
         if (enemiesToSpawn == 0 && enemyParent.childCount == 0 && gameStarted)
         {
             gameStarted = false;
+            GameManager.Instance.audioManager.StopSceneMusic();
             WaveReward();
             GameManager.Instance.shopManager.SpawnShop();
             timer = waveTimer;

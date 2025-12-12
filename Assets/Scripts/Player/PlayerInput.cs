@@ -189,14 +189,14 @@ public class PlayerInput : MonoBehaviour
     public Vector3 GetHorizontalAxis()
     {
         if (!GameManager.Instance.gamePaused)
-        return controller.transform.forward * Input.GetAxis("Vertical");
+        return controller.characterDirection.forward * Input.GetAxis("Vertical");
         else return Vector3.zero;
     }
 
     public Vector3 GetVerticalAxis()
     {
         if (!GameManager.Instance.gamePaused)
-        return controller.transform.right * Input.GetAxis("Horizontal");
+        return controller.characterDirection.right * Input.GetAxis("Horizontal");
         else return Vector3.zero;
     }
 

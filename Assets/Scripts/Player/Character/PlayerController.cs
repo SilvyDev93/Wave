@@ -3,12 +3,15 @@ using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] float walkSpeed;
     [SerializeField] float jumpForce;
+    [SerializeField] float coyoteTime;
+    [SerializeField] float jumpGroundCheckDelay;
 
     [Header("Gravity")]   
     [SerializeField] float fallSpeed;
@@ -17,19 +20,22 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask groundMask;
     public bool gravityEnabled = true;
 
-    [Header("Snapping")]
-    [SerializeField] bool snap;
-    [SerializeField] float snapDistance;
-    [SerializeField] float snapOffset;
+    [Header("Slope Control")]
+    [SerializeField] float slopeDistance;
+    [SerializeField] float slopeYDistance;
+    [SerializeField] float slopeLimit;
 
     [Header("References")]
     [SerializeField] Transform groundCheck;
+    public Transform characterDirection;
 
     [Header("Debug")]
     [SerializeField] bool showCheckSphere;
-    [SerializeField] bool showSnapRay;
+    [SerializeField] bool showCheckRay;
 
     float movementSpeed; float currentGravity = 0;
+
+    bool canJump; bool coyoting; bool wontCheckGround;
 
     PlayerCharacter character; PlayerInput input;
 
@@ -47,6 +53,7 @@ public class PlayerController : MonoBehaviour
             currentGravity += gravityIncreaseSpeed;
             Vector3 gravity = GameManager.Instance.globalGravity * fallSpeed * currentGravity * Vector3.up;
             rb.AddForce(gravity, ForceMode.Acceleration);
+            StartCoroutine(OnGroundDelayed());
         }
 
         if (OnGround())
@@ -62,46 +69,52 @@ public class PlayerController : MonoBehaviour
             }
 
             rb.linearVelocity = velocity;
+
+            canJump = true;
         }
-    }
-
-    void PlayerSnapping()
-    {
-        if (OnGround() && snap) 
-        {
-            Ray ray = new Ray();
-
-            ray.origin = groundCheck.position + Vector3.up * snapOffset;
-            ray.direction = -transform.up;
-
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, snapDistance))
-            {
-                float slopeAngle = Vector3.Angle(hit.normal, Vector3.up);
-                Debug.Log(slopeAngle);
-                slopeAngle = Mathf.Clamp(slopeAngle, 0, 45);
-                SetCharacterRotationX(-slopeAngle);
-            }           
-        }
-    }
-
-    void SetCharacterRotationX(float slopeAngle)
-    {
-        transform.localEulerAngles = new Vector3(slopeAngle, transform.localEulerAngles.y, transform.localEulerAngles.z);
     }
 
     public void Jump()
     {
-        if (OnGround())
+        if (canJump)
         {
+            Vector3 velocity = rb.linearVelocity;
+            velocity.y = 0;
+            rb.linearVelocity = velocity;
             rb.AddForce(transform.up * jumpForce, ForceMode.VelocityChange);
+            StartCoroutine(DelayGroundCheck());
+            canJump = false;
         }
+    }
+
+    IEnumerator DelayGroundCheck()
+    {
+        wontCheckGround = true;
+        yield return new WaitForSeconds(jumpGroundCheckDelay);
+        wontCheckGround = false;
     }
 
     public bool OnGround()
     {
-        return Physics.CheckSphere(groundCheck.position, groundCheckDistance, groundMask);
+        if (!wontCheckGround)
+        {
+            return Physics.CheckSphere(groundCheck.position, groundCheckDistance, groundMask);
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    IEnumerator OnGroundDelayed()
+    {
+        if (!coyoting)
+        {
+            coyoting = true;
+            yield return new WaitForSeconds(coyoteTime);
+            canJump = false;
+            coyoting = false;
+        }       
     }
 
     public bool IsPlayerMoving() // Used by other scripts to know if player is moving
@@ -116,10 +129,29 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void PlayerSlopeControl()
+    {
+        RaycastHit hit;
+
+        Vector3 pos = groundCheck.transform.position;
+        pos.y += slopeYDistance;
+
+        if (Physics.Raycast(pos, -transform.up, out hit, slopeDistance, groundMask))
+        {
+            float angle = Vector3.Angle(Vector3.up, hit.normal);
+
+            if (angle < slopeLimit)
+            {
+                Quaternion targetRotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
+                characterDirection.rotation = targetRotation;
+            }
+        }
+    }
+
     void FixedUpdate()
     {      
         PlayerGravity();
-        PlayerSnapping();
+        PlayerSlopeControl();
     }
 
     void Awake()
@@ -138,11 +170,13 @@ public class PlayerController : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawSphere(groundCheck.position, groundCheckDistance);
         }
-  
-        if (showSnapRay) 
+
+        if (showCheckRay)
         {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawRay(groundCheck.position + Vector3.up * snapOffset, -transform.up * snapDistance);
-        }      
+            Gizmos.color = Color.red;
+            Vector3 pos = groundCheck.transform.position;
+            pos.y += slopeYDistance;
+            Gizmos.DrawRay(pos, -transform.up * slopeDistance);
+        }
     }
 }

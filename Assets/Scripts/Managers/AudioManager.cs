@@ -11,4 +11,14 @@ public class AudioManager : MonoBehaviour
         audio.pitch = newPitch;
         audio.Play();
     }
+
+    public void PlaySceneMusic()
+    {
+        sceneMusic.Play();
+    }
+
+    public void StopSceneMusic()
+    {
+        sceneMusic.Pause();
+    }
 }
