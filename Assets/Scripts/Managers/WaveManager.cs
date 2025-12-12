@@ -9,7 +9,8 @@ public class WaveManager : MonoBehaviour
     [SerializeField] int waveCount;
     [SerializeField] int initialWaveTimer;
     [SerializeField] int waveTimer;
-    [SerializeField] int enemyCooldown;
+    [SerializeField] float enemyCooldown;
+    [SerializeField] int baseEnemyAmount;
 
     [Header("Reward")]
     [SerializeField] int baseReward;
@@ -78,7 +79,7 @@ public class WaveManager : MonoBehaviour
 
         for (int i = 0; i < waveList.Length; i++)
         {
-            waveList[i] = 10;
+            waveList[i] = baseEnemyAmount + i * 10;
         }
 
         timer = initialWaveTimer;
@@ -133,7 +134,7 @@ public class WaveManager : MonoBehaviour
             else
             {
                 timer = timer - 1 * Time.deltaTime;
-                hud.enemyCounter.text = ((int)timer).ToString();
+                hud.enemyCounter.text = ((int)timer).ToString() + " " + "Seconds";
             }            
         }
     }   

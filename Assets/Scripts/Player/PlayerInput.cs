@@ -125,6 +125,18 @@ public class PlayerInput : MonoBehaviour
             WeaponChange(currentWeaponIndex);
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            currentWeaponIndex = 3;
+            WeaponChange(currentWeaponIndex);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            currentWeaponIndex = 4;
+            WeaponChange(currentWeaponIndex);
+        }
+
         switch (Input.GetAxis("Mouse ScrollWheel"))
         {
             case > 0:

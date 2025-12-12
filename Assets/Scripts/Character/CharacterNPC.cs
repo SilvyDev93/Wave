@@ -12,9 +12,14 @@ public class CharacterNPC : MonoBehaviour
     [SerializeField] int reward;
     [SerializeField] float healthBarTime;
     [SerializeField] float explosionCooldown;
+    [SerializeField] DeathMode deathMode;
 
     [Header("Damage Numbers")]
     [SerializeField] GameObject damageNumbers;
+
+    [Header("Explosion Death")]
+    [SerializeField] GameObject explosionEffect;
+    [SerializeField] GameObject bloodDecal;
 
     [Header("Drops")]
     [SerializeField] float dropChance;
@@ -37,6 +42,12 @@ public class CharacterNPC : MonoBehaviour
     public bool onExplosionCooldown;
 
     Vector3 hitPoint; Vector3 hitDirection; float hitStrenght;
+
+    public enum DeathMode
+    {
+        Corpse,
+        Explosion
+    }
 
     public void TakeDamage(float damage)
     {
@@ -76,8 +87,22 @@ public class CharacterNPC : MonoBehaviour
     {
         GameManager.Instance.playerCharacter.GetMoney(reward);
         GameManager.Instance.playerHUD.ReduceEnemyCounter();
-        GameObject corpseObject = Instantiate(corpse, transform.position, transform.rotation);
-        corpseObject.GetComponent<CorpseObject>().PushCorpse(hitPoint, hitDirection, hitStrenght);
+
+        switch (deathMode)
+        {
+            case DeathMode.Corpse:                
+                GameObject corpseObject = Instantiate(corpse, transform.position, transform.rotation);
+                corpseObject.GetComponent<CorpseObject>().PushCorpse(hitPoint, hitDirection, hitStrenght);
+                break;
+
+            case DeathMode.Explosion:
+                //GameObject explosion = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), transform.position, transform.rotation); //Explosion effect
+                Vector3 pos = transform.position;
+                pos.y -= 1;
+                Instantiate(bloodDecal, pos, bloodDecal.transform.rotation); // blood decal
+                break;
+        }
+        
         DropItem();
         Destroy(gameObject);
     }

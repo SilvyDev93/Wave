@@ -181,8 +181,11 @@ MonoBehaviour:
   reward: 10
   healthBarTime: 6
   explosionCooldown: 0.1
+  deathMode: 1
   damageNumbers: {fileID: 1685757667064729607, guid: 41d27d3aacc2e594ca1239579d82ea7b, type: 3}
-  dropChance: 70
+  explosionEffect: {fileID: 0}
+  bloodDecal: {fileID: 2922058503853703424, guid: f4c864efcb3df8c4289a50a324df43e6, type: 3}
+  dropChance: 20
   drop: {fileID: 6931764086985884495, guid: 2cea2d845e1b7274ba888ff250fc36f0, type: 3}
   groundCheck: {fileID: 5585399259421836369}
   groundCheckDistance: 0.125

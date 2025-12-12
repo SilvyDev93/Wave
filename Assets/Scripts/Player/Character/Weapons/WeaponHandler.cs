@@ -53,7 +53,7 @@ public class WeaponHandler : MonoBehaviour
     
     IEnumerator GetWeapons()
     {
-        playerWeapons = new GameObject[3];
+        playerWeapons = new GameObject[transform.childCount];
 
         for (int i = 0; i < playerWeapons.Length; i++)
         {

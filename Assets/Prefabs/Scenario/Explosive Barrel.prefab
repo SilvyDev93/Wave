@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7692332547098609758}
+  - component: {fileID: 1326593072999018494}
   - component: {fileID: 3991288308356627896}
   - component: {fileID: 4059693546417077609}
   - component: {fileID: 6581311513083665628}
-  - component: {fileID: 1326593072999018494}
   m_Layer: 7
   m_Name: Explosive Barrel
   m_TagString: Untagged
@@ -35,6 +35,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1326593072999018494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3730363475413527390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 914b53c799ec14f44a5476bda36f8f24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosion: {fileID: 776593789594815755, guid: db564871acad86649b4b9c08d68f99a8, type: 3}
+  respawnTime: 10
 --- !u!33 &3991288308356627896
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -109,16 +123,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1326593072999018494
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3730363475413527390}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 914b53c799ec14f44a5476bda36f8f24, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  explosion: {fileID: 776593789594815755, guid: db564871acad86649b4b9c08d68f99a8, type: 3}

@@ -63,7 +63,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 792054db5423a7e43915e100bef7268d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeTime: 300
+  lifeTime: 15
+  destroyFromStart: 1
 --- !u!33 &5092381082141632252
 MeshFilter:
   m_ObjectHideFlags: 0
