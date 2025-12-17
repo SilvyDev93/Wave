@@ -59,7 +59,7 @@ public class FirstPersonCamera : MonoBehaviour
 
     void Shake()
     {
-        if (shake)
+        if (shake && !GameManager.Instance.gamePaused)
         {
             shakeStrength = Mathf.Clamp(shakeStrength, 0f, 50f);
             float randomZ = Random.value - 0.5f;

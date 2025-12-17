@@ -27,6 +27,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] [Range(1, 16)] int numberOfProyectiles;
     [SerializeField] [Range(1, 16)] int bulletPenetration;
     [SerializeField] float knockback;
+    [SerializeField] float ammoRecovery;
 
     [Header("Ammo Mode: Reload")]
     [SerializeField] ReloadType reloadType;
@@ -446,7 +447,7 @@ public class Weapon : MonoBehaviour
             ammoInMag = ammoToMag;
             currentAmmo -= ammoToMag;
 
-            StartCoroutine(weaponHandler.DisplayAmmo());
+            weaponHandler.DisplayAmmo2();
         }      
     }
 
@@ -529,12 +530,34 @@ public class Weapon : MonoBehaviour
         catch { }
     }
 
+    public void AmmoRefill(float scriptAmmoRecovery)
+    {
+        float ammoToRecover = 0;
+
+        switch (ammoRecovery)
+        {
+            case 0:
+                ammoToRecover = ammoRecovery;
+                break;
+
+            default:
+                ammoToRecover = scriptAmmoRecovery;
+                break;
+        }
+
+        int ammoToRefill = (int)(totalAmmo * ammoToRecover) / 100;
+        ammoToRefill = Mathf.Clamp(ammoToRefill, 1, 3000);
+        int ammoGet = currentAmmo + ammoToRefill;
+        ammoGet = Mathf.Clamp(ammoGet, 1, totalAmmo);
+        currentAmmo = ammoGet;
+        ScriptReload();
+    }
+
     void GetReferences()
     {
         weaponHandler = transform.parent.GetComponent<WeaponHandler>();
         fpsCam = transform.parent.parent.GetComponent<FirstPersonCamera>();
-        audioSource = GetComponent<AudioSource>();
-        
+        audioSource = GetComponent<AudioSource>();        
     }
 
     void Update()

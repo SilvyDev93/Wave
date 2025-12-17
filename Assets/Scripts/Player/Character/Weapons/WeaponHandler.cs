@@ -90,6 +90,16 @@ public class WeaponHandler : MonoBehaviour
         }
     }
 
+    public void DisplayAmmo2()
+    {
+        Transform weaponSlots = GameManager.Instance.playerHUD.weaponSlots;
+
+        for (int i = 0; i < playerWeapons.Length; i++)
+        {
+            weaponSlots.GetChild(i).GetComponent<WeaponSlot>().SetAmmoString(playerWeapons[i].GetComponent<Weapon>().GetAmmoString());
+        }
+    }
+
     void Start()
     {
         StartCoroutine(GetWeapons());       

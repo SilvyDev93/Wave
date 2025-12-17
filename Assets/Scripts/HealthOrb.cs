@@ -22,6 +22,8 @@ public class HealthOrb : MonoBehaviour
         if (other.tag == "Player")
         {
             other.GetComponent<PlayerCharacter>().RecoverHealth(healthFactor);
+            PlayerSounds playerSounds = GameManager.Instance.audioManager.playerSounds;
+            playerSounds.PlayAudio(playerSounds.healthPickUp);
             Destroy(gameObject);
         }
     }

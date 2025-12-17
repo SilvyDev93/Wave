@@ -114,7 +114,9 @@ public class GameManager : MonoBehaviour
 
         pauseMenu = playerTransform.GetChild(1).GetComponent<PauseMenu>();
         shopMenu = playerTransform.GetChild(1).GetComponent<ShopMenu>();        
-        crosshairHandler = playerTransform.GetChild(1).GetComponent<CrosshairHandler>();        
+        crosshairHandler = playerTransform.GetChild(1).GetComponent<CrosshairHandler>();
+
+        audioManager.GetReferences();
     }
 
     private void OnEnable()
@@ -131,6 +133,7 @@ public class GameManager : MonoBehaviour
     {
         ManagerInstancing();
         GetReferences();
+       
         waveManager.StartWaving();
     }
 

@@ -102,6 +102,7 @@ public class WaveManager : MonoBehaviour
         DestroyAllEntities();
         GetReferences();
         WavesSetUp();
+        wave = 0;
         previousReward = baseReward;
     }
 

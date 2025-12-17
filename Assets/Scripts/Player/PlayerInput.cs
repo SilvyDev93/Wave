@@ -221,12 +221,12 @@ public class PlayerInput : MonoBehaviour
 
         if (Input.GetKey(KeyCode.A))
         {
-            return -GameManager.Instance.playerController.transform.right;
+            return -GameManager.Instance.playerController.characterDirection.transform.right;
         }
 
         if (Input.GetKey(KeyCode.D))
         {
-            return GameManager.Instance.playerController.transform.right;
+            return GameManager.Instance.playerController.characterDirection.transform.right;
         }
 
         return Vector3.zero;
@@ -241,12 +241,12 @@ public class PlayerInput : MonoBehaviour
 
         if (Input.GetKey(KeyCode.W))
         {
-            return GameManager.Instance.playerController.transform.forward;
+            return GameManager.Instance.playerController.characterDirection.transform.forward;
         }
 
         if (Input.GetKey(KeyCode.S))
         {
-            return -GameManager.Instance.playerController.transform.forward;
+            return -GameManager.Instance.playerController.characterDirection.transform.forward;
         }
 
         return Vector3.zero;

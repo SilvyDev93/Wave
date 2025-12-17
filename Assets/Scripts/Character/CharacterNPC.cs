@@ -23,7 +23,7 @@ public class CharacterNPC : MonoBehaviour
 
     [Header("Drops")]
     [SerializeField] float dropChance;
-    [SerializeField] GameObject drop;
+    [SerializeField] GameObject[] drops;
 
     [Header("Ground Check")]
     [SerializeField] Transform groundCheck;
@@ -37,7 +37,7 @@ public class CharacterNPC : MonoBehaviour
 
     Rigidbody rb; CharacterNavigation characterNavigation;
 
-    float currentHealth; bool groundCheckEnabled = true;
+    float currentHealth; bool groundCheckEnabled = true; bool dying;
 
     public bool onExplosionCooldown;
 
@@ -85,26 +85,31 @@ public class CharacterNPC : MonoBehaviour
 
     public void KillEntity()
     {
-        GameManager.Instance.playerCharacter.GetMoney(reward);
-        GameManager.Instance.playerHUD.ReduceEnemyCounter();
-
-        switch (deathMode)
+        if (!dying)
         {
-            case DeathMode.Corpse:                
-                GameObject corpseObject = Instantiate(corpse, transform.position, transform.rotation);
-                corpseObject.GetComponent<CorpseObject>().PushCorpse(hitPoint, hitDirection, hitStrenght);
-                break;
+            dying = true;
 
-            case DeathMode.Explosion:
-                //GameObject explosion = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), transform.position, transform.rotation); //Explosion effect
-                Vector3 pos = transform.position;
-                pos.y -= 1;
-                Instantiate(bloodDecal, pos, bloodDecal.transform.rotation); // blood decal
-                break;
-        }
-        
-        DropItem();
-        Destroy(gameObject);
+            GameManager.Instance.playerCharacter.GetMoney(reward);
+            GameManager.Instance.playerHUD.ReduceEnemyCounter();
+
+            switch (deathMode)
+            {
+                case DeathMode.Corpse:
+                    GameObject corpseObject = Instantiate(corpse, transform.position, transform.rotation);
+                    corpseObject.GetComponent<CorpseObject>().PushCorpse(hitPoint, hitDirection, hitStrenght);
+                    break;
+
+                case DeathMode.Explosion:
+                    GameObject explosion = Instantiate(explosionEffect, transform.position, explosionEffect.transform.rotation); //Explosion effect
+                    Vector3 pos = transform.position;
+                    pos.y -= 1;
+                    Instantiate(bloodDecal, pos, bloodDecal.transform.rotation); // blood decal
+                    break;
+            }
+
+            DropItem();
+            Destroy(gameObject);
+        }       
     }
 
     public void SetLastHitPush(Vector3 point, Vector3 direction, float push)
@@ -118,7 +123,7 @@ public class CharacterNPC : MonoBehaviour
     {
         if (GameManager.Instance.ProbabilityCalculation(dropChance))
         {
-            Instantiate(drop, transform.position, Quaternion.identity);
+            Instantiate(drops[Random.Range(0, drops.Length)], transform.position, Quaternion.identity);
         }
     }
 

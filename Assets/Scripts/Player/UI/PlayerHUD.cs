@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem.HID;
 using UnityEngine.UI;
+using static System.Net.Mime.MediaTypeNames;
 
 public class PlayerHUD : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class PlayerHUD : MonoBehaviour
 
     [Header("Captions")]
     public TextMeshProUGUI shopCaption;
+    public TextMeshProUGUI playerMessage;
 
     [Header("Hit Marker")]
     public GameObject hitMarker;
@@ -32,9 +34,10 @@ public class PlayerHUD : MonoBehaviour
     public GameObject reloadText;
     public GameObject deathScreen;
     
-
     [HideInInspector] public Slider leftStaminaSlider;
     [HideInInspector] public Slider rightStaminaSlider;
+
+    float playerMessageTime; bool emptyMessage;
 
     public void ReduceEnemyCounter()
     {
@@ -89,9 +92,33 @@ public class PlayerHUD : MonoBehaviour
         }
     }
 
+    public void SetPlayerMessage(string text, float time)
+    {
+        playerMessage.text = text;
+        playerMessageTime = time;
+        emptyMessage = true;
+    }
+
+    void EmptyPlayerMessage()
+    {
+        if (emptyMessage)
+        {
+            if (playerMessageTime <= 0)
+            {
+                playerMessage.text = "";
+                emptyMessage = false;
+            }
+            else
+            {
+                playerMessageTime -= 1 * Time.deltaTime;
+            }
+        }
+    }
+
     void Update()
     {
         HideStamina();
+        EmptyPlayerMessage();
     }
 
     void Awake()

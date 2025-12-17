@@ -183,10 +183,12 @@ MonoBehaviour:
   explosionCooldown: 0.1
   deathMode: 1
   damageNumbers: {fileID: 1685757667064729607, guid: 41d27d3aacc2e594ca1239579d82ea7b, type: 3}
-  explosionEffect: {fileID: 0}
+  explosionEffect: {fileID: 3022155171136106757, guid: 4ac2bf7228338904189d5ea4be309d33, type: 3}
   bloodDecal: {fileID: 2922058503853703424, guid: f4c864efcb3df8c4289a50a324df43e6, type: 3}
   dropChance: 20
-  drop: {fileID: 6931764086985884495, guid: 2cea2d845e1b7274ba888ff250fc36f0, type: 3}
+  drops:
+  - {fileID: 6931764086985884495, guid: 2cea2d845e1b7274ba888ff250fc36f0, type: 3}
+  - {fileID: 2181527427582169296, guid: 5cb98a7621aa60b43b2818895652f4f0, type: 3}
   groundCheck: {fileID: 5585399259421836369}
   groundCheckDistance: 0.125
   groundMask:

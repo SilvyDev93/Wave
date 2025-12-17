@@ -38,6 +38,9 @@ public class PlayerAbilities : MonoBehaviour
         {
             canDash = false;
 
+            PlayerSounds playerSounds = GameManager.Instance.audioManager.playerSounds;
+            playerSounds.PlayAudio(playerSounds.dash);
+
             GameManager.Instance.playerInput.lockedInput = true;
 
             firstPersonCamera.StopChangeFov();
