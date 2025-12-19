@@ -8,12 +8,20 @@ public class PlayerSounds : MonoBehaviour
     public AudioClip healthPickUp;
     public AudioClip dash;
 
+    [Header("Audio Sources")]
+    public AudioSource landingSource;
+
     AudioSource audioSource;
 
     public void PlayAudio(AudioClip clip)
     {
         audioSource.clip = clip;
         audioSource.Play();
+    }
+
+    public void PlayLandingSound()
+    {
+        landingSource.Play();
     }
 
     private void Awake()

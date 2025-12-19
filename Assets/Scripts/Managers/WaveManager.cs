@@ -47,7 +47,8 @@ public class WaveManager : MonoBehaviour
 
         if (wave >= waveCount)
         {
-            Debug.Log("You won!");
+            GameManager.Instance.MouseLockedState(false);
+            SceneManager.LoadScene(1);
         }
         else
         {

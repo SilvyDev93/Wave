@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
     float movementSpeed; float currentGravity = 0;
 
-    bool canJump; bool coyoting; bool wontCheckGround;
+    bool canJump; bool coyoting; bool wontCheckGround; bool onAir;
 
     PlayerCharacter character; PlayerInput input;
 
@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!OnGround() && gravityEnabled)
         {
+            onAir = true;
             currentGravity += gravityIncreaseSpeed;
             Vector3 gravity = GameManager.Instance.globalGravity * fallSpeed * currentGravity * Vector3.up;
             rb.AddForce(gravity, ForceMode.Acceleration);
@@ -70,6 +71,12 @@ public class PlayerController : MonoBehaviour
 
             rb.linearVelocity = velocity;
 
+            if (onAir)
+            {
+                GameManager.Instance.audioManager.playerSounds.PlayLandingSound();
+            }
+
+            onAir = false;
             canJump = true;
         }
     }

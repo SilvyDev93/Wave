@@ -121,19 +121,21 @@ public class Weapon : MonoBehaviour
             }
         }
 
-        int GetCurrentAmmoMode()
+        
+    }
+
+    int GetCurrentAmmoMode()
+    {
+        switch (ammoMode.ToString())
         {
-            switch (ammoMode.ToString())
-            {
-                case "Total":
-                    return currentAmmo;
+            case "Total":
+                return currentAmmo;
 
-                case "Reload":
-                    return ammoInMag;
-            }
-
-            return 0;
+            case "Reload":
+                return ammoInMag;
         }
+
+        return 0;
     }
 
     IEnumerator Shoot()
@@ -167,24 +169,27 @@ public class Weapon : MonoBehaviour
         {
             for (int i = 0; i < burstShots; i++)
             {
-                if (proyectile == null)
+                if (GetCurrentAmmoMode() > 0)
                 {
-                    ShootBullet();
-                }
-                else
-                {
-                    ShootProyectile();
-                }
+                    if (proyectile == null)
+                    {
+                        ShootBullet();
+                    }
+                    else
+                    {
+                        ShootProyectile();
+                    }
 
-                fpsCam.FireRecoil(recoil);
-                fpsCam.StartShake(strenght, initialSpeed, smoothTime);
-                GameManager.Instance.audioManager.PlayAudioPitch(audioSource, Random.Range(0.8f, 1.2f));
-                Instantiate(muzzleFlash, muzzle.transform.position, Quaternion.identity, muzzle);
+                    fpsCam.FireRecoil(recoil);
+                    fpsCam.StartShake(strenght, initialSpeed, smoothTime);
+                    GameManager.Instance.audioManager.PlayAudioPitch(audioSource, Random.Range(0.8f, 1.2f));
+                    Instantiate(muzzleFlash, muzzle.transform.position, Quaternion.identity, muzzle);
 
-                ConsumeAmmo();
-                StartCoroutine(weaponHandler.DisplayAmmo());
+                    ConsumeAmmo();
+                    StartCoroutine(weaponHandler.DisplayAmmo());
 
-                yield return new WaitForSeconds(0.05f);
+                    yield return new WaitForSeconds(0.05f);
+                }                
             }
         }
 
