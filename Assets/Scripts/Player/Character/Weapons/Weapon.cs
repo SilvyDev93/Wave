@@ -19,7 +19,7 @@ public class Weapon : MonoBehaviour
     public PointerType pointerType;
 
     [Header("Weapon Parameters")]
-    [SerializeField] float damage;
+    [SerializeField] DamageParameters damageParameters;
     [SerializeField] float rateOfFire;
     [SerializeField] int totalAmmo;   
     [SerializeField] int range;
@@ -28,6 +28,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] [Range(1, 16)] int bulletPenetration;
     [SerializeField] float knockback;
     [SerializeField] float ammoRecovery;
+    [SerializeField] float criticalChance;
 
     [Header("Ammo Mode: Reload")]
     [SerializeField] ReloadType reloadType;
@@ -119,9 +120,7 @@ public class Weapon : MonoBehaviour
             {
                 PlayerReload();
             }
-        }
-
-        
+        }        
     }
 
     int GetCurrentAmmoMode()
@@ -213,50 +212,13 @@ public class Weapon : MonoBehaviour
                         ray.origin = rayOrigin;
                     }
 
-                    /*
-                    RaycastHit[] hits = Physics.RaycastAll(ray, range, hitLayer, QueryTriggerInteraction.Ignore);
-
-                    RaycastHit[] limitedByPenetration = new RaycastHit[bulletPenetration];
-
-                    for (int e = 0; e < limitedByPenetration.Length; e++)
-                    {
-                        limitedByPenetration[e] = hits[e];
-                    }
-
-                    foreach (RaycastHit hit in limitedByPenetration)
-                    {
-                        if (hit.transform != null)
-                        {
-                            CharacterNPC character = hit.transform.GetComponent<CharacterNPC>();
-
-                            if (character != null)
-                            {
-                                character.TakeDamage(damage);
-                                Instantiate(bloodSplatterDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
-                                hitTarget = true;
-                            }
-                            else
-                            {
-                                if (hit.transform.gameObject.layer == 7)
-                                {
-                                    hit.transform.gameObject.SendMessage("TakeDamage", damage);
-                                }
-
-                                Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-                                Instantiate(bulletHoleDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
-                                rayOrigin = hit.point;
-                            }
-                        }                        
-                    }
-                    */
-
                     if (Physics.Raycast(ray, out hit, range, hitLayer, QueryTriggerInteraction.Ignore))
                     {
                         CharacterNPC character = hit.transform.GetComponent<CharacterNPC>();
 
                         if (character != null)
                         {
-                            character.TakeDamage(damage);
+                            character.RecieveDamageParameters(damageParameters);
                             character.SetLastHitPush(hit.point, ray.direction, ragdollPushStrenght);
                             Instantiate(bloodSplatterDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
                             hitTarget = true;
@@ -265,7 +227,8 @@ public class Weapon : MonoBehaviour
                         {
                             if (hit.transform.gameObject.layer == 7)
                             {
-                                hit.transform.gameObject.SendMessage("TakeDamage", damage);
+                                //hit.transform.gameObject.SendMessage("TakeDamage", damage);
+                                hit.transform.gameObject.GetComponent<CharacterNPC>().RecieveDamageParameters(damageParameters);
                             }
 
                             Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));

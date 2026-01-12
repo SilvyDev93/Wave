@@ -29,6 +29,7 @@ public class WaveManager : MonoBehaviour
         if (enemiesToSpawn > 0)
         {
             Instantiate(enemy, ChooseSpawn().position, Quaternion.identity, enemyParent);
+            enemy.GetComponent<CharacterNPC>().ChangeLevel(Random.Range(wave, wave + 3));
             enemiesToSpawn--;            
             StartCoroutine(SpawnCooldown());
         }             

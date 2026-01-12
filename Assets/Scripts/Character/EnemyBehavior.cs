@@ -4,7 +4,6 @@ using UnityEngine;
 public class EnemyBehavior : MonoBehaviour
 {
     [Header("Melee Enemy")]
-    public int damage;
     public float range;
     public float time;
     public float duration;
@@ -12,7 +11,6 @@ public class EnemyBehavior : MonoBehaviour
     public EnemyAttackHitbox hitbox;
 
     [HideInInspector] public bool attacking;
-
     [HideInInspector] public CharacterNavigation characterNavigation;
     [HideInInspector] public Transform playerTransform;
     

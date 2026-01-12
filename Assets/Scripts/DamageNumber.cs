@@ -19,6 +19,11 @@ public class DamageNumber : MonoBehaviour
     {
         number.text = damage.ToString();
     }
+
+    public void SetTextColor(Color color)
+    {
+        number.color = color;
+    }
     
     private void Update()
     {

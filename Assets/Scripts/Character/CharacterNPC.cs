@@ -6,13 +6,27 @@ using UnityEngine.UI;
 
 public class CharacterNPC : MonoBehaviour
 {
-    [Header("Character Parameters")]
-    [SerializeField] float health;
+    [SerializeField] string characterName;
+    [SerializeField] int level;
+
+    [Header("Character Parameters (Affected by level)")]
+    [SerializeField] float baseHealth;
+    [SerializeField] int baseDamage;
+    
+    [Header("Character Parameters (Not affected by level)")]
     [SerializeField] float movementSpeed;
     [SerializeField] int reward;
+
+    [Header("Configuration")]
     [SerializeField] float healthBarTime;
     [SerializeField] float explosionCooldown;
     [SerializeField] DeathMode deathMode;
+
+    [Header("Billboard")]
+    [SerializeField] GameObject billboard;
+    [SerializeField] TextMeshProUGUI nameBillboard;
+    [SerializeField] TextMeshProUGUI levelBillboard;
+    [SerializeField] Slider healthSlider;
 
     [Header("Damage Numbers")]
     [SerializeField] GameObject damageNumbers;
@@ -30,14 +44,17 @@ public class CharacterNPC : MonoBehaviour
     [SerializeField] float groundCheckDistance;
     [SerializeField] LayerMask groundMask;
 
-    [Header("References")]  
-    [SerializeField] Slider healthSlider;
+    [Header("References")]       
     [SerializeField] GameObject corpse;
     [SerializeField] Transform damageNumbersTransform;
 
     Rigidbody rb; CharacterNavigation characterNavigation;
 
-    float currentHealth; bool groundCheckEnabled = true; bool dying;
+    // OnGame Value
+    float currentHealth;
+    [HideInInspector] public float currentDamage;
+
+    bool groundCheckEnabled = true; bool dying;
 
     public bool onExplosionCooldown;
 
@@ -49,25 +66,69 @@ public class CharacterNPC : MonoBehaviour
         Explosion
     }
 
+    public void RecieveDamageParameters(DamageParameters damageParameters)
+    {
+        bool criticalDamage = IsCrit();
+        float damage = DamageCalculation();
+
+        DamageNumbersInstantiate(damage, criticalDamage);
+        SetBillboardActive();
+        TakeDamage(damage);              
+
+        bool IsCrit()
+        {
+            if (Random.Range(0, 101) <= damageParameters.criticalChance)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        float DamageCalculation()
+        {
+            int damage = Random.Range(damageParameters.minDamage, damageParameters.maxDamage + 1);
+
+            if (criticalDamage)
+            {
+                return damage * 2;
+            }
+
+            return damage;
+        }
+    }
+
+    void SetBillboardActive()
+    {
+        StopCoroutine(HideBillboard());
+        billboard.SetActive(true);
+        StartCoroutine(HideBillboard());
+    }
+
+    void DamageNumbersInstantiate(float damage, bool isCrit)
+    {
+        GameObject damageNumber = Instantiate(damageNumbers, damageNumbersTransform);
+        DamageNumber dmgNumber = damageNumber.GetComponent<DamageNumber>();
+        dmgNumber.SetDamageNumber((int)damage);
+
+        if (isCrit)
+        {
+            dmgNumber.SetTextColor(Color.yellow);
+        }       
+    }
+
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
-        currentHealth = Mathf.Clamp(currentHealth, 0, health);
+        currentHealth = Mathf.Clamp(currentHealth, 0, baseHealth);
         healthSlider.value = currentHealth;
-
-        StopCoroutine(HideHealthBar());
-        healthSlider.gameObject.SetActive(true);
 
         if (currentHealth <= 0)
         {           
             KillEntity();
-        }
-
-        GameObject damageNumber = Instantiate(damageNumbers, damageNumbersTransform);
-        damageNumber.GetComponent<DamageNumber>().SetDamageNumber((int) damage);
-        StartCoroutine(HideHealthBar());
+        }          
     }
-
+    
     public void TakeKnockback(float force, Vector3 direction)
     {
         SeparateFromGround();
@@ -168,26 +229,44 @@ public class CharacterNPC : MonoBehaviour
         StartCoroutine(GroundCheckCoroutine());        
     }
 
-    IEnumerator HideHealthBar()
+    IEnumerator HideBillboard()
     {
         yield return new WaitForSeconds(healthBarTime);
-        healthSlider.gameObject.SetActive(false);
+        billboard.SetActive(false);
     }
 
     void GetReferences()
     {
-        currentHealth = health;
-        healthSlider.maxValue = health;
+        currentHealth = baseHealth;
+        healthSlider.maxValue = baseHealth;
         healthSlider.value = currentHealth;
-        healthSlider.gameObject.SetActive(false);
+        billboard.SetActive(false);
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
         characterNavigation = GetComponent<CharacterNavigation>();
     }
 
+    void SetCharacterParametersByLevel()
+    {
+        currentHealth = baseHealth + ((baseHealth * 0.25f) * level);
+        currentDamage = baseDamage + ((baseDamage * 0.25f) * level);
+    }
+
+    public void ChangeLevel(int newLevel)
+    {
+        level = newLevel;
+        SetCharacterParametersByLevel();
+    }
+
     void SetCharacterParameters()
     {
         characterNavigation.agent.speed = movementSpeed;
+    }
+
+    void SetBillboardParameters()
+    {
+        nameBillboard.text = characterName;
+        levelBillboard.text = level.ToString();
     }
 
     private void Update()
@@ -202,6 +281,8 @@ public class CharacterNPC : MonoBehaviour
     {
         GetReferences();
         SetCharacterParameters();
+        SetCharacterParametersByLevel();
+        SetBillboardParameters();
         StartCoroutine(GroundCheckCoroutine());
     }
 

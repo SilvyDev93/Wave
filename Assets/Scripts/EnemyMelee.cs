@@ -13,7 +13,7 @@ public class EnemyMelee : EnemyBehavior
 
         yield return new WaitForSeconds(time);
 
-        hitbox.SetHitboxActive(damage);
+        hitbox.SetHitboxActive((int) GetComponent<CharacterNPC>().currentDamage);
 
         yield return new WaitForSeconds(duration);
 

@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float jumpForce;
     [SerializeField] float coyoteTime;
     [SerializeField] float jumpGroundCheckDelay;
+    [SerializeField] float collisionDistance;
 
     [Header("Gravity")]   
     [SerializeField] float fallSpeed;
@@ -37,13 +38,15 @@ public class PlayerController : MonoBehaviour
 
     bool canJump; bool coyoting; bool wontCheckGround; bool onAir;
 
+    Vector3 inputMovement;
+
     PlayerCharacter character; PlayerInput input;
 
     [HideInInspector] public Rigidbody rb;
 
     public void MovePlayer() // Player inputs handled in FixedUpdate
     {
-        rb.MovePosition(transform.position + (input.GetVerticalAxis() + input.GetHorizontalAxis()) * movementSpeed * Time.deltaTime);
+        rb.MovePosition(transform.position + (input.GetVerticalAxis() + input.GetHorizontalAxis()) * movementSpeed * Time.fixedDeltaTime);               
     }
 
     void PlayerGravity()
