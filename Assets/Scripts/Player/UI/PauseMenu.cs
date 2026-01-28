@@ -37,8 +37,21 @@ public class PauseMenu : MonoBehaviour
         GameManager.Instance.UnPauseGame();
     }
 
+    public void LoadGame()
+    {
+        SceneManager.LoadScene(1);
+    }
+
+    public void ReturnToMainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
     private void Awake()
     {
-        pauseMenu.SetActive(false);
+        if (pauseMenu != null)
+        {
+            pauseMenu.SetActive(false);
+        }        
     }
 }

@@ -17,7 +17,7 @@ public class AmmoCrate : MonoBehaviour
         hud.SetPlayerMessage("Got " + weaponToReload.name + " ammo", 2);
 
         PlayerSounds playerSounds = GameManager.Instance.audioManager.playerSounds;
-        playerSounds.PlayAudio(playerSounds.ammoPickUp);
+        playerSounds.PlayAudio("ammoRecovery");
 
         Destroy(transform.parent.gameObject);
     }

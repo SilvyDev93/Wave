@@ -1,5 +1,6 @@
 using System.Collections;
 using System.ComponentModel;
+using System.Net.NetworkInformation;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
@@ -76,7 +77,9 @@ public class PlayerController : MonoBehaviour
 
             if (onAir)
             {
-                GameManager.Instance.audioManager.playerSounds.PlayLandingSound();
+                //GameManager.Instance.audioManager.playerSounds.PlayLandingSound();
+                PlayerSounds playerSounds = GameManager.Instance.audioManager.playerSounds;
+                playerSounds.PlayAudio("landing");
             }
 
             onAir = false;

@@ -70,15 +70,18 @@ public class Weapon : MonoBehaviour
     [SerializeField] Transform muzzle;
     [SerializeField] LayerMask hitLayer;
     [SerializeField] Animator visualAnimator;
-    [SerializeField] LayerMask doesNotCountPenetration;
 
     int currentAmmo; int ammoInMag; 
     float spread; float targetSpread; float currentFireSpread; float currentAirborneSpread; float fireCooldown;
-    bool hitTarget;
+    bool hitTarget; bool activeReload;
 
     FirstPersonCamera fpsCam; AudioSource audioSource; PlayerHUD hud; WeaponHandler weaponHandler; Rigidbody rb;
 
     [HideInInspector] public bool shooting; [HideInInspector] public bool reloading;
+
+    /// <summary>
+    /// Enumerators
+    /// </summary>
 
     public enum FireMode
     {
@@ -106,9 +109,16 @@ public class Weapon : MonoBehaviour
         SingleLoading
     }
 
+    /// <summary>
+    /// Shooting
+    /// </summary>
+
     public void PlayerTriggerPush()
     {
-        StopCoroutine(SingleReload());
+        if (GetCurrentAmmoMode() > 0)
+        {
+            ResetReloadState();
+        }     
 
         if (!shooting)
         {
@@ -120,21 +130,7 @@ public class Weapon : MonoBehaviour
             {
                 PlayerReload();
             }
-        }        
-    }
-
-    int GetCurrentAmmoMode()
-    {
-        switch (ammoMode.ToString())
-        {
-            case "Total":
-                return currentAmmo;
-
-            case "Reload":
-                return ammoInMag;
         }
-
-        return 0;
     }
 
     IEnumerator Shoot()
@@ -144,7 +140,7 @@ public class Weapon : MonoBehaviour
 
         reloading = false;
         StopCoroutine(MagReload());
-        StopCoroutine(SingleReload());        
+        StopCoroutine(SingleReload());
         GameManager.Instance.playerHUD.reloadText.SetActive(false);
 
         float burstShots = GetBurstFireShots();
@@ -154,7 +150,7 @@ public class Weapon : MonoBehaviour
         if (visualAnimator != null)
         {
             visualAnimator.SetTrigger("WeaponFire");
-        }        
+        }
 
         FireKnockback();
 
@@ -163,7 +159,7 @@ public class Weapon : MonoBehaviour
         yield return new WaitForSeconds(fireCooldown);
 
         StartCoroutine(ManualBoltAction());
-       
+
         IEnumerator ShootLogic()
         {
             for (int i = 0; i < burstShots; i++)
@@ -188,7 +184,7 @@ public class Weapon : MonoBehaviour
                     StartCoroutine(weaponHandler.DisplayAmmo());
 
                     yield return new WaitForSeconds(0.05f);
-                }                
+                }
             }
         }
 
@@ -262,7 +258,7 @@ public class Weapon : MonoBehaviour
         {
             for (int i = 0; i < numberOfProyectiles; i++)
             {
-                Instantiate(proyectile, Camera.main.ScreenToWorldPoint(Input.mousePosition), Camera.main.transform.rotation);               
+                Instantiate(proyectile, Camera.main.ScreenToWorldPoint(Input.mousePosition), Camera.main.transform.rotation);
             }
         }
 
@@ -294,130 +290,47 @@ public class Weapon : MonoBehaviour
                     break;
             }
         }
-        
+
         void FireKnockback()
         {
             if (!GameManager.Instance.playerController.OnGround())
-            rb.AddForce(-Camera.main.transform.forward * knockback, ForceMode.Impulse);
+                rb.AddForce(-Camera.main.transform.forward * knockback, ForceMode.Impulse);
         }
     }
 
-    public string GetAmmoString()
+    int GetBurstFireShots()
     {
-        switch (ammoMode.ToString())
+        if (fireMode.ToString() == "Burst")
         {
-            case "Total":
-                return currentAmmo.ToString();
-
-            case "Reload":
-                return ammoInMag.ToString() + " / " + currentAmmo.ToString();
+            return numberOfBurstShots;
         }
-
-        return null;
+        else
+        {
+            return 1;
+        }
     }
 
-    public void PlayerReload()
+    void SetCrosshairVisibility()
     {
-        if (ammoMode.ToString() == "Reload")
+        try
         {
-            if (ammoInMag != magSize && currentAmmo > 0 && !shooting && !reloading)
+            switch (pointerType.ToString())
             {
-                switch (reloadType.ToString())
-                {
-                    case "Magazine":
-                        StartCoroutine(MagReload());
-                        break;
+                case "Crosshair":
+                    GameManager.Instance.crosshairHandler.SetCrosshairActive(true);
+                    break;
 
-                    case "SingleLoading":
-                        StartCoroutine(SingleReload());
-                        break;
-                }
+                default:
+                    GameManager.Instance.crosshairHandler.SetCrosshairActive(false);
+                    break;
             }
-
-            StartCoroutine(weaponHandler.DisplayAmmo());
-        }                
-    }
-
-    IEnumerator MagReload()
-    {
-        reloading = true;
-
-        GameManager.Instance.playerHUD.reloadText.SetActive(true);
-
-        if (visualAnimator != null)
-        {
-            visualAnimator.SetBool("WeaponReload", true);
         }
-
-        yield return new WaitForSeconds(reloadSpeed);
-
-        if (visualAnimator != null)
-        {
-            visualAnimator.SetBool("WeaponReload", false);
-        }
-
-        currentAmmo += ammoInMag;
-        ammoInMag = 0;
-
-        int ammo = currentAmmo - magSize;
-        ammo = Mathf.Clamp(ammo, 0, magSize);
-
-        int ammoToMag = currentAmmo - ammo;
-        ammoToMag = Mathf.Clamp(ammoToMag, 0, magSize);
-
-        ammoInMag = ammoToMag;
-        currentAmmo -= ammoToMag;
-
-        reloading = false;
-
-        StartCoroutine(weaponHandler.DisplayAmmo());
-
-        GameManager.Instance.playerHUD.reloadText.SetActive(false);
+        catch { }
     }
 
-    IEnumerator SingleReload()
-    {
-        reloading = true;
-
-        GameManager.Instance.playerHUD.reloadText.SetActive(true);
-       
-        int bulletsToReload = magSize - ammoInMag;
-
-        for (int i = 0; i < bulletsToReload; i++)
-        {
-            if (currentAmmo > 0)
-            {
-                ammoInMag++;
-                currentAmmo--;
-                StartCoroutine(weaponHandler.DisplayAmmo());
-                yield return new WaitForSeconds(reloadSpeed);
-            }           
-        }
-
-        reloading = false;
-
-        GameManager.Instance.playerHUD.reloadText.SetActive(false);
-    }
-
-    void ScriptReload()
-    {
-        if (ammoMode.ToString() == "Reload")
-        {
-            currentAmmo += ammoInMag;
-            ammoInMag = 0;
-
-            int ammo = currentAmmo - magSize;
-            ammo = Mathf.Clamp(ammo, 0, magSize);
-
-            int ammoToMag = currentAmmo - ammo;
-            ammoToMag = Mathf.Clamp(ammoToMag, 0, magSize);
-
-            ammoInMag = ammoToMag;
-            currentAmmo -= ammoToMag;
-
-            weaponHandler.DisplayAmmo2();
-        }      
-    }
+    /// <summary>
+    /// Fire Recoil/Spread
+    /// </summary>
 
     void BulletSpreadControl()
     {
@@ -468,34 +381,162 @@ public class Weapon : MonoBehaviour
         return (Vector2) Input.mousePosition + Random.insideUnitCircle * spread;
     }
 
-    int GetBurstFireShots()
+    /// <summary>
+    /// Reload Related
+    /// </summary>
+
+    public void PlayerReload()
     {
-        if (fireMode.ToString() == "Burst")
+        if (ammoMode.ToString() == "Reload")
         {
-            return numberOfBurstShots;
-        }
-        else
-        {
-            return 1;
+            if (ammoInMag != magSize && currentAmmo > 0 && !shooting && !reloading)
+            {
+                switch (reloadType.ToString())
+                {
+                    case "Magazine":
+                        StartCoroutine(MagReload());
+                        break;
+
+                    case "SingleLoading":
+                        StartCoroutine(SingleReload());
+                        break;
+                }
+            }
+
+            StartCoroutine(weaponHandler.DisplayAmmo());
         }
     }
 
-    void SetCrosshairVisibility()
+    IEnumerator MagReload()
     {
-        try
-        {
-            switch (pointerType.ToString())
-            {
-                case "Crosshair":
-                    GameManager.Instance.crosshairHandler.SetCrosshairActive(true);
-                    break;
+        reloading = true;
+        activeReload = true;
 
-                default:
-                    GameManager.Instance.crosshairHandler.SetCrosshairActive(false);
+        GameManager.Instance.playerHUD.reloadText.SetActive(true);
+
+        if (visualAnimator != null)
+        {
+            visualAnimator.SetBool("WeaponReload", true);
+        }
+
+        yield return new WaitForSeconds(reloadSpeed);
+
+        if (visualAnimator != null)
+        {
+            visualAnimator.SetBool("WeaponReload", false);
+        }
+
+        if (activeReload)
+        {
+            ReloadCalculation();
+        }
+
+        ResetReloadState();
+    }
+
+    IEnumerator SingleReload()
+    {
+        reloading = true;
+
+        GameManager.Instance.playerHUD.reloadText.SetActive(true);
+
+        int bulletsToReload = magSize - ammoInMag;
+
+        activeReload = true;
+
+        for (int i = 0; i < bulletsToReload; i++)
+        {
+            if (currentAmmo > 0)
+            {
+                if (activeReload)
+                {
+                    ammoInMag++;
+                    currentAmmo--;
+                    StartCoroutine(weaponHandler.DisplayAmmo());
+                    yield return new WaitForSeconds(reloadSpeed);
+                }
+                else
+                {
                     break;
+                }
             }
         }
-        catch { }
+
+        reloading = false;
+        activeReload = false;
+
+        GameManager.Instance.playerHUD.reloadText.SetActive(false);
+    }
+
+    void ScriptReload()
+    {
+        if (ammoMode.ToString() == "Reload")
+        {
+            ReloadCalculation();
+            weaponHandler.DisplayAmmo2();
+        }
+    }
+
+    void ResetReloadState()
+    {
+        reloading = false;
+        activeReload = false;
+
+        if (visualAnimator != null)
+        {
+            visualAnimator.SetBool("WeaponReload", false);
+        }
+
+        StartCoroutine(weaponHandler.DisplayAmmo());
+
+        GameManager.Instance.playerHUD.reloadText.SetActive(false);
+    }
+
+    void ReloadCalculation()
+    {
+        currentAmmo += ammoInMag;
+        ammoInMag = 0;
+
+        int ammo = currentAmmo - magSize;
+        ammo = Mathf.Clamp(ammo, 0, magSize);
+
+        int ammoToMag = currentAmmo - ammo;
+        ammoToMag = Mathf.Clamp(ammoToMag, 0, magSize);
+
+        ammoInMag = ammoToMag;
+        currentAmmo -= ammoToMag;
+    }
+
+    /// <summary>
+    /// Ammunition Control
+    /// </summary>
+
+    public string GetAmmoString()
+    {
+        switch (ammoMode.ToString())
+        {
+            case "Total":
+                return currentAmmo.ToString();
+
+            case "Reload":
+                return ammoInMag.ToString() + " / " + currentAmmo.ToString();
+        }
+
+        return null;
+    }
+
+    int GetCurrentAmmoMode()
+    {
+        switch (ammoMode.ToString())
+        {
+            case "Total":
+                return currentAmmo;
+
+            case "Reload":
+                return ammoInMag;
+        }
+
+        return 0;
     }
 
     public void AmmoRefill(float scriptAmmoRecovery)
@@ -519,18 +560,31 @@ public class Weapon : MonoBehaviour
         ammoGet = Mathf.Clamp(ammoGet, 1, totalAmmo);
         currentAmmo = ammoGet;
         ScriptReload();
+    } 
+
+    /// <summary>
+    /// Unity Methods
+    /// </summary>
+
+    void OnEnable()
+    {
+        GetReferences();
+
+        SetCrosshairVisibility();
+
+        StartCoroutine(weaponHandler.DisplayAmmo());
+
+        if (visualAnimator != null)
+        {
+            visualAnimator.SetBool("WeaponReload", false);
+        }
     }
 
     void GetReferences()
     {
         weaponHandler = transform.parent.GetComponent<WeaponHandler>();
         fpsCam = transform.parent.parent.GetComponent<FirstPersonCamera>();
-        audioSource = GetComponent<AudioSource>();        
-    }
-
-    void Update()
-    {
-        BulletSpreadControl();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Start()
@@ -540,19 +594,14 @@ public class Weapon : MonoBehaviour
         ScriptReload();
     }
 
-    void OnEnable()
+    void Update()
     {
-        GetReferences();      
-
-        SetCrosshairVisibility();
-
-        StartCoroutine(weaponHandler.DisplayAmmo());
+        BulletSpreadControl();
     }
 
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-
         Ray ray = Camera.main.ScreenPointToRay(MousePositionSpreadOffset());
         Gizmos.DrawRay(ray);
     }

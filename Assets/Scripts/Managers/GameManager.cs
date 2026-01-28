@@ -103,20 +103,25 @@ public class GameManager : MonoBehaviour
 
     void GetReferences()
     {
-        Transform playerTransform = GameObject.Find("Player").transform;
-        playerCharacter = playerTransform.GetChild(0).GetComponent<PlayerCharacter>();
-        playerController = playerTransform.GetChild(0).GetComponent<PlayerController>();
-        playerAbilities = playerTransform.GetChild(0).GetComponent<PlayerAbilities>();
-        playerHUD = playerTransform.GetChild(1).GetComponent<PlayerHUD>();
-        playerInput = playerTransform.gameObject.GetComponent<PlayerInput>();
+        if (InGameplayScene())
+        {
+            Transform playerTransform = GameObject.Find("Player").transform;
 
-        weaponHandler = GameObject.Find("WeaponHandler").GetComponent<WeaponHandler>();
+            if (playerTransform != null)
+            {
+                playerCharacter = playerTransform.GetChild(0).GetComponent<PlayerCharacter>();
+                playerController = playerTransform.GetChild(0).GetComponent<PlayerController>();
+                playerAbilities = playerTransform.GetChild(0).GetComponent<PlayerAbilities>();
+                playerHUD = playerTransform.GetChild(1).GetComponent<PlayerHUD>();
+                playerInput = playerTransform.gameObject.GetComponent<PlayerInput>();
+                pauseMenu = playerTransform.GetChild(1).GetComponent<PauseMenu>();
+                shopMenu = playerTransform.GetChild(1).GetComponent<ShopMenu>();
+                crosshairHandler = playerTransform.GetChild(1).GetComponent<CrosshairHandler>();
+            }
 
-        pauseMenu = playerTransform.GetChild(1).GetComponent<PauseMenu>();
-        shopMenu = playerTransform.GetChild(1).GetComponent<ShopMenu>();        
-        crosshairHandler = playerTransform.GetChild(1).GetComponent<CrosshairHandler>();
-
-        audioManager.GetReferences();
+            weaponHandler = GameObject.Find("WeaponHandler").GetComponent<WeaponHandler>();
+            audioManager.GetReferences();
+        }       
     }
 
     private void OnEnable()
@@ -129,11 +134,32 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    void DestroyManager()
+    {
+        if (!InGameplayScene())
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    bool InGameplayScene()
+    {
+        if (SceneManager.GetActiveScene().buildIndex != 1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        ManagerInstancing();
+        DestroyManager();
+        ManagerInstancing();        
         GetReferences();
-       
+        UnPauseGame();
         waveManager.StartWaving();
     }
 

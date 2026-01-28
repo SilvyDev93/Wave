@@ -39,7 +39,7 @@ public class PlayerAbilities : MonoBehaviour
             canDash = false;
 
             PlayerSounds playerSounds = GameManager.Instance.audioManager.playerSounds;
-            playerSounds.PlayAudio(playerSounds.dash);
+            playerSounds.PlayAudio("dashing");
 
             GameManager.Instance.playerInput.lockedInput = true;
 

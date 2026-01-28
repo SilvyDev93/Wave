@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class WeaponHandler : MonoBehaviour
 {
@@ -96,7 +95,11 @@ public class WeaponHandler : MonoBehaviour
 
         for (int i = 0; i < playerWeapons.Length; i++)
         {
-            weaponSlots.GetChild(i).GetComponent<WeaponSlot>().SetAmmoString(playerWeapons[i].GetComponent<Weapon>().GetAmmoString());
+            try
+            {
+                weaponSlots.GetChild(i).GetComponent<WeaponSlot>().SetAmmoString(playerWeapons[i].GetComponent<Weapon>().GetAmmoString());
+            }
+            catch { }         
         }
     }
 
