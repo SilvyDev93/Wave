@@ -947,7 +947,7 @@ GameObject:
   - component: {fileID: 5251204268502762949}
   - component: {fileID: 5836338454904887194}
   - component: {fileID: 4689843086381416442}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Visor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -8,7 +8,7 @@ public class ExplosiveBarrel : MonoBehaviour
 
     MeshRenderer meshRenderer; Collider col;
     
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damage)
     {
         Instantiate(explosion, transform.position, Quaternion.identity);
         SetActive(false);

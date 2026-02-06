@@ -68,7 +68,7 @@ public class Weapon : MonoBehaviour
 
     [Header("References")]
     [SerializeField] Transform muzzle;
-    [SerializeField] LayerMask hitLayer;
+    [SerializeField] LayerMask layersToHit;
     [SerializeField] Animator visualAnimator;
 
     int currentAmmo; int ammoInMag; 
@@ -208,7 +208,46 @@ public class Weapon : MonoBehaviour
                         ray.origin = rayOrigin;
                     }
 
+                    /*
                     if (Physics.Raycast(ray, out hit, range, hitLayer, QueryTriggerInteraction.Ignore))
+                    {
+                        BulletImpact();
+                    }
+                    */
+
+                    ///////////////////////////////////////////
+
+                    RaycastHit[] hits;
+                    hits = Physics.RaycastAll(Camera.main.ScreenPointToRay(shotOrigin).origin, Camera.main.transform.forward, range, layersToHit, QueryTriggerInteraction.Ignore);
+
+                    for (int i = 0; i < bulletPenetration; i++)
+                    {
+                        CharacterNPC character = hits[i].transform.GetComponent<CharacterNPC>();
+
+                        if (character != null)
+                        {
+                            character.RecieveDamageParameters(damageParameters);
+                            character.SetLastHitPush(hits[i].point, ray.direction, ragdollPushStrenght);
+                            Instantiate(bloodSplatterDecal, hits[i].point, Quaternion.LookRotation(hits[i].normal), hits[i].transform);
+                            hitTarget = true;
+                        }
+                        else
+                        {
+                            if (hits[i].transform.gameObject.layer == 7)
+                            {
+                                hits[i].transform.SendMessage("TakeDamage", damageParameters.minDamage);
+                                //hit.transform.gameObject.GetComponent<CharacterNPC>().RecieveDamageParameters(damageParameters);
+                            }
+
+                            Instantiate(impactEffect, hits[i].point, Quaternion.LookRotation(hits[i].normal));
+                            Instantiate(bulletHoleDecal, hits[i].point, Quaternion.LookRotation(hits[i].normal), hits[i].transform);
+                            rayOrigin = hits[i].point;
+                        }
+                    }
+
+                    //////////////////////////////////////////////
+
+                    void BulletImpact()
                     {
                         CharacterNPC character = hit.transform.GetComponent<CharacterNPC>();
 
@@ -223,8 +262,8 @@ public class Weapon : MonoBehaviour
                         {
                             if (hit.transform.gameObject.layer == 7)
                             {
-                                //hit.transform.gameObject.SendMessage("TakeDamage", damage);
-                                hit.transform.gameObject.GetComponent<CharacterNPC>().RecieveDamageParameters(damageParameters);
+                                hit.transform.SendMessage("TakeDamage", damageParameters.minDamage);
+                                //hit.transform.gameObject.GetComponent<CharacterNPC>().RecieveDamageParameters(damageParameters);
                             }
 
                             Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
