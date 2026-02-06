@@ -17,6 +17,7 @@ public class Weapon : MonoBehaviour
     public AmmoMode ammoMode;
     public FireMode fireMode;
     public PointerType pointerType;
+    [SerializeField] bool unlimitedAmmo;
 
     [Header("Weapon Parameters")]
     [SerializeField] DamageParameters damageParameters;
@@ -68,7 +69,8 @@ public class Weapon : MonoBehaviour
 
     [Header("References")]
     [SerializeField] Transform muzzle;
-    [SerializeField] LayerMask layersToHit;
+    [SerializeField] LayerMask entityLayer = 7;
+    [SerializeField] LayerMask terrainLayer = 3;
     [SerializeField] Animator visualAnimator;
 
     int currentAmmo; int ammoInMag; 
@@ -209,7 +211,7 @@ public class Weapon : MonoBehaviour
                     }
 
                     /*
-                    if (Physics.Raycast(ray, out hit, range, hitLayer, QueryTriggerInteraction.Ignore))
+                    if (Physics.Raycast(ray, out hit, range, layersToHit, QueryTriggerInteraction.Ignore))
                     {
                         BulletImpact();
                     }
@@ -218,34 +220,49 @@ public class Weapon : MonoBehaviour
                     ///////////////////////////////////////////
 
                     RaycastHit[] hits;
-                    hits = Physics.RaycastAll(Camera.main.ScreenPointToRay(shotOrigin).origin, Camera.main.transform.forward, range, layersToHit, QueryTriggerInteraction.Ignore);
+                    hits = Physics.RaycastAll(ray.origin, ray.direction, range, entityLayer, QueryTriggerInteraction.Ignore);
 
-                    for (int i = 0; i < bulletPenetration; i++)
+                    if (hits.Length > 0) 
                     {
-                        CharacterNPC character = hits[i].transform.GetComponent<CharacterNPC>();
+                        for (int i = 0; i < (bulletPenetration > hits.Length ? hits.Length: bulletPenetration); i++)
+                        {
+                            CharacterNPC character = hits[i].transform.GetComponent<CharacterNPC>();
 
-                        if (character != null)
-                        {
-                            character.RecieveDamageParameters(damageParameters);
-                            character.SetLastHitPush(hits[i].point, ray.direction, ragdollPushStrenght);
-                            Instantiate(bloodSplatterDecal, hits[i].point, Quaternion.LookRotation(hits[i].normal), hits[i].transform);
-                            hitTarget = true;
-                        }
-                        else
-                        {
-                            if (hits[i].transform.gameObject.layer == 7)
+                            if (character != null)
                             {
-                                hits[i].transform.SendMessage("TakeDamage", damageParameters.minDamage);
-                                //hit.transform.gameObject.GetComponent<CharacterNPC>().RecieveDamageParameters(damageParameters);
+                                character.RecieveDamageParameters(damageParameters);
+                                character.SetLastHitPush(hits[i].point, ray.direction, ragdollPushStrenght);
+                                Instantiate(bloodSplatterDecal, hits[i].point, Quaternion.LookRotation(hits[i].normal), hits[i].transform);
+                                hitTarget = true;
                             }
+                            else
+                            {
+                                if (hits[i].transform.gameObject.layer == 7)
+                                {
+                                    hits[i].transform.SendMessage("TakeDamage", damageParameters.minDamage);
+                                    //hit.transform.gameObject.GetComponent<CharacterNPC>().RecieveDamageParameters(damageParameters);
+                                }
 
-                            Instantiate(impactEffect, hits[i].point, Quaternion.LookRotation(hits[i].normal));
-                            Instantiate(bulletHoleDecal, hits[i].point, Quaternion.LookRotation(hits[i].normal), hits[i].transform);
-                            rayOrigin = hits[i].point;
+                                Instantiate(impactEffect, hits[i].point, Quaternion.LookRotation(hits[i].normal));
+                                Instantiate(bulletHoleDecal, hits[i].point, Quaternion.LookRotation(hits[i].normal), hits[i].transform);
+                                rayOrigin = hits[i].point;
+                            }
                         }
                     }
 
-                    //////////////////////////////////////////////
+                    if (Physics.Raycast(ray, out hit, range, terrainLayer, QueryTriggerInteraction.Ignore))
+                    {
+                        Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                        Instantiate(bulletHoleDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
+                        rayOrigin = hit.point;
+                    }
+
+                    if (hits.Length < bulletPenetration)
+                    {
+                        
+                    }
+
+                    ////////////////////////////////////////////// usar segundo raycast para el impacto de bala en las paredes
 
                     void BulletImpact()
                     {
@@ -306,7 +323,10 @@ public class Weapon : MonoBehaviour
             switch (ammoMode.ToString())
             {
                 case "Total":
-                    currentAmmo--;
+                    if (!unlimitedAmmo)
+                    {
+                        currentAmmo--;
+                    }                    
                     break;
 
                 case "Reload":
@@ -490,7 +510,12 @@ public class Weapon : MonoBehaviour
                 if (activeReload)
                 {
                     ammoInMag++;
-                    currentAmmo--;
+
+                    if (!unlimitedAmmo)
+                    {
+                        currentAmmo--;
+                    }
+                    
                     StartCoroutine(weaponHandler.DisplayAmmo());
                     yield return new WaitForSeconds(reloadSpeed);
                 }
@@ -533,6 +558,8 @@ public class Weapon : MonoBehaviour
 
     void ReloadCalculation()
     {
+        int initialAmmo = currentAmmo;
+
         currentAmmo += ammoInMag;
         ammoInMag = 0;
 
@@ -544,6 +571,11 @@ public class Weapon : MonoBehaviour
 
         ammoInMag = ammoToMag;
         currentAmmo -= ammoToMag;
+        
+        if (unlimitedAmmo)
+        {
+            currentAmmo = initialAmmo;
+        }
     }
 
     /// <summary>
@@ -555,13 +587,37 @@ public class Weapon : MonoBehaviour
         switch (ammoMode.ToString())
         {
             case "Total":
-                return currentAmmo.ToString();
+                return ReturnTotalAmmo();
 
             case "Reload":
-                return ammoInMag.ToString() + " / " + currentAmmo.ToString();
+                return ReturnReloadAmmo();
         }
 
         return null;
+
+        string ReturnTotalAmmo()
+        {
+            switch (unlimitedAmmo)
+            {
+                case true:
+                    return "Infinito";
+
+                case false:
+                    return currentAmmo.ToString();
+            }
+        }
+
+        string ReturnReloadAmmo()
+        {
+            switch (unlimitedAmmo)
+            {
+                case true:
+                    return ammoInMag.ToString() + " / " + "Infinito";
+
+                case false:
+                    return ammoInMag.ToString() + " / " + currentAmmo.ToString();
+            }
+        }
     }
 
     int GetCurrentAmmoMode()

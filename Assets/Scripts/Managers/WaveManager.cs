@@ -18,7 +18,8 @@ public class WaveManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] Transform spawns;
-    [SerializeField] GameObject enemy;
+
+    GameObject[] enemies;
     
     int wave; int enemiesToSpawn; int previousReward; int[] waveList; bool gameStarted; bool startNextWave; float timer;
 
@@ -28,8 +29,8 @@ public class WaveManager : MonoBehaviour
     {
         if (enemiesToSpawn > 0)
         {
-            Instantiate(enemy, ChooseSpawn().position, Quaternion.identity, enemyParent);
-            enemy.GetComponent<CharacterNPC>().ChangeLevel(Random.Range(wave, wave + 3));
+            GameObject newEnemy = Instantiate(enemies[Random.Range(0, enemies.Length)], ChooseSpawn().position, Quaternion.identity, enemyParent);
+            newEnemy.GetComponent<CharacterNPC>().ChangeLevel(Random.Range(wave, wave + 3));
             enemiesToSpawn--;            
             StartCoroutine(SpawnCooldown());
         }             
@@ -99,10 +100,16 @@ public class WaveManager : MonoBehaviour
         }       
     }
 
+    void GetResources()
+    {
+        enemies = Resources.LoadAll<GameObject>("Characters");
+    }
+
     public void StartWaving()
     {
         DestroyAllEntities();
         GetReferences();
+        GetResources();
         WavesSetUp();
         wave = 0;
         previousReward = baseReward;

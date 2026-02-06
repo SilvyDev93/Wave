@@ -1,6 +1,7 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Net.NetworkInformation;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
@@ -47,7 +48,14 @@ public class PlayerController : MonoBehaviour
 
     public void MovePlayer() // Player inputs handled in FixedUpdate
     {
-        rb.MovePosition(transform.position + (input.GetVerticalAxis() + input.GetHorizontalAxis()) * movementSpeed * Time.fixedDeltaTime);               
+        rb.MovePosition(transform.position + (input.GetVerticalAxis() + input.GetHorizontalAxis()).normalized * movementSpeed * Time.fixedDeltaTime);
+
+        /*
+        Vector3 dir = (input.GetVerticalAxis() + input.GetHorizontalAxis()).normalized;
+        dir.y = rb.linearVelocity.y;
+        rb.linearVelocity = dir * movementSpeed * Time.fixedDeltaTime;
+        Debug.Log(rb.angularVelocity);
+        */
     }
 
     void PlayerGravity()
@@ -65,7 +73,7 @@ public class PlayerController : MonoBehaviour
         {
             currentGravity = 0;
             Vector3 velocity = rb.linearVelocity;
-            velocity.y = 0; // si se jode en y es por esto
+            /*velocity.y = 0; */// si se jode en y es por esto
 
             if (!IsPlayerMoving())
             {
