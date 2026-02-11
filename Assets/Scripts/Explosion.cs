@@ -4,7 +4,7 @@ using UnityEngine;
 public class Explosion : MonoBehaviour
 {
     [Header("Explosion")]
-    [SerializeField] float targetSize;
+    public float targetSize;
     [SerializeField] float sizeIncreaseFactor;
     [SerializeField] LayerMask entityLayer;
 

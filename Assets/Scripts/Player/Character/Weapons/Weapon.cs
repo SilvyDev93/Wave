@@ -210,15 +210,6 @@ public class Weapon : MonoBehaviour
                         ray.origin = rayOrigin;
                     }
 
-                    /*
-                    if (Physics.Raycast(ray, out hit, range, layersToHit, QueryTriggerInteraction.Ignore))
-                    {
-                        BulletImpact();
-                    }
-                    */
-
-                    ///////////////////////////////////////////
-
                     RaycastHit[] hits;
                     hits = Physics.RaycastAll(ray.origin, ray.direction, range, entityLayer, QueryTriggerInteraction.Ignore);
 
@@ -255,38 +246,6 @@ public class Weapon : MonoBehaviour
                         Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
                         Instantiate(bulletHoleDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
                         rayOrigin = hit.point;
-                    }
-
-                    if (hits.Length < bulletPenetration)
-                    {
-                        
-                    }
-
-                    ////////////////////////////////////////////// usar segundo raycast para el impacto de bala en las paredes
-
-                    void BulletImpact()
-                    {
-                        CharacterNPC character = hit.transform.GetComponent<CharacterNPC>();
-
-                        if (character != null)
-                        {
-                            character.RecieveDamageParameters(damageParameters);
-                            character.SetLastHitPush(hit.point, ray.direction, ragdollPushStrenght);
-                            Instantiate(bloodSplatterDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
-                            hitTarget = true;
-                        }
-                        else
-                        {
-                            if (hit.transform.gameObject.layer == 7)
-                            {
-                                hit.transform.SendMessage("TakeDamage", damageParameters.minDamage);
-                                //hit.transform.gameObject.GetComponent<CharacterNPC>().RecieveDamageParameters(damageParameters);
-                            }
-
-                            Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-                            Instantiate(bulletHoleDecal, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
-                            rayOrigin = hit.point;
-                        }
                     }
                 }
 

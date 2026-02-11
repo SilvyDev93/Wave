@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyMelee : EnemyBehavior
 {
+    public EnemyAttackHitbox hitbox;
+
     public override IEnumerator InitiateAttack()
     {
         attacking = true;
@@ -23,5 +25,10 @@ public class EnemyMelee : EnemyBehavior
         yield return new WaitForSeconds(cooldown);
 
         attacking = false;
+    }
+
+    private void Start()
+    {
+        hitbox.gameObject.SetActive(false);
     }
 }

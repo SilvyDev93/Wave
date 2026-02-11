@@ -33,6 +33,8 @@ public class PlayerInput : MonoBehaviour
             WeaponChangeInput();
 
             KickInput();
+
+            StompInput();
         }
 
         ShopInput();
@@ -178,6 +180,14 @@ public class PlayerInput : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             GameManager.Instance.playerAbilities.Kick();
+        }
+    }
+
+    void StompInput()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            GameManager.Instance.playerAbilities.Stomp();
         }
     }
 

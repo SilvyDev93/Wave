@@ -8,7 +8,6 @@ public class EnemyBehavior : MonoBehaviour
     public float time;
     public float duration;
     public float cooldown;
-    public EnemyAttackHitbox hitbox;
 
     [HideInInspector] public bool attacking;
     [HideInInspector] public CharacterNavigation characterNavigation;
@@ -36,8 +35,7 @@ public class EnemyBehavior : MonoBehaviour
     void Awake()
     {
         characterNavigation = GetComponent<CharacterNavigation>();
-        playerTransform = GameManager.Instance.playerCharacter.transform;
-        hitbox.gameObject.SetActive(false);
+        playerTransform = GameManager.Instance.playerCharacter.transform;        
     }
 
     void OnDrawGizmos()

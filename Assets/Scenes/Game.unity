@@ -24554,7 +24554,12 @@ MonoBehaviour:
   kickRadius: 1
   kickKnockback: 15
   kickStaminaCost: 25
+  stompVelocity: 150
+  stompCooldown: 0
+  stompExplosionStrength: 10
+  stompExplosionTime: 5
   kickOrigin: {fileID: 1739906124}
+  explosion: {fileID: 776593789594815755, guid: 7dd9d332b2a3c774e8499680bd0c6566, type: 3}
   entityLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -58222,6 +58227,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1702169689}
     m_Modifications:
     - target: {fileID: 3406256170254683264, guid: 80e9414dc887e1c48bc15db6ffdbf090, type: 3}
+      propertyPath: bulletTracer
+      value: 
+      objectReference: {fileID: 4940741961463484026, guid: 876947764e343d34aa689c5ff067b826, type: 3}
+    - target: {fileID: 3406256170254683264, guid: 80e9414dc887e1c48bc15db6ffdbf090, type: 3}
       propertyPath: unlimitedAmmo
       value: 1
       objectReference: {fileID: 0}
@@ -58279,7 +58288,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7297795863742581081, guid: 80e9414dc887e1c48bc15db6ffdbf090, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -58340,7 +58349,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4354167508601527049, guid: 2535907864694894f9138642fd05d893, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7781752872780147943, guid: 2535907864694894f9138642fd05d893, type: 3}
       propertyPath: unlimitedAmmo
@@ -58555,6 +58564,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5733782122248320862, guid: 6aec6e1d42d41de4f8cd08f07ceca12e, type: 3}
+      propertyPath: bulletTracer
+      value: 
+      objectReference: {fileID: 4940741961463484026, guid: 876947764e343d34aa689c5ff067b826, type: 3}
+    - target: {fileID: 5733782122248320862, guid: 6aec6e1d42d41de4f8cd08f07ceca12e, type: 3}
       propertyPath: unlimitedAmmo
       value: 1
       objectReference: {fileID: 0}
@@ -58584,6 +58597,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1702169689}
     m_Modifications:
+    - target: {fileID: 55468214138709818, guid: a7f6057e719368848bd03e0eedd4f3c9, type: 3}
+      propertyPath: bulletTracer
+      value: 
+      objectReference: {fileID: 4940741961463484026, guid: 876947764e343d34aa689c5ff067b826, type: 3}
     - target: {fileID: 55468214138709818, guid: a7f6057e719368848bd03e0eedd4f3c9, type: 3}
       propertyPath: unlimitedAmmo
       value: 0
@@ -58642,7 +58659,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9170907919284671068, guid: a7f6057e719368848bd03e0eedd4f3c9, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

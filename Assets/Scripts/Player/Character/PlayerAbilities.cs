@@ -18,14 +18,25 @@ public class PlayerAbilities : MonoBehaviour
     [SerializeField] float kickKnockback;
     [SerializeField] float kickStaminaCost;
 
+    [Header("Stomp")]
+    [SerializeField] float stompVelocity;    
+    [SerializeField] float stompCooldown;
+    [SerializeField] float stompExplosionStrength;
+    [SerializeField] float stompExplosionTime;
+
     [Header("References")]
     [SerializeField] Transform kickOrigin;
+    [SerializeField] GameObject explosion;
     [SerializeField] LayerMask entityLayer;
 
     PlayerCharacter playerCharacter;
     PlayerController playerController;
     PlayerInput playerInput;
     FirstPersonCamera firstPersonCamera;
+
+    float stompTime;
+
+    bool stomping;
 
     public void Dash()
     {
@@ -93,6 +104,41 @@ public class PlayerAbilities : MonoBehaviour
 
             playerCharacter.ConsumeStamina(kickStaminaCost);
         }        
+    }
+
+    public void Stomp()
+    {
+        if (!playerController.OnGround())
+        {
+            playerController.GetComponent<Rigidbody>().AddForce(-transform.up * stompVelocity, ForceMode.Impulse);
+            stompTime = 0;
+            stomping = true;
+        }
+    }
+
+    void InStompDuration()
+    {
+        if (stomping)
+        {
+            stompTime += stompExplosionTime * Time.deltaTime;
+
+            if (playerController.OnGround())
+            {
+                if (stompTime >= 0.8f)
+                {
+                    GameObject knockbackRadius = Instantiate(explosion, transform.position, explosion.transform.rotation);
+                    knockbackRadius.GetComponent<Explosion>().targetSize = stompTime * stompExplosionStrength;
+                    Debug.Log(stompTime);
+                }
+                
+                stomping = false;
+            }
+        }      
+    }
+
+    private void Update()
+    {
+        InStompDuration();
     }
 
     private void Start()

@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60b2ae68c99059d429d284a5ad7bbeaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strenght: 10
+  strenght: 1
   initialSpeed: 0.5
   smoothTime: 0.75
 --- !u!33 &1021239167098299840
@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 3600735942597743485}
   - component: {fileID: 6222603796610586944}
   m_Layer: 0
-  m_Name: Explosion
+  m_Name: StompKnockback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -202,15 +202,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetSize: 10
-  sizeIncreaseFactor: 0.75
+  sizeIncreaseFactor: 1
   entityLayer:
     serializedVersion: 2
     m_Bits: 128
-  playerDamage: 10
-  playerForce: 150
-  playerUpwardsForce: 0.8
-  npcDamage: 2
-  npcForce: 15
+  playerDamage: 0
+  playerForce: 0
+  playerUpwardsForce: 0
+  npcDamage: 0
+  npcForce: 30
   npcUpwardsForce: 2
 --- !u!114 &3600735942597743485
 MonoBehaviour:
@@ -225,6 +225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifeTime: 0.85
+  destroyFromStart: 1
 --- !u!135 &6222603796610586944
 SphereCollider:
   m_ObjectHideFlags: 0

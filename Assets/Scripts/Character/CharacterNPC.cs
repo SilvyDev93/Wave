@@ -169,6 +169,7 @@ public class CharacterNPC : MonoBehaviour
             }
 
             DropItem();
+            SendMessage("OnDeath", SendMessageOptions.DontRequireReceiver);
             Destroy(gameObject);
         }       
     }
