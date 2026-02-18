@@ -273,7 +273,8 @@ public class Weapon : MonoBehaviour
         {
             for (int i = 0; i < numberOfProyectiles; i++)
             {
-                Instantiate(proyectile, Camera.main.ScreenToWorldPoint(Input.mousePosition), Camera.main.transform.rotation);
+                GameObject newProyectile = Instantiate(proyectile, Camera.main.ScreenToWorldPoint(Input.mousePosition), Camera.main.transform.rotation);
+                newProyectile.SendMessage("SetDamageParameters", damageParameters);
             }
         }
 

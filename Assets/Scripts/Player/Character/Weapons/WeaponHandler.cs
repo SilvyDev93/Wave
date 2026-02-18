@@ -103,8 +103,17 @@ public class WeaponHandler : MonoBehaviour
         }
     }
 
+    void SetAllWeaponsActive()
+    {
+        foreach (Transform weapon in transform)
+        {
+            weapon.gameObject.SetActive(true);
+        }
+    }
+
     void Start()
     {
+        SetAllWeaponsActive();
         StartCoroutine(GetWeapons());       
     }
 }

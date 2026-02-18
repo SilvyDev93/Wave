@@ -270,7 +270,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6166275861691660951}
   - component: {fileID: 55468214138709818}
-  - component: {fileID: 5573036084045110069}
   - component: {fileID: 2674152980348183961}
   m_Layer: 8
   m_Name: Pistol
@@ -315,7 +314,8 @@ MonoBehaviour:
   ammoMode: 1
   fireMode: 3
   pointerType: 1
-  damageParameters: {fileID: 5573036084045110069}
+  unlimitedAmmo: 1
+  damageParameters: {fileID: 11400000, guid: 89e6679fc3d6f1b419cfda6e0b351bba, type: 2}
   rateOfFire: 0.2
   totalAmmo: 50
   range: 120
@@ -342,33 +342,21 @@ MonoBehaviour:
   initialSpeed: 1
   smoothTime: 0.2
   impactEffect: {fileID: 6257086598729102694, guid: 1aee2c7bee254094cb9a74e85949c14a, type: 3}
-  bulletTracer: {fileID: 4363240378193048525, guid: 128a7fc6374640244b9e0580cf098161, type: 3}
+  bulletTracer: {fileID: 4940741961463484026, guid: 876947764e343d34aa689c5ff067b826, type: 3}
   muzzleFlash: {fileID: 7958085563752842535, guid: 6d6e029fa005d3043a12fddaa492d755, type: 3}
   ragdollPushStrenght: 12
   bulletHoleDecal: {fileID: 2922058503853703424, guid: 3acd74e360702ba418bb0e73f3793d30, type: 3}
   bloodSplatterDecal: {fileID: 2922058503853703424, guid: e9100f3f5401af54d8061eac23eafb60, type: 3}
   muzzle: {fileID: 7153451362421760905}
-  layersToHit:
+  entityLayer:
     serializedVersion: 2
-    m_Bits: 136
+    m_Bits: 128
+  terrainLayer:
+    serializedVersion: 2
+    m_Bits: 8
   visualAnimator: {fileID: 6875033635174122761}
   shooting: 0
   reloading: 0
---- !u!114 &5573036084045110069
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9170907919284671068}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4acaa77d7d69c44dae860a8054e6011, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minDamage: 1
-  maxDamage: 2
-  criticalChance: 100
 --- !u!82 &2674152980348183961
 AudioSource:
   m_ObjectHideFlags: 0

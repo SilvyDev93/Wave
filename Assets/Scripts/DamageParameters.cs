@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class DamageParameters : MonoBehaviour
+[CreateAssetMenu(fileName = "DamageParameters", menuName = "Scriptable Objects/DamageParameters")]
+public class DamageParameters : ScriptableObject
 {
     [Header("Damage Range")]
     public int minDamage;

@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 
 public class FirstPersonCamera : MonoBehaviour
@@ -9,7 +10,14 @@ public class FirstPersonCamera : MonoBehaviour
     [SerializeField] float tiltAngle;
     [SerializeField] float smooth;
 
-    float shakeStrength; float shakeSpeed; float shakeSmooth; float targetFov; float changeSpeed; bool changeFov;
+    [Header("HeadBob")]
+    [SerializeField] float amount; //0.002f
+    [SerializeField] float frequency; // 10 
+    [SerializeField] float bobSmooth;      
+
+    float shakeStrength; float shakeSpeed; float shakeSmooth; float targetFov; float changeSpeed;
+    bool changeFov;
+    Vector3 startPos;
 
     Camera cam;
 
@@ -53,8 +61,8 @@ public class FirstPersonCamera : MonoBehaviour
     public void FireRecoil(float recoil)
     {
         float verticalAngle = transform.eulerAngles.x - recoil * Random.Range(0.25f, 1);
-        Quaternion target = Quaternion.Euler(verticalAngle, transform.eulerAngles.y, transform.eulerAngles.z);
-        transform.rotation = target;
+        Quaternion cameraRotationTarget = Quaternion.Euler(verticalAngle, transform.eulerAngles.y, transform.eulerAngles.z);
+        transform.rotation = cameraRotationTarget;      
     }
 
     void Shake()
@@ -132,12 +140,40 @@ public class FirstPersonCamera : MonoBehaviour
         shake = true;
     }
 
+    void CheckForHeadbobTrigger()
+    {
+        float inputMagnitude = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).magnitude;
+
+        if (inputMagnitude > 0 && GameManager.Instance.playerController.OnGround())
+        {
+            StarHeadBob();
+        }
+    }
+
+    Vector3 StarHeadBob()
+    {
+        Vector3 pos = Vector3.zero;
+        pos.y += Mathf.Lerp(pos.y, Mathf.Sin(Time.time * frequency) * amount * 1.4f, bobSmooth * Time.deltaTime);
+        pos.x += Mathf.Lerp(pos.x, Mathf.Cos(Time.time * frequency / 2f) * amount * 1.6f, bobSmooth * Time.deltaTime);
+        transform.localPosition += pos;
+
+        return pos;
+    }
+
+    void StopHeadBob()
+    {
+        if (transform.localPosition == startPos) return;
+        transform.localPosition = Vector3.Lerp(transform.localPosition, startPos, 1 * Time.deltaTime);
+    }
+
     void Update()
     {
         MouseLook();
         MovementTilt();
         FovModifier();
         Shake();
+        CheckForHeadbobTrigger();
+        StopHeadBob();
     }
 
     private void Awake()
@@ -146,5 +182,6 @@ public class FirstPersonCamera : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         cam = GetComponent<Camera>();
         fov = cam.fieldOfView;
+        startPos = transform.localPosition;
     }
 }

@@ -6,6 +6,7 @@ public class PlayerInput : MonoBehaviour
 {
     [SerializeField] PlayerController controller;
     public bool lockedInput;
+    public bool lockedMovement;
     public bool lockedMouse;
 
     int currentWeaponIndex = 0;
@@ -44,7 +45,10 @@ public class PlayerInput : MonoBehaviour
 
     void MoveInput()
     {
-        controller.MovePlayer();
+        if (!lockedMovement) 
+        {
+            controller.MovePlayer();
+        }       
     }
 
     void JumpInput()
@@ -136,6 +140,12 @@ public class PlayerInput : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             currentWeaponIndex = 4;
+            WeaponChange(currentWeaponIndex);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            currentWeaponIndex = 5;
             WeaponChange(currentWeaponIndex);
         }
 
