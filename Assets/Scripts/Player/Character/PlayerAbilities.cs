@@ -19,7 +19,8 @@ public class PlayerAbilities : MonoBehaviour
     [SerializeField] float kickStaminaCost;
 
     [Header("Stomp")]
-    [SerializeField] float stompVelocity;    
+    [SerializeField] float stompVelocity;
+    [SerializeField] bool stompExplosion;
     [SerializeField] float stompCooldown;
     [SerializeField] float stompExplosionStrength;
     [SerializeField] float stompExplosionTime;
@@ -123,7 +124,7 @@ public class PlayerAbilities : MonoBehaviour
 
     void InStompDuration()
     {
-        if (stomping)
+        if (stomping && stompExplosion)
         {
             stompTime += stompExplosionTime * Time.deltaTime;
 
@@ -133,7 +134,7 @@ public class PlayerAbilities : MonoBehaviour
                 {
                     GameObject knockbackRadius = Instantiate(explosion, transform.position, explosion.transform.rotation);
                     knockbackRadius.GetComponent<Explosion>().targetSize = stompTime * stompExplosionStrength;
-                    Debug.Log(stompTime);
+                    //Debug.Log(stompTime);
                 }
                 
                 stomping = false;

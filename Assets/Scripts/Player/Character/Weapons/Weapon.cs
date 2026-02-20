@@ -228,7 +228,7 @@ public class Weapon : MonoBehaviour
                             }
                             else
                             {
-                                if (hits[i].transform.gameObject.layer == 7)
+                                if (hits[i].transform.gameObject.layer == 7 && hits[i].transform.gameObject.tag != "Enemy")
                                 {
                                     hits[i].transform.SendMessage("TakeDamage", damageParameters.minDamage);
                                     //hit.transform.gameObject.GetComponent<CharacterNPC>().RecieveDamageParameters(damageParameters);
@@ -238,6 +238,8 @@ public class Weapon : MonoBehaviour
                                 Instantiate(bulletHoleDecal, hits[i].point, Quaternion.LookRotation(hits[i].normal), hits[i].transform);
                                 rayOrigin = hits[i].point;
                             }
+
+                            Debug.Log(hits[i].transform.name);
                         }
                     }
 

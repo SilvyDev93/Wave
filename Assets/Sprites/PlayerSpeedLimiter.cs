@@ -64,7 +64,8 @@ public class PlayerSpeedLimiter : MonoBehaviour
 
     Vector3 GetCollisionOutwardDirection(Collider col)
     {
-        Vector3 dir = (col.transform.position - transform.position).normalized;
+        //Vector3 dir = col.GetContact().normal.;
+        
         return -col.transform.forward;
     }
 }
