@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
 
     bool canJump; bool coyoting; bool wontCheckGround; bool onAir;
 
-    Vector3 inputMovement;
+    Vector3 inputMovement; Vector3 lastPosition;
 
     PlayerCharacter character; PlayerInput input;
 
@@ -200,4 +200,32 @@ public class PlayerController : MonoBehaviour
             Gizmos.DrawRay(pos, -transform.up * slopeDistance);
         }
     }
+
+    /*
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.layer == 3)
+        {
+            Debug.Log("Detecting Wall");
+            //Vector3 directionVector = (other.ClosestPoint(transform.position) - transform.position).normalized;
+            //Debug.Log(other.ClosestPoint(transform.position));
+            //GameManager.Instance.playerController.rb.AddForce(directionVector * wallPushStrengh);
+            //GameManager.Instance.playerInput.lockedMovement = true;
+            GameManager.Instance.playerController.transform.position = lastPosition;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == 3)
+        {
+            GameManager.Instance.playerInput.lockedMovement = false;
+        }
+    }
+
+    private void Update()
+    {
+        lastPosition = GameManager.Instance.playerController.transform.position;
+    }
+    */
 }

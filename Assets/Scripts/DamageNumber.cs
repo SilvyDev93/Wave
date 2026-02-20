@@ -24,6 +24,12 @@ public class DamageNumber : MonoBehaviour
     {
         number.color = color;
     }
+
+    public void AddScale(Vector3 scaleAdd)
+    {
+        Vector3 finalScale = transform.GetChild(0).localScale + scaleAdd;
+        transform.GetChild(0).localScale = finalScale;
+    }
     
     private void Update()
     {

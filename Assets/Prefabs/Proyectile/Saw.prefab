@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ac43619f4b90064ab6930ad22367faa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  proyectileSpeed: 60
+  proyectileSpeed: 2400
   damageParameters: {fileID: 0}
 --- !u!114 &2722737353793543881
 MonoBehaviour:
@@ -137,7 +137,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

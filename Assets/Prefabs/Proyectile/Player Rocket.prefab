@@ -138,8 +138,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb6fdfec729e9864a9d955808e3b5606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  proyectileSpeed: 1500
+  damageParameters: {fileID: 0}
   explosion: {fileID: 776593789594815755, guid: db564871acad86649b4b9c08d68f99a8, type: 3}
-  misileSpeed: 40
   directHitDamage: 20
 --- !u!114 &2722737353793543881
 MonoBehaviour:

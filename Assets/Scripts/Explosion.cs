@@ -14,7 +14,7 @@ public class Explosion : MonoBehaviour
     [SerializeField] float playerUpwardsForce;
 
     [Header("NPC Interaction")]
-    [SerializeField] float npcDamage;
+    [SerializeField] DamageParameters damageParameters;
     [SerializeField] float npcForce;
     [SerializeField] float npcUpwardsForce;
 
@@ -47,7 +47,8 @@ public class Explosion : MonoBehaviour
 
                     if (!other.GetComponent<CharacterNPC>().onExplosionCooldown)
                     {
-                        other.SendMessage("TakeDamage", npcDamage);
+                        //other.SendMessage("TakeDamage", npcDamage);
+                        other.gameObject.GetComponent<CharacterNPC>().RecieveDamageParameters(damageParameters);
                         other.GetComponent<CharacterNPC>().SeparateFromGround();
                         other.GetComponent<Rigidbody>().AddExplosionForce(npcForce, transform.position, currentSize, npcUpwardsForce, ForceMode.Impulse);
                         //StartCoroutine(other.GetComponent<CharacterNPC>().ExplosionDamageCooldown());

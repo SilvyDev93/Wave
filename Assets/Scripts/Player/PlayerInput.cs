@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using static UnityEngine.Android.AndroidGame;
@@ -276,6 +277,13 @@ public class PlayerInput : MonoBehaviour
     {
         lockedInput = active;
         lockedMouse = active;
+    }
+
+    public IEnumerator TempLockedMovement(float time)
+    {
+        lockedMovement = true;
+        yield return new WaitForSeconds(time);
+        lockedMovement = false;
     }
 
     void Update()

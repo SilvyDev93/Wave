@@ -114,6 +114,7 @@ public class CharacterNPC : MonoBehaviour
         if (isCrit)
         {
             dmgNumber.SetTextColor(Color.yellow);
+            dmgNumber.AddScale(new Vector3(0.0125f, 0.0125f, 0.0125f));
         }       
     }
 

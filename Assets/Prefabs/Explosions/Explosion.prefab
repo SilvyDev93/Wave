@@ -211,7 +211,7 @@ MonoBehaviour:
   playerDamage: 10
   playerForce: 150
   playerUpwardsForce: 0.8
-  npcDamage: 2
+  damageParameters: {fileID: 11400000, guid: d959e672746d6dd4390bcaa9a208cad2, type: 2}
   npcForce: 15
   npcUpwardsForce: 2
 --- !u!114 &3600735942597743485

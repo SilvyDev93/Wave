@@ -6,14 +6,22 @@ public class Proyectile : MonoBehaviour
     [SerializeField] protected float proyectileSpeed;
     [SerializeField] protected DamageParameters damageParameters;
 
+    Rigidbody rb;
+
     public virtual void ProyectileImpact(Collision collision)
+    {
+        // Impact
+    }
+
+    public virtual void ProyectileImpact(Collider collider)
     {
         // Impact
     }
 
     public virtual void ProyectileMovement()
     {
-        transform.position += transform.forward * proyectileSpeed * Time.deltaTime;
+        //transform.position += transform.forward * proyectileSpeed * Time.deltaTime;
+        rb.linearVelocity = transform.forward * proyectileSpeed * Time.deltaTime;
     }
 
     void IgnorePlayerCollision()
@@ -32,6 +40,11 @@ public class Proyectile : MonoBehaviour
         ProyectileImpact(collision);
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        ProyectileImpact(other);
+    }
+
     void Update()
     {
         ProyectileMovement();
@@ -39,6 +52,7 @@ public class Proyectile : MonoBehaviour
 
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
         IgnorePlayerCollision();
     }
 }

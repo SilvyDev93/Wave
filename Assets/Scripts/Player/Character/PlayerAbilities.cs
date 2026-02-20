@@ -27,6 +27,7 @@ public class PlayerAbilities : MonoBehaviour
     [Header("References")]
     [SerializeField] Transform kickOrigin;
     [SerializeField] GameObject explosion;
+    [SerializeField] PlayerSpeedLimiter playerSpeedLimiter;
     [SerializeField] LayerMask entityLayer;
 
     PlayerCharacter playerCharacter;
@@ -53,6 +54,8 @@ public class PlayerAbilities : MonoBehaviour
             playerSounds.PlayAudio("dashing");
 
             GameManager.Instance.playerInput.lockedInput = true;
+            GameManager.Instance.playerInput.lockedMovement = true;
+            playerSpeedLimiter.triggerActive = false;
 
             firstPersonCamera.StopChangeFov();
             firstPersonCamera.ChangeFov(firstPersonCamera.fov + 20, 100);
@@ -66,6 +69,8 @@ public class PlayerAbilities : MonoBehaviour
             yield return new WaitForSeconds(dashDuration);
 
             GameManager.Instance.playerInput.lockedInput = false;
+            GameManager.Instance.playerInput.lockedMovement = false;
+            playerSpeedLimiter.triggerActive = true;
 
             firstPersonCamera.StopChangeFov();
             firstPersonCamera.ChangeFov(firstPersonCamera.fov, -100);

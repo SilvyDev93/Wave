@@ -16,12 +16,13 @@ public class GameManager : MonoBehaviour
     public float globalGravity = -9.81f;
     public bool gamePaused;
 
+    [Header("Managers")]
     public WaveManager waveManager;
     public AudioManager audioManager;
     public DebugManager debugManager;
     public PlayerManager playerManager;
     public ShopManager shopManager;
-
+    
     [HideInInspector] public PlayerInput playerInput;
     [HideInInspector] public PlayerCharacter playerCharacter;
     [HideInInspector] public PlayerController playerController;

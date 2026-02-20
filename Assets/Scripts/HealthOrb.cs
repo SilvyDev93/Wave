@@ -30,7 +30,7 @@ public class HealthOrb : MonoBehaviour
 
     void Update()
     {
-        Animation();
+        //Animation();
     }
 
     private void Start()

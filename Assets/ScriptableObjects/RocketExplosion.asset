@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e4acaa77d7d69c44dae860a8054e6011, type: 3}
-  m_Name: Shotgun
+  m_Name: RocketExplosion
   m_EditorClassIdentifier: 
-  minDamage: 2
-  maxDamage: 5
+  minDamage: 10
+  maxDamage: 20
   criticalChance: 5
