@@ -239,6 +239,7 @@ MonoBehaviour:
   characterNavigation: {fileID: 0}
   playerTransform: {fileID: 0}
   explosion: {fileID: 776593789594815755, guid: db564871acad86649b4b9c08d68f99a8, type: 3}
+  detonationTime: 2
 --- !u!33 &2617578397767684053
 MeshFilter:
   m_ObjectHideFlags: 0

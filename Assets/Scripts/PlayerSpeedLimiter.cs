@@ -1,3 +1,4 @@
+using Palmmedia.ReportGenerator.Core.CodeAnalysis;
 using TMPro;
 using UnityEngine;
 
@@ -6,8 +7,9 @@ public class PlayerSpeedLimiter : MonoBehaviour
     [Header("Parameters")]
     [SerializeField] float wallPushStrengh;
     [SerializeField] float lockedInputDuration;
+    [SerializeField] GameObject collisionDetector;
 
-    Vector3 lastPosition;
+    Vector3 lastPosition; Ray ray; Ray ray2; 
 
     bool updatePostion = true;
 
@@ -50,6 +52,7 @@ public class PlayerSpeedLimiter : MonoBehaviour
                 vel.x = 0;
                 vel.z = 0;
                 GameManager.Instance.playerController.rb.linearVelocity = vel;
+                
             }
         }    
     }
@@ -64,8 +67,25 @@ public class PlayerSpeedLimiter : MonoBehaviour
 
     Vector3 GetCollisionOutwardDirection(Collider col)
     {
-        //Vector3 dir = col.GetContact().normal.;
+        GameObject colDetector = Instantiate(collisionDetector);
+        colDetector.transform.position = col.ClosestPointOnBounds(transform.position);
+
+        RaycastHit hit;
+        Vector3 direction = transform.position - col.ClosestPointOnBounds(transform.position);
+        ray = new Ray(transform.position, direction);
+        Vector3 normalDirection = Vector3.zero;
+
+        if (Physics.Raycast(ray, out hit, 10, 3, QueryTriggerInteraction.Ignore))
+        {
+            normalDirection = transform.InverseTransformDirection(hit.normal);
+        }
         
-        return -col.transform.forward;
+        return normalDirection;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawRay(ray);
     }
 }

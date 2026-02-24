@@ -25,6 +25,11 @@ public class CharacterNavigation : MonoBehaviour
         followPlayer = active;
     }
 
+    public void SetDestination(Vector3 newDestination)
+    {
+        destination = newDestination;
+    }
+
     private void Update()
     {
         if (agent.enabled) 
