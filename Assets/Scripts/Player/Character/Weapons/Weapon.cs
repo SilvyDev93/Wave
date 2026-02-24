@@ -2,6 +2,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static UnityEditor.PlayerSettings;
 using static UnityEngine.UI.Image;
 
 public class Weapon : MonoBehaviour
@@ -63,6 +64,15 @@ public class Weapon : MonoBehaviour
     [SerializeField] GameObject muzzleFlash;
     [SerializeField] float ragdollPushStrenght;
 
+    [Header("Bob")]
+    [SerializeField] float bobAmount = 0.05f;
+    [SerializeField] float bobFrequency = 20;
+    [SerializeField] float bobSmooth = 10;
+
+    [Header("Sway")]
+    [SerializeField] float swaySmooth = 8;
+    [SerializeField] float swayMultiplier = 2;
+
     [Header("Decals")]
     [SerializeField] GameObject bulletHoleDecal;
     [SerializeField] GameObject bloodSplatterDecal;
@@ -74,8 +84,11 @@ public class Weapon : MonoBehaviour
     [SerializeField] Animator visualAnimator;
 
     int currentAmmo; int ammoInMag; 
-    float spread; float targetSpread; float currentFireSpread; float currentAirborneSpread; float fireCooldown;
+    float spread; float targetSpread; float currentFireSpread; float currentAirborneSpread; float fireCooldown; float breath;
+    float currBobAmount; float currBobFrequency; float currBobSmooth;
     bool hitTarget; bool activeReload;
+
+    Vector3 startPos;
 
     FirstPersonCamera fpsCam; AudioSource audioSource; PlayerHUD hud; WeaponHandler weaponHandler; Rigidbody rb;
 
@@ -617,7 +630,57 @@ public class Weapon : MonoBehaviour
         ammoGet = Mathf.Clamp(ammoGet, 1, totalAmmo);
         currentAmmo = ammoGet;
         ScriptReload();
-    } 
+    }
+
+    /// <summary>
+    /// Visual Effects
+    /// </summary>
+
+    void CheckForWeaponbobTrigger()
+    {
+        float inputMagnitude = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).magnitude;
+
+        if (inputMagnitude > 0 && GameManager.Instance.playerController.OnGround())
+        {
+            StartWeaponBob(bobFrequency, bobAmount, bobSmooth);
+            Debug.Log("moving");
+        }
+        else if (GameManager.Instance.playerController.OnGround())
+        {
+            StartWeaponBob(10, 0.025f, 5);
+            Debug.Log("stopped");
+        }
+    }
+
+    Vector3 StartWeaponBob(float frenquency, float amount, float smooth)
+    {
+        Vector3 pos = Vector3.zero;
+
+        pos.y += Mathf.Lerp(pos.y, Mathf.Sin(Time.time * frenquency) * amount * 1.4f, smooth * Time.deltaTime);
+        pos.x += Mathf.Lerp(pos.x, Mathf.Cos(Time.time * frenquency / 2f) * amount * 1.6f, smooth * Time.deltaTime);
+        transform.localPosition += pos;
+
+        return pos;
+    }
+
+    void StopWeaponBob()
+    {
+        if (transform.localPosition == startPos) return;
+        transform.localPosition = Vector3.Lerp(transform.localPosition, startPos, 1 * Time.deltaTime);
+    }
+
+    void WeaponSway()
+    {
+        float mouseX = Input.GetAxisRaw("Mouse X") * swayMultiplier;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * swayMultiplier;
+
+        Quaternion rotationX = Quaternion.AngleAxis(-mouseY, Vector3.right);
+        Quaternion rotationY = Quaternion.AngleAxis(mouseX, Vector3.up);
+
+        Quaternion targetRotation = rotationX * rotationY;
+
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, swaySmooth * Time.deltaTime);
+    }
 
     /// <summary>
     /// Unity Methods
@@ -648,12 +711,16 @@ public class Weapon : MonoBehaviour
     {
         rb = GameManager.Instance.playerController.rb;
         currentAmmo = totalAmmo;
+        startPos = transform.localPosition;
         ScriptReload();
     }
 
     void Update()
     {
         BulletSpreadControl();
+        WeaponSway();
+        CheckForWeaponbobTrigger();
+        StopWeaponBob();
     }
 
     void OnDrawGizmos()

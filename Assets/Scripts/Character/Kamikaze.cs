@@ -16,12 +16,17 @@ public class Kamikaze : EnemyBehavior
 
         yield return new WaitForSeconds(detonationTime);
 
+        Explode();
+    }
+
+    void Explode()
+    {
         Instantiate(explosion, transform.position, explosion.transform.rotation);
         Destroy(gameObject);
     }
 
     public void OnDeath()
     {
-        StartCoroutine(InitiateAttack());
+        Explode();
     }
 }
