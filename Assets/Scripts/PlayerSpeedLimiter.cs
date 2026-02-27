@@ -7,6 +7,9 @@ public class PlayerSpeedLimiter : MonoBehaviour
     [Header("Parameters")]
     [SerializeField] float wallPushStrengh;
     [SerializeField] float lockedInputDuration;
+    [SerializeField] bool teleportPlayer;
+
+    [Header("References")]
     [SerializeField] GameObject collisionDetector;
 
     Vector3 lastPosition; Ray ray; Ray ray2; 
@@ -23,7 +26,12 @@ public class PlayerSpeedLimiter : MonoBehaviour
             {
                 updatePostion = false;
                 lastPosition.y = GameManager.Instance.playerController.transform.position.y;
-                GameManager.Instance.playerController.transform.position = lastPosition;
+
+                if (teleportPlayer)
+                {
+                    GameManager.Instance.playerController.transform.position = lastPosition;
+                }
+                
                 StopCoroutine(GameManager.Instance.playerInput.TempLockedMovement(lockedInputDuration));
                 StartCoroutine(GameManager.Instance.playerInput.TempLockedMovement(lockedInputDuration));
             }

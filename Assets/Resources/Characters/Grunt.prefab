@@ -130,6 +130,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8817517509216496202}
   - component: {fileID: 2434570268697203874}
+  - component: {fileID: 4214080984310367414}
   - component: {fileID: 3579826658876315927}
   - component: {fileID: 3411759466510298382}
   - component: {fileID: 2617578397767684053}
@@ -205,6 +206,20 @@ MonoBehaviour:
   damageNumbersTransform: {fileID: 1744473158227687534}
   currentDamage: 0
   onExplosionCooldown: 0
+--- !u!114 &4214080984310367414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1668019418490947111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca5a52f05a247c748a911d77bc709dc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  avaiableFromWave: 1
+  spawnChance: 80
 --- !u!114 &3579826658876315927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,10 +236,10 @@ MonoBehaviour:
   time: 0.1
   duration: 0.1
   cooldown: 0.1
-  hitbox: {fileID: 8094346791045696757}
   attacking: 0
   characterNavigation: {fileID: 0}
   playerTransform: {fileID: 0}
+  hitbox: {fileID: 8094346791045696757}
 --- !u!114 &3411759466510298382
 MonoBehaviour:
   m_ObjectHideFlags: 0

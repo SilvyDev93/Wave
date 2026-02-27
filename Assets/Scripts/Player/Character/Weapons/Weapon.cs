@@ -64,10 +64,17 @@ public class Weapon : MonoBehaviour
     [SerializeField] GameObject muzzleFlash;
     [SerializeField] float ragdollPushStrenght;
 
-    [Header("Bob")]
-    [SerializeField] float bobAmount = 0.05f;
-    [SerializeField] float bobFrequency = 20;
-    [SerializeField] float bobSmooth = 10;
+    [Header("Bobbing")]
+
+    [Header("Idle Bob")]
+    [SerializeField] float idleBobAmount = 0.005f;
+    [SerializeField] float idleBobFrequency = 1;
+    [SerializeField] float idleBobSmooth = 5f;
+
+    [Header("Move Bob")]
+    [SerializeField] float moveBobAmount = 0.05f;
+    [SerializeField] float moveBobFrequency = 20;
+    [SerializeField] float moveBobSmooth = 10;
 
     [Header("Sway")]
     [SerializeField] float swaySmooth = 8;
@@ -641,14 +648,12 @@ public class Weapon : MonoBehaviour
         float inputMagnitude = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).magnitude;
 
         if (inputMagnitude > 0 && GameManager.Instance.playerController.OnGround())
-        {
-            StartWeaponBob(bobFrequency, bobAmount, bobSmooth);
-            Debug.Log("moving");
+        {          
+            StartWeaponBob(moveBobFrequency, moveBobAmount, moveBobSmooth);
         }
         else if (GameManager.Instance.playerController.OnGround())
         {
-            StartWeaponBob(10, 0.025f, 5);
-            Debug.Log("stopped");
+            StartWeaponBob(idleBobFrequency, idleBobAmount, idleBobSmooth);
         }
     }
 

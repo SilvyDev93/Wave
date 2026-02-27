@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 8817517509216496202}
   - component: {fileID: 2434570268697203874}
   - component: {fileID: 3579826658876315927}
+  - component: {fileID: 9174680217931254627}
   - component: {fileID: 3411759466510298382}
   - component: {fileID: 2617578397767684053}
   - component: {fileID: 4695531502583854085}
@@ -226,6 +227,20 @@ MonoBehaviour:
   characterNavigation: {fileID: 0}
   playerTransform: {fileID: 0}
   hitbox: {fileID: 8094346791045696757}
+--- !u!114 &9174680217931254627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1668019418490947111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca5a52f05a247c748a911d77bc709dc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  avaiableFromWave: 3
+  spawnChance: 20
 --- !u!114 &3411759466510298382
 MonoBehaviour:
   m_ObjectHideFlags: 0

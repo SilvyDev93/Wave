@@ -29,11 +29,37 @@ public class WaveManager : MonoBehaviour
     {
         if (enemiesToSpawn > 0)
         {
-            GameObject newEnemy = Instantiate(enemies[Random.Range(0, enemies.Length)], ChooseSpawn().position, Quaternion.identity, enemyParent);
-            newEnemy.GetComponent<CharacterNPC>().ChangeLevel(Random.Range(wave, wave + 3));
-            enemiesToSpawn--;            
-            StartCoroutine(SpawnCooldown());
+            GameObject newEnemy = SelectEnemy();
+
+            switch (newEnemy)
+            {
+                default:
+                    Instantiate(newEnemy, ChooseSpawn().position, Quaternion.identity, enemyParent);
+                    newEnemy.GetComponent<CharacterNPC>().ChangeLevel(Random.Range(wave, wave + 3));
+                    enemiesToSpawn--;
+                    StartCoroutine(SpawnCooldown());
+                    break;
+
+                case null:
+                    SpawnEnemies();
+                    break;
+            }
         }             
+    }
+
+    GameObject SelectEnemy()
+    {
+        GameObject enemy = enemies[Random.Range(0, enemies.Length)];
+        WaveController enemyWave = enemy.GetComponent<WaveController>();
+
+        int randomInt = Random.Range(0, 101);
+
+        if (enemyWave.avaiableFromWave <= wave && enemyWave.spawnChance >= randomInt)
+        {
+            return enemy;
+        }
+
+        return null;
     }
 
     IEnumerator SpawnCooldown()

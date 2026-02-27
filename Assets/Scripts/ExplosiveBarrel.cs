@@ -5,8 +5,9 @@ public class ExplosiveBarrel : MonoBehaviour
 {
     [SerializeField] GameObject explosion;
     [SerializeField] float respawnTime;
-
-    MeshRenderer meshRenderer; Collider col;
+    [SerializeField] MeshRenderer meshRenderer; 
+    
+    Collider col;
     
     public void TakeDamage(int damage)
     {
@@ -29,7 +30,6 @@ public class ExplosiveBarrel : MonoBehaviour
 
     private void Awake()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
         col = GetComponent<Collider>();
     }
 }

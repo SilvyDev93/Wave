@@ -130,8 +130,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8817517509216496202}
   - component: {fileID: 2434570268697203874}
-  - component: {fileID: 3411759466510298382}
+  - component: {fileID: 5328104392152927659}
   - component: {fileID: 4033319188231598521}
+  - component: {fileID: 3411759466510298382}
   - component: {fileID: 2617578397767684053}
   - component: {fileID: 4695531502583854085}
   - component: {fileID: 3732378218470813949}
@@ -205,7 +206,7 @@ MonoBehaviour:
   damageNumbersTransform: {fileID: 1744473158227687534}
   currentDamage: 0
   onExplosionCooldown: 0
---- !u!114 &3411759466510298382
+--- !u!114 &5328104392152927659
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -214,11 +215,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1668019418490947111}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9b8d2044c40c0f4d920a4e03460a3af, type: 3}
+  m_Script: {fileID: 11500000, guid: ca5a52f05a247c748a911d77bc709dc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
-  playerTransform: {fileID: 0}
+  avaiableFromWave: 2
+  spawnChance: 30
 --- !u!114 &4033319188231598521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,6 +241,20 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   explosion: {fileID: 776593789594815755, guid: db564871acad86649b4b9c08d68f99a8, type: 3}
   detonationTime: 0.5
+--- !u!114 &3411759466510298382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1668019418490947111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9b8d2044c40c0f4d920a4e03460a3af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agent: {fileID: 0}
+  playerTransform: {fileID: 0}
 --- !u!33 &2617578397767684053
 MeshFilter:
   m_ObjectHideFlags: 0
