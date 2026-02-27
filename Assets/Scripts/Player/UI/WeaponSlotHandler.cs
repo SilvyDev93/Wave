@@ -6,13 +6,16 @@ public class WeaponSlotHandler : MonoBehaviour
     [SerializeField] GameObject weaponSlotPrefab;
     void WeaponSlotsCreation()
     {
-        for (int i = 0; i < GameManager.Instance.weaponHandler.playerWeapons.Length; i++)
+        WeaponHandler weaponHandler = GameManager.Instance.weaponHandler;
+
+        for (int i = 0; i < weaponHandler.playerWeapons.Length; i++)
         {
             GameObject slot = Instantiate(weaponSlotPrefab, transform);
             slot.name = "Slot " + i;
+            slot.GetComponent<WeaponSlot>().SetWeaponPortrait(weaponHandler.GetWeapon(i).weaponPortrait);
         }
 
-        GameManager.Instance.weaponHandler.slotsReady = true;
+        weaponHandler.slotsReady = true;
     }
 
     void Start()

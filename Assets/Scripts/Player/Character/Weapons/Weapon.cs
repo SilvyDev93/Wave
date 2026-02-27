@@ -89,6 +89,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] LayerMask entityLayer = 7;
     [SerializeField] LayerMask terrainLayer = 3;
     [SerializeField] Animator visualAnimator;
+    public Texture2D weaponPortrait;
 
     int currentAmmo; int ammoInMag; 
     float spread; float targetSpread; float currentFireSpread; float currentAirborneSpread; float fireCooldown; float breath;

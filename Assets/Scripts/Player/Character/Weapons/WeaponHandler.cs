@@ -77,6 +77,11 @@ public class WeaponHandler : MonoBehaviour
         playerWeapons[0].SetActive(true);
     }
 
+    public Weapon GetWeapon(int index) 
+    {
+        return playerWeapons[index].GetComponent<Weapon>();
+    }
+
     public IEnumerator DisplayAmmo()
     {
         yield return new WaitUntil(() => slotsReady);

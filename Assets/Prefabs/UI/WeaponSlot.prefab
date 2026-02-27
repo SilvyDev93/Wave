@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Ammo
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0966adc9f8a19bc48bcd82288c6149ee, type: 2}
+  m_sharedMaterial: {fileID: -5005462400405485708, guid: 0966adc9f8a19bc48bcd82288c6149ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 2206119389705741249}
   - component: {fileID: 7570240498190600603}
   m_Layer: 5
-  m_Name: WeaponImage
+  m_Name: WeaponPortrait
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -261,3 +261,4 @@ MonoBehaviour:
   selectedScale: {x: 1, y: 1}
   reducedScale: {x: 0.75, y: 0.75}
   ammoCounter: {fileID: 4613224245794285070}
+  weaponPortrait: {fileID: 7570240498190600603}
