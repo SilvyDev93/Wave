@@ -60,6 +60,7 @@ public class PlayerCharacter : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth, 0, health);
         hud.SetHealthValue((int) currentHealth);
         GameManager.Instance.audioManager.PlayAudioPitch(damageSound, Random.Range(0.9f, 1.1f));
+        Debug.Log("Took damage: " + damage);
 
         if (currentHealth <= 0)
         {

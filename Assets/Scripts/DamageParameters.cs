@@ -9,4 +9,10 @@ public class DamageParameters : ScriptableObject
 
 
     public float criticalChance;
+
+    public void SetEqualDamage(int damage)
+    {
+        minDamage = damage;
+        maxDamage = damage;
+    }
 }

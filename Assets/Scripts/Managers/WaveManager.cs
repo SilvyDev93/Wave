@@ -16,6 +16,9 @@ public class WaveManager : MonoBehaviour
     [SerializeField] int baseReward;
     [SerializeField] float rewardIncreaseFactor;
 
+    [Header("Wave Music")]
+    [SerializeField] AudioClip[] musicWaveAvaiable;
+
     [Header("References")]
     [SerializeField] Transform spawns;
 
@@ -80,7 +83,7 @@ public class WaveManager : MonoBehaviour
         }
         else
         {
-            GameManager.Instance.audioManager.PlaySceneMusic();
+            GameManager.Instance.audioManager.PlaySceneMusic(musicWaveAvaiable[wave - 1]);
             hud.waveCounter.text = "Wave " + wave.ToString();
             enemiesToSpawn = waveList[wave];
             hud.enemyCounter.text = enemiesToSpawn.ToString();

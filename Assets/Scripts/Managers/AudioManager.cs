@@ -14,8 +14,9 @@ public class AudioManager : MonoBehaviour
         audio.Play();
     }
 
-    public void PlaySceneMusic()
+    public void PlaySceneMusic(AudioClip clip)
     {
+        sceneMusic.clip = clip;
         sceneMusic.Play();
     }
 

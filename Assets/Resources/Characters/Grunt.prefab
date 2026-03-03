@@ -218,7 +218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca5a52f05a247c748a911d77bc709dc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avaiableFromWave: 1
+  avaiableFromWave: 2
   spawnChance: 80
 --- !u!114 &3579826658876315927
 MonoBehaviour:
