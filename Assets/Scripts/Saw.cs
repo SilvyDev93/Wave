@@ -4,6 +4,8 @@ public class Saw : Proyectile
 {
     public override void ProyectileImpact(Collider collider)
     {
+        base.ProyectileImpact(collider);
+
         if (collider.gameObject.layer == 3 || collider.gameObject.layer == 9)
         {
             SendBackSaw();

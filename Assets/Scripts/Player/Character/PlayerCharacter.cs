@@ -51,7 +51,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         money += amount;
         money = Mathf.Clamp(money, 0, 999999);
-        hud.moneyCounter.text = money.ToString();
+        hud.moneyCounter.text = money.ToString() + " $";
     }
 
     public void TakeDamage(int damage)

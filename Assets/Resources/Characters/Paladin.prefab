@@ -179,10 +179,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterName: Paladin
-  level: 1
+  level: 6
   baseHealth: 20
   baseDamage: 10
-  movementSpeed: 8
+  movementSpeed: 10
   reward: 20
   healthBarTime: 6
   explosionCooldown: 0.1
@@ -205,7 +205,7 @@ MonoBehaviour:
     m_Bits: 8
   corpse: {fileID: 4378294567563536508, guid: a269da372105f2a4da22f9555bd53a51, type: 3}
   damageNumbersTransform: {fileID: 1744473158227687534}
-  currentDamage: 0
+  currentDamage: 25
   onExplosionCooldown: 0
 --- !u!114 &3579826658876315927
 MonoBehaviour:

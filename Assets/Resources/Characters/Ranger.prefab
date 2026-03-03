@@ -178,10 +178,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterName: Ranger
-  level: 1
+  level: 6
   baseHealth: 5
   baseDamage: 3
-  movementSpeed: 9.5
+  movementSpeed: 10
   reward: 10
   healthBarTime: 6
   explosionCooldown: 0.1
@@ -204,7 +204,7 @@ MonoBehaviour:
     m_Bits: 8
   corpse: {fileID: 4378294567563536508, guid: a269da372105f2a4da22f9555bd53a51, type: 3}
   damageNumbersTransform: {fileID: 1744473158227687534}
-  currentDamage: 3.75
+  currentDamage: 7.5
   onExplosionCooldown: 0
 --- !u!114 &-3268247409891685585
 MonoBehaviour:
@@ -221,7 +221,7 @@ MonoBehaviour:
   range: 20
   time: 0.1
   duration: 0.1
-  cooldown: 0.1
+  cooldown: 1
   attacking: 0
   characterNavigation: {fileID: 0}
   playerTransform: {fileID: 0}
@@ -238,8 +238,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca5a52f05a247c748a911d77bc709dc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avaiableFromWave: 1
-  spawnChance: 80
+  avaiableFromWave: 2
+  spawnChance: 20
 --- !u!114 &3411759466510298382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,7 +285,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5fde1aa82fcbf114f9b6a4d7a5e29ee6, type: 2}
+  - {fileID: 2100000, guid: 96eb009502ccd1e41a4a64571652b6e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

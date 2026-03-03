@@ -17,6 +17,7 @@ public class RangeEnemy : EnemyBehavior
         yield return new WaitForSeconds(time);
 
         GameObject newProyectile = Instantiate(proyectile, transform.position, transform.rotation);
+        newProyectile.transform.LookAt(GameManager.Instance.playerCharacter.transform);
         DamageParameters dmgPars = ScriptableObject.CreateInstance<DamageParameters>();
         dmgPars.SetEqualDamage((int) GetComponent<CharacterNPC>().currentDamage);
         newProyectile.GetComponent<Proyectile>().SetDamageParameters(dmgPars);

@@ -178,10 +178,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterName: Grunt
-  level: 1
+  level: 4
   baseHealth: 5
   baseDamage: 3
-  movementSpeed: 9.5
+  movementSpeed: 14.5
   reward: 10
   healthBarTime: 6
   explosionCooldown: 0.1
@@ -204,7 +204,7 @@ MonoBehaviour:
     m_Bits: 8
   corpse: {fileID: 4378294567563536508, guid: a269da372105f2a4da22f9555bd53a51, type: 3}
   damageNumbersTransform: {fileID: 1744473158227687534}
-  currentDamage: 0
+  currentDamage: 6
   onExplosionCooldown: 0
 --- !u!114 &4214080984310367414
 MonoBehaviour:
@@ -218,7 +218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca5a52f05a247c748a911d77bc709dc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avaiableFromWave: 2
+  avaiableFromWave: 1
   spawnChance: 80
 --- !u!114 &3579826658876315927
 MonoBehaviour:
