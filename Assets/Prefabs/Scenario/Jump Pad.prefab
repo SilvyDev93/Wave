@@ -421,7 +421,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7226044163626831620}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -498,6 +498,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 4341448810558331718}
     m_Modifications:
     - target: {fileID: 3742293792097532556, guid: 6b7356fadc3147746b3b9470801e132b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3742293792097532556, guid: 6b7356fadc3147746b3b9470801e132b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3742293792097532556, guid: 6b7356fadc3147746b3b9470801e132b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3742293792097532556, guid: 6b7356fadc3147746b3b9470801e132b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -540,6 +552,14 @@ PrefabInstance:
     - target: {fileID: 6300504712233296543, guid: 6b7356fadc3147746b3b9470801e132b, type: 3}
       propertyPath: m_Name
       value: JumpPadVisualEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008493424444135228, guid: 6b7356fadc3147746b3b9470801e132b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008493424444135228, guid: 6b7356fadc3147746b3b9470801e132b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

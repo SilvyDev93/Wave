@@ -1,9 +1,5 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.UI.Image;
 
 public class Weapon : MonoBehaviour
 {
@@ -30,7 +26,6 @@ public class Weapon : MonoBehaviour
     [SerializeField] [Range(1, 16)] int bulletPenetration;
     [SerializeField] float knockback;
     [SerializeField] float ammoRecovery;
-    [SerializeField] float criticalChance;
 
     [Header("Ammo Mode: Reload")]
     [SerializeField] ReloadType reloadType;
@@ -259,8 +254,6 @@ public class Weapon : MonoBehaviour
                                 Instantiate(bulletHoleDecal, hits[i].point, Quaternion.LookRotation(hits[i].normal), hits[i].transform);
                                 rayOrigin = hits[i].point;
                             }
-
-                            Debug.Log(hits[i].transform.name);
                         }
                     }
 

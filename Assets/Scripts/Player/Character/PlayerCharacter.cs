@@ -6,7 +6,9 @@ using UnityEngine.SceneManagement;
 public class PlayerCharacter : MonoBehaviour
 {
     [Header("Health")]
-    [SerializeField] float health;
+    public float health;
+    [SerializeField] float healthRegenTime;
+    [SerializeField] int healthRegenAmount;
 
     [Header("Stamina")]
     [SerializeField] float stamina;
@@ -22,7 +24,7 @@ public class PlayerCharacter : MonoBehaviour
 
     [HideInInspector] public int money;
 
-    [HideInInspector] public bool exhausted; [HideInInspector] public bool shopAvailable; 
+    [HideInInspector] public bool isDead; [HideInInspector] public bool exhausted; [HideInInspector] public bool shopAvailable; 
 
     void StaminaHandling()
     {
@@ -60,7 +62,6 @@ public class PlayerCharacter : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth, 0, health);
         hud.SetHealthValue((int) currentHealth);
         GameManager.Instance.audioManager.PlayAudioPitch(damageSound, Random.Range(0.9f, 1.1f));
-        Debug.Log("Took damage: " + damage);
 
         if (currentHealth <= 0)
         {
@@ -77,6 +78,7 @@ public class PlayerCharacter : MonoBehaviour
 
     public void KillEntity()
     {
+        isDead = true;
         GameManager.Instance.MouseLockedState(false);
         GameManager.Instance.playerInput.SetAllPlayerInput(true);
         GameManager.Instance.playerHUD.deathScreen.SetActive(true);
@@ -99,6 +101,16 @@ public class PlayerCharacter : MonoBehaviour
         {
             yield return new WaitForSeconds(staminaCooldown);
             regenStamina = true;
+        }
+    }
+
+    public IEnumerator PassiveHealthRegen()
+    {
+        if (!isDead)
+        {
+            yield return new WaitForSeconds(healthRegenTime);
+            RecoverHealth(healthRegenAmount);
+            StartCoroutine(PassiveHealthRegen());
         }
     }
 
@@ -127,5 +139,6 @@ public class PlayerCharacter : MonoBehaviour
         regenStamina = true;
 
         GetMoney(0);
+        StartCoroutine(PassiveHealthRegen());
     }
 }

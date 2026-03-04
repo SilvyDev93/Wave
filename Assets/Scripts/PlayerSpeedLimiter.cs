@@ -1,5 +1,3 @@
-using Palmmedia.ReportGenerator.Core.CodeAnalysis;
-using TMPro;
 using UnityEngine;
 
 public class PlayerSpeedLimiter : MonoBehaviour

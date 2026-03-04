@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -27,6 +26,8 @@ public class WaveManager : MonoBehaviour
     int wave; int enemiesToSpawn; int previousReward; int[] waveList; bool gameStarted; bool startNextWave; float timer;
 
     PlayerHUD hud; Transform enemyParent;
+
+    [HideInInspector] public int enemyCounterNumber;
 
     void SpawnEnemies()
     {
@@ -86,7 +87,8 @@ public class WaveManager : MonoBehaviour
             GameManager.Instance.audioManager.PlaySceneMusic(musicWaveAvaiable[wave - 1]);
             hud.waveCounter.text = "Wave " + wave.ToString();
             enemiesToSpawn = waveList[wave];
-            hud.enemyCounter.text = enemiesToSpawn.ToString();
+            enemyCounterNumber = enemiesToSpawn;
+            hud.enemyCounter.text = enemiesToSpawn.ToString() + " Remaining";
             gameStarted = true;
             SpawnEnemies();
         }      

@@ -29,6 +29,9 @@ public class PlayerHUD : MonoBehaviour
     public GameObject hitMarker;
     [SerializeField] float markerLifetime;
 
+    [Header("Screen Effects")]
+    public RawImage bloodVignette;
+
     [Header("Other")]
     public Transform weaponSlots;
     public GameObject reloadText;
@@ -41,13 +44,29 @@ public class PlayerHUD : MonoBehaviour
 
     public void ReduceEnemyCounter()
     {
-        enemyCounter.text = (int.Parse(enemyCounter.text) - 1).ToString();
+        //enemyCounter.text = (int.Parse(enemyCounter.text) - 1).ToString();
+        //enemyCounterNumber
+        //
+        GameManager.Instance.waveManager.enemyCounterNumber -= 1;
+        enemyCounter.text = (GameManager.Instance.waveManager.enemyCounterNumber + " Remaining").ToString();
     }
 
     public void SetHealthValue(int value)
     {
         healthCounter.text = value.ToString();
         healthSlider.value = value;
+
+        float oppositeValue = Mathf.Abs(GameManager.Instance.playerCharacter.health - value);
+        float transparency = (oppositeValue * 1) / GameManager.Instance.playerCharacter.health;
+
+        // GameManager.Instance.playerCharacter.health es 1
+        // value es x
+        // x = (value * 1) / health
+        // alpha.a = x
+
+        Color alpha = bloodVignette.color;
+        alpha.a = transparency;
+        bloodVignette.color = alpha;
     }
 
     public void SetStaminaSliderValue(float stamina)
