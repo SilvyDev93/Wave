@@ -13,6 +13,7 @@ public class WeaponSlotHandler : MonoBehaviour
             GameObject slot = Instantiate(weaponSlotPrefab, transform);
             slot.name = "Slot " + i;
             slot.GetComponent<WeaponSlot>().SetWeaponPortrait(weaponHandler.GetWeapon(i).weaponPortrait);
+            slot.GetComponent<WeaponSlot>().SetWeaponIndex(i + 1);
         }
 
         weaponHandler.slotsReady = true;

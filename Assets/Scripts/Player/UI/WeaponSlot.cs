@@ -11,6 +11,7 @@ public class WeaponSlot : MonoBehaviour
     [Header("References")]
     [SerializeField] TextMeshProUGUI ammoCounter;
     [SerializeField] RawImage weaponPortrait;
+    [SerializeField] TextMeshProUGUI weaponIndex;
 
     bool selected = true;
 
@@ -38,6 +39,11 @@ public class WeaponSlot : MonoBehaviour
     public void SetWeaponPortrait(Texture2D portrait)
     {
         weaponPortrait.texture = portrait;
+    }
+
+    public void SetWeaponIndex(int index)
+    {
+        weaponIndex.text = index.ToString();
     }
 
     private void Start()
