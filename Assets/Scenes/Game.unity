@@ -26957,10 +26957,10 @@ RectTransform:
   - {fileID: 1541298891}
   m_Father: {fileID: 785762124}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!43 &905575514
 Mesh:
@@ -40722,6 +40722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0150f9cd22b9611428cb09aaa9a81001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waveToStart: 3
   waveCount: 6
   initialWaveTimer: 0
   waveTimer: 30
@@ -56165,10 +56166,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 901064161}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 826, y: 334}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -134, y: -58.774746}
+  m_SizeDelta: {x: 100, y: -117.55052}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1966287076
 MonoBehaviour:
@@ -56200,14 +56201,14 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 7
   m_Spacing: 50
   m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
+  m_ChildScaleHeight: 1
   m_ReverseArrangement: 1
 --- !u!43 &1969109979
 Mesh:
@@ -60450,7 +60451,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2181527427582169296, guid: bb02847a39e1869498155e43fa098f9b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4977798061887113310, guid: bb02847a39e1869498155e43fa098f9b, type: 3}
       propertyPath: m_LocalPosition.x

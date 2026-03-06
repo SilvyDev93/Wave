@@ -18,8 +18,15 @@ public class Misile : Proyectile
         {
             if (collision.gameObject.tag != "Player")
             {
-                //collision.gameObject.SendMessage("TakeDamage", directHitDamage);
-                collision.gameObject.GetComponent<CharacterNPC>().RecieveDamageParameters(damageParameters);
+                // escudo tankear misil petar con el tiempo
+
+                var character = collision.gameObject.GetComponent<CharacterNPC>();
+
+                if (character != null)
+                {
+                    character.RecieveDamageParameters(damageParameters);
+                }
+                
                 Instantiate(explosion, transform.position, Quaternion.identity);
                 Destroy(gameObject);
             }

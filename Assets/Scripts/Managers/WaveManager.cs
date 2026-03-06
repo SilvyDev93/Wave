@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class WaveManager : MonoBehaviour
 {
     [Header("Wave Parameters")]
+    [SerializeField] int waveToStart;
     [SerializeField] int waveCount;
     [SerializeField] int initialWaveTimer;
     [SerializeField] int waveTimer;
@@ -45,6 +46,7 @@ public class WaveManager : MonoBehaviour
                     break;
 
                 case null:
+                    Debug.LogError("Not spawned");
                     SpawnEnemies();
                     break;
             }
@@ -142,7 +144,7 @@ public class WaveManager : MonoBehaviour
         GetReferences();
         GetResources();
         WavesSetUp();
-        wave = 0;
+        wave = waveToStart;
         previousReward = baseReward;
     }
 

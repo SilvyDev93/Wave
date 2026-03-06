@@ -45,16 +45,20 @@ public class Explosion : MonoBehaviour
 
                 case "Enemy":
 
-                    if (!other.GetComponent<CharacterNPC>().onExplosionCooldown)
+                    CharacterNPC character = other.GetComponent<CharacterNPC>();
+                    if (character != null)
                     {
-                        //other.SendMessage("TakeDamage", npcDamage);
-                        other.gameObject.GetComponent<CharacterNPC>().RecieveDamageParameters(damageParameters);
-                        other.GetComponent<CharacterNPC>().SeparateFromGround();
-                        other.GetComponent<Rigidbody>().AddExplosionForce(npcForce, transform.position, currentSize, npcUpwardsForce, ForceMode.Impulse);
-                        //StartCoroutine(other.GetComponent<CharacterNPC>().ExplosionDamageCooldown());
-                        other.GetComponent<CharacterNPC>().onExplosionCooldown = true;
+                        if (!character.onExplosionCooldown)
+                        {
+                            //other.SendMessage("TakeDamage", npcDamage);
+                            other.gameObject.GetComponent<CharacterNPC>().RecieveDamageParameters(damageParameters);
+                            other.GetComponent<CharacterNPC>().SeparateFromGround();
+                            other.GetComponent<Rigidbody>().AddExplosionForce(npcForce, transform.position, currentSize, npcUpwardsForce, ForceMode.Impulse);
+                            //StartCoroutine(other.GetComponent<CharacterNPC>().ExplosionDamageCooldown());
+                            other.GetComponent<CharacterNPC>().onExplosionCooldown = true;
+                        }
                     }
-                    
+                                                         
                     break;
             }  
         }       

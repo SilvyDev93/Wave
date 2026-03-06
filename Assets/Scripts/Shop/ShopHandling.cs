@@ -18,10 +18,17 @@ public class ShopHandling : MonoBehaviour
 
     void CreateWeaponInventoryArray()
     {
+        for (int i = inventoryTransform.childCount - 1; 0 <= i; i--)
+        {
+            Destroy(inventoryTransform.GetChild(i).gameObject);
+        }
+
+        /*
         foreach (Transform child in inventoryTransform)
         {
             Destroy(child.gameObject);
         }
+        */
 
         InventoryList list = inventoryTransform.GetComponent<InventoryList>();
 
@@ -62,7 +69,8 @@ public class ShopHandling : MonoBehaviour
 
     private void OnEnable()
     {
-        ShopRefresh();      
+        ShopRefresh();
+        Debug.Log("Enable");
     }
 
     private void Awake()

@@ -16,6 +16,7 @@ public class ShopArea : MonoBehaviour
 
     private void OnDestroy()
     {
+        // if scene running
         PlayerExitShop();
     }
 }

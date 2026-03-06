@@ -22,7 +22,7 @@ public class Kamikaze : EnemyBehavior
     void Explode()
     {
         Instantiate(explosion, transform.position, explosion.transform.rotation);
-        Destroy(gameObject);
+        GetComponent<CharacterNPC>().KillEntity();
     }
 
     public void OnDeath()
