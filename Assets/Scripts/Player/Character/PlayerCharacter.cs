@@ -129,8 +129,6 @@ public class PlayerCharacter : MonoBehaviour
 
         hud = GameManager.Instance.playerHUD;
 
-        hud.healthSlider.maxValue = health;
-
         hud.SetHealthValue((int)currentHealth);
 
         hud.leftStaminaSlider.maxValue = stamina;

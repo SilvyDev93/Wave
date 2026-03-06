@@ -9,8 +9,7 @@ public class PlayerHUD : MonoBehaviour
 {
     [Header("Player")]
 
-    [Header("Sliders")]
-    public Slider healthSlider;    
+    [Header("Sliders")]    
     public Transform staminaSliders;
 
     [Header("Counters")]
@@ -54,7 +53,6 @@ public class PlayerHUD : MonoBehaviour
     public void SetHealthValue(int value)
     {
         healthCounter.text = value.ToString();
-        healthSlider.value = value;
 
         float oppositeValue = Mathf.Abs(GameManager.Instance.playerCharacter.health - value);
         float transparency = (oppositeValue * 1) / GameManager.Instance.playerCharacter.health;
