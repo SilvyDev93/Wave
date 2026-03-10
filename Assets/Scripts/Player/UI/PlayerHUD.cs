@@ -54,8 +54,10 @@ public class PlayerHUD : MonoBehaviour
     {
         healthCounter.text = value.ToString();
 
-        float oppositeValue = Mathf.Abs(GameManager.Instance.playerCharacter.health - value);
-        float transparency = (oppositeValue * 1) / GameManager.Instance.playerCharacter.health;
+        float oppositeValue = Mathf.Abs(GameManager.Instance.playerCharacter.health - value) - 30;
+        float finalValue = Mathf.Clamp(oppositeValue, 0, oppositeValue);
+        float transparency = (finalValue * 1) / GameManager.Instance.playerCharacter.health;
+        Debug.Log(transparency);
 
         // GameManager.Instance.playerCharacter.health es 1
         // value es x
