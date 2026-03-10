@@ -43,9 +43,6 @@ public class PlayerHUD : MonoBehaviour
 
     public void ReduceEnemyCounter()
     {
-        //enemyCounter.text = (int.Parse(enemyCounter.text) - 1).ToString();
-        //enemyCounterNumber
-        //
         GameManager.Instance.waveManager.enemyCounterNumber -= 1;
         enemyCounter.text = (GameManager.Instance.waveManager.enemyCounterNumber + " Remaining").ToString();
     }
@@ -57,12 +54,6 @@ public class PlayerHUD : MonoBehaviour
         float oppositeValue = Mathf.Abs(GameManager.Instance.playerCharacter.health - value) - 30;
         float finalValue = Mathf.Clamp(oppositeValue, 0, oppositeValue);
         float transparency = (finalValue * 1) / GameManager.Instance.playerCharacter.health;
-        Debug.Log(transparency);
-
-        // GameManager.Instance.playerCharacter.health es 1
-        // value es x
-        // x = (value * 1) / health
-        // alpha.a = x
 
         Color alpha = bloodVignette.color;
         alpha.a = transparency;

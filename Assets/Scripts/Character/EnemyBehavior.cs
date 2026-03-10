@@ -27,6 +27,12 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
+    public virtual void OnAwake()
+    {
+        characterNavigation = GetComponent<CharacterNavigation>();
+        playerTransform = GameManager.Instance.playerCharacter.transform;
+    }
+
     void Update()
     {
         AttackRange();
@@ -34,8 +40,7 @@ public class EnemyBehavior : MonoBehaviour
 
     void Awake()
     {
-        characterNavigation = GetComponent<CharacterNavigation>();
-        playerTransform = GameManager.Instance.playerCharacter.transform;        
+        OnAwake();
     }
 
     void OnDrawGizmos()

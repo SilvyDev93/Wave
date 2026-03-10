@@ -5,6 +5,9 @@ using UnityEngine;
 public class RangeEnemy : EnemyBehavior
 {
     [SerializeField] GameObject proyectile;
+    [SerializeField] Transform shootOrigin;
+
+    Transform proyectileSpawnPoint;
 
     public override IEnumerator InitiateAttack()
     {
@@ -16,7 +19,7 @@ public class RangeEnemy : EnemyBehavior
 
         yield return new WaitForSeconds(time);
 
-        GameObject newProyectile = Instantiate(proyectile, transform.position, transform.rotation);
+        GameObject newProyectile = Instantiate(proyectile, shootOrigin.position, shootOrigin.rotation);
         newProyectile.transform.LookAt(GameManager.Instance.playerCharacter.transform);
         DamageParameters dmgPars = ScriptableObject.CreateInstance<DamageParameters>();
         dmgPars.SetEqualDamage((int) GetComponent<CharacterNPC>().currentDamage);
@@ -29,5 +32,19 @@ public class RangeEnemy : EnemyBehavior
         yield return new WaitForSeconds(cooldown);
 
         attacking = false;
+    }
+
+    public override void OnAwake()
+    {
+        base.OnAwake();
+
+        if (shootOrigin == null)
+        {
+            proyectileSpawnPoint = transform;
+        }
+        else
+        {
+            proyectileSpawnPoint = shootOrigin;
+        }
     }
 }

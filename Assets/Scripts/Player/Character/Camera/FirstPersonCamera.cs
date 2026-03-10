@@ -1,5 +1,7 @@
 using System.Threading;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 public class FirstPersonCamera : MonoBehaviour
 {
@@ -34,18 +36,23 @@ public class FirstPersonCamera : MonoBehaviour
 
             Vector3 rot = transform.rotation.eulerAngles;
             rot.x += -mouseY;
+            CameraClamp(rot);
+        }
+    }
 
-            if (rot.x > 180)
-            {
-                rot.x = rot.x < 270f ? 270f : rot.x;
-            }
-            else
-            {
-                rot.x = rot.x > 90f ? 90f : rot.x;
-            }
+    void CameraClamp(Vector3 rot)
+    {
+        if (rot.x > 180)
+        {
+            rot.x = rot.x < 270f ? 270f : rot.x;
+        }
+        else
+        {
+            rot.x = rot.x > 90f ? 90f : rot.x;
+        }
 
-            transform.rotation = Quaternion.Euler(rot);
-        }       
+        //rot.y = 0;
+        transform.rotation = Quaternion.Euler(rot);
     }
 
     void MovementTilt()
@@ -62,7 +69,8 @@ public class FirstPersonCamera : MonoBehaviour
     {
         float verticalAngle = transform.eulerAngles.x - recoil * Random.Range(0.25f, 1);
         Quaternion cameraRotationTarget = Quaternion.Euler(verticalAngle, transform.eulerAngles.y, transform.eulerAngles.z);
-        transform.rotation = cameraRotationTarget;      
+        //transform.rotation = cameraRotationTarget;
+        CameraClamp(cameraRotationTarget.eulerAngles);
     }
 
     void Shake()

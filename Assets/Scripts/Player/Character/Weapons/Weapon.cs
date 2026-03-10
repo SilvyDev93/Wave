@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
@@ -576,7 +576,7 @@ public class Weapon : MonoBehaviour
             switch (unlimitedAmmo)
             {
                 case true:
-                    return "Infinito";
+                    return "∞";
 
                 case false:
                     return currentAmmo.ToString();
@@ -588,7 +588,7 @@ public class Weapon : MonoBehaviour
             switch (unlimitedAmmo)
             {
                 case true:
-                    return ammoInMag.ToString() + " / " + "Infinito";
+                    return ammoInMag.ToString() + " / " + "∞";
 
                 case false:
                     return ammoInMag.ToString() + " / " + currentAmmo.ToString();

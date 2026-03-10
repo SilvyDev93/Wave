@@ -20,15 +20,9 @@ public class ShopHandling : MonoBehaviour
     {
         for (int i = inventoryTransform.childCount - 1; 0 <= i; i--)
         {
-            Destroy(inventoryTransform.GetChild(i).gameObject);
+            //Destroy(inventoryTransform.GetChild(i).gameObject);
+            DestroyImmediate(inventoryTransform.GetChild(i).gameObject);
         }
-
-        /*
-        foreach (Transform child in inventoryTransform)
-        {
-            Destroy(child.gameObject);
-        }
-        */
 
         InventoryList list = inventoryTransform.GetComponent<InventoryList>();
 
@@ -63,6 +57,15 @@ public class ShopHandling : MonoBehaviour
 
     public void ShopRefresh()
     {
+        if (weaponHandler == null) 
+        {
+            try
+            {
+                weaponHandler = GameManager.Instance.weaponHandler;
+            }
+            catch { }
+        }
+
         CreateWeaponInventoryArray();
         shopMoneyDisplay.SetPlayerMoney();
     }
@@ -70,12 +73,10 @@ public class ShopHandling : MonoBehaviour
     private void OnEnable()
     {
         ShopRefresh();
-        Debug.Log("Enable");
     }
 
-    private void Awake()
-    {
-        weaponHandler = GameManager.Instance.weaponHandler;
+    private void Start()
+    {        
         CreateWeaponShopArray();
     }
 }

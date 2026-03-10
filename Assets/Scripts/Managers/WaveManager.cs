@@ -46,7 +46,6 @@ public class WaveManager : MonoBehaviour
                     break;
 
                 case null:
-                    Debug.LogError("Not spawned");
                     SpawnEnemies();
                     break;
             }
