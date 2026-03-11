@@ -49,13 +49,6 @@ public class PlayerController : MonoBehaviour
     public void MovePlayer() // Player inputs handled in FixedUpdate
     {
         rb.MovePosition(transform.position + (input.GetVerticalAxis() + input.GetHorizontalAxis()).normalized * movementSpeed * Time.fixedDeltaTime);
-
-        /*
-        Vector3 dir = (input.GetVerticalAxis() + input.GetHorizontalAxis()).normalized;
-        dir.y = rb.linearVelocity.y;
-        rb.linearVelocity = dir * movementSpeed * Time.fixedDeltaTime;
-        Debug.Log(rb.angularVelocity);
-        */
     }
 
     void PlayerGravity()
@@ -73,7 +66,6 @@ public class PlayerController : MonoBehaviour
         {
             currentGravity = 0;
             Vector3 velocity = rb.linearVelocity;
-            /*velocity.y = 0; */// si se jode en y es por esto
 
             if (!IsPlayerMoving())
             {
@@ -85,7 +77,6 @@ public class PlayerController : MonoBehaviour
 
             if (onAir)
             {
-                //GameManager.Instance.audioManager.playerSounds.PlayLandingSound();
                 PlayerSounds playerSounds = GameManager.Instance.audioManager.playerSounds;
                 playerSounds.PlayAudio("landing");
             }
@@ -93,6 +84,14 @@ public class PlayerController : MonoBehaviour
             onAir = false;
             canJump = true;
         }
+    }
+
+    public void StopGravityInfluence() 
+    {
+        currentGravity = 0;
+        Vector3 velocity = rb.linearVelocity;
+        velocity.y = 0;
+        rb.linearVelocity = velocity;
     }
 
     public void Jump()
@@ -200,32 +199,4 @@ public class PlayerController : MonoBehaviour
             Gizmos.DrawRay(pos, -transform.up * slopeDistance);
         }
     }
-
-    /*
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.layer == 3)
-        {
-            Debug.Log("Detecting Wall");
-            //Vector3 directionVector = (other.ClosestPoint(transform.position) - transform.position).normalized;
-            //Debug.Log(other.ClosestPoint(transform.position));
-            //GameManager.Instance.playerController.rb.AddForce(directionVector * wallPushStrengh);
-            //GameManager.Instance.playerInput.lockedMovement = true;
-            GameManager.Instance.playerController.transform.position = lastPosition;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.layer == 3)
-        {
-            GameManager.Instance.playerInput.lockedMovement = false;
-        }
-    }
-
-    private void Update()
-    {
-        lastPosition = GameManager.Instance.playerController.transform.position;
-    }
-    */
 }

@@ -9,6 +9,8 @@ public class Teleporter : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             other.gameObject.transform.position = destination.position;
+            AudioManager audioManager = GameManager.Instance.audioManager;
+            audioManager.PlayAudio(audioManager.teleport);
         }        
     }
 }

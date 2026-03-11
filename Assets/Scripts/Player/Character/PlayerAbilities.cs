@@ -142,6 +142,18 @@ public class PlayerAbilities : MonoBehaviour
         }      
     }
 
+    public bool IsDashing()
+    {
+        if (!canDash)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     private void Update()
     {
         InStompDuration();
