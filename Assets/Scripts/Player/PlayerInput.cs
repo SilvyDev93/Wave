@@ -181,7 +181,12 @@ public class PlayerInput : MonoBehaviour
         void WeaponChange(int weaponIndex)
         {
             WeaponHandler weaponHandler = GameManager.Instance.weaponHandler;
-            weaponHandler.ChangeWeapon(weaponIndex);
+
+            if (weaponIndex < weaponHandler.transform.childCount)
+            {
+                weaponHandler.ChangeWeapon(weaponIndex);
+            }
+            
             StartCoroutine(weaponHandler.DisplayAmmo());
         }
     }
@@ -217,18 +222,36 @@ public class PlayerInput : MonoBehaviour
                     break;
             }            
         }
-    }    
+    }
+    
+    public void LockMouseInput(bool locked)
+    {
+        lockedMouse = locked;
+
+        switch (locked)
+        {
+            case true:
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                break;
+
+            case false:
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                break;
+        }
+    }
 
     public Vector3 GetHorizontalAxis()
     {
-        if (!GameManager.Instance.gamePaused)
+        if (!GameManager.Instance.gamePaused && !lockedMouse)
         return controller.characterDirection.forward * Input.GetAxis("Vertical");
         else return Vector3.zero;
     }
 
     public Vector3 GetVerticalAxis()
     {
-        if (!GameManager.Instance.gamePaused)
+        if (!GameManager.Instance.gamePaused && !lockedMouse)
         return controller.characterDirection.right * Input.GetAxis("Horizontal");
         else return Vector3.zero;
     }

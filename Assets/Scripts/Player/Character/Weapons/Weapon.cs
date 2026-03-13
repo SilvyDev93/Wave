@@ -7,6 +7,8 @@ public class Weapon : MonoBehaviour
     public string weaponName;
     public int price;
     public int weight;
+    public bool canBeSold;
+    public bool canBeRefilled;
     public int sellValue;
 
     [Header("Weapon Configuration")]

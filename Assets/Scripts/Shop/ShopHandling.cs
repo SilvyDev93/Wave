@@ -20,7 +20,6 @@ public class ShopHandling : MonoBehaviour
     {
         for (int i = inventoryTransform.childCount - 1; 0 <= i; i--)
         {
-            //Destroy(inventoryTransform.GetChild(i).gameObject);
             DestroyImmediate(inventoryTransform.GetChild(i).gameObject);
         }
 

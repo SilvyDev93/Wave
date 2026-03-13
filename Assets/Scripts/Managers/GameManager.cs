@@ -30,9 +30,11 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public PlayerHUD playerHUD;
 
     [HideInInspector] public WeaponHandler weaponHandler;
+    [HideInInspector] public WeaponSlotHandler weaponSlotHandler;
 
     [HideInInspector] public PauseMenu pauseMenu;
-    [HideInInspector] public ShopMenu shopMenu;       
+    [HideInInspector] public ShopMenu shopMenu;
+    public ShopHandling shopHandling;
     [HideInInspector] public CrosshairHandler crosshairHandler;
     
     public void PauseGame()
@@ -100,7 +102,39 @@ public class GameManager : MonoBehaviour
         }
 
         return false;
-    }   
+    }
+    
+    public void GivePlayerWeapon(GameObject weapon)
+    {
+        GameObject newWeapon = Instantiate(weapon, weaponHandler.transform);
+        newWeapon.name = weapon.name;
+        newWeapon.SetActive(false);
+        StartCoroutine(weaponHandler.GetWeapons());
+        weaponHandler.ChangeWeapon(weaponHandler.playerWeapons.Length - 1);
+        weaponSlotHandler.WeaponSlotsReset();
+        shopHandling.ShopRefresh();
+    }
+
+    public void RemovePlayerWeapon(GameObject weapon)
+    {
+        if (weaponHandler.playerWeapons.Length > 1)
+        {
+            foreach (Transform t in weaponHandler.transform)
+            {
+                if (t.gameObject == weapon)
+                {
+                    DestroyImmediate(t.gameObject);
+                    StartCoroutine(weaponHandler.GetWeapons());
+                    //weaponHandler.ChangeWeapon(0);
+                    weaponSlotHandler.WeaponSlotsReset();
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("Cant sell with just one weapon");
+        }
+    }
 
     void GetReferences()
     {
@@ -117,10 +151,13 @@ public class GameManager : MonoBehaviour
                 playerInput = playerTransform.gameObject.GetComponent<PlayerInput>();
                 pauseMenu = playerTransform.GetChild(1).GetComponent<PauseMenu>();
                 shopMenu = playerTransform.GetChild(1).GetComponent<ShopMenu>();
+                
                 crosshairHandler = playerTransform.GetChild(1).GetComponent<CrosshairHandler>();
             }
 
             weaponHandler = GameObject.Find("WeaponHandler").GetComponent<WeaponHandler>();
+            weaponSlotHandler = GameObject.Find("WeaponSlots").GetComponent<WeaponSlotHandler>();
+
             audioManager.GetReferences();
         }       
     }

@@ -16,15 +16,16 @@ public class WeaponStore : MonoBehaviour
     [SerializeField] RawImage weaponIcon;
     [SerializeField] RawImage typeIcon;
 
+    GameObject weaponObject;
     Weapon weapon;
 
     public void DisplayWeaponInfo(Object givenWeapon)
     {
-        GameObject newWeapon = (GameObject)givenWeapon;
-        weapon = newWeapon.GetComponent<Weapon>();
+        weaponObject = (GameObject)givenWeapon;
+        weapon = weaponObject.GetComponent<Weapon>();
 
         weaponName.text = weapon.name;
-        weaponPrice.text = weapon.price.ToString();
+        weaponPrice.text = weapon.price.ToString() + " $";
         weaponWeight.text = weapon.weight.ToString();
     }
 
@@ -34,7 +35,9 @@ public class WeaponStore : MonoBehaviour
         {
             Debug.Log("Bought " + weapon.name);
             GameManager.Instance.playerManager.ManagePlayerMoney(-weapon.price);
-            transform.parent.parent.GetComponent<ShopHandling>().ShopRefresh();
+            GameManager.Instance.GivePlayerWeapon(weaponObject);
+            //StartCoroutine(GameManager.Instance.weaponHandler.DisplayAmmo());
+            //transform.parent.parent.GetComponent<ShopHandling>().ShopRefresh();
         }
         else
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 public class WeaponSlotHandler : MonoBehaviour
 {
     [SerializeField] GameObject weaponSlotPrefab;
-    void WeaponSlotsCreation()
+    public void WeaponSlotsCreation()
     {
         WeaponHandler weaponHandler = GameManager.Instance.weaponHandler;
 
@@ -17,11 +17,29 @@ public class WeaponSlotHandler : MonoBehaviour
         }
 
         weaponHandler.slotsReady = true;
+
+        bool originalActiveState = gameObject.activeSelf;
+
+        gameObject.SetActive(true);
+        StartCoroutine(GameManager.Instance.weaponHandler.DisplayAmmo());
+        gameObject.SetActive(originalActiveState);
+    }
+
+    public void WeaponSlotsReset()
+    {
+        WeaponHandler weaponHandler = GameManager.Instance.weaponHandler;
+        weaponHandler.slotsReady = false;
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Destroy(transform.GetChild(i).gameObject);
+        }
+
+        WeaponSlotsCreation();
     }
 
     void Start()
     {
-        WeaponSlotsCreation();
-        StartCoroutine(GameManager.Instance.weaponHandler.DisplayAmmo());
+        WeaponSlotsCreation();      
     }
 }

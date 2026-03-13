@@ -50,7 +50,7 @@ public class WeaponHandler : MonoBehaviour
         return weapons;
     }
     
-    IEnumerator GetWeapons()
+    public IEnumerator GetWeapons()
     {
         playerWeapons = new GameObject[transform.childCount];
 

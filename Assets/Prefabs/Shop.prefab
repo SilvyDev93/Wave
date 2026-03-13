@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scalingEnabled: 1
-  scaleFactor: 0.05
+  scaleFactor: 0.1
 --- !u!114 &8443018739436954731
 MonoBehaviour:
   m_ObjectHideFlags: 0

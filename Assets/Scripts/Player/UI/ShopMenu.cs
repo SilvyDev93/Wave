@@ -36,16 +36,18 @@ public class ShopMenu : MonoBehaviour
     void OpenShop()
     {
         shopMenu.SetActive(true);
-        hud.SetActive(false);
-        GameManager.Instance.MouseLockedState(false);
+        //hud.SetActive(false);
+        GameManager.Instance.playerHUD.SetActiveHUD(false);
+        GameManager.Instance.playerInput.LockMouseInput(true);
         GameManager.Instance.playerInput.lockedInput = true;
     }
 
     void CloseShop()
     {
         shopMenu.SetActive(false);
-        hud.SetActive(true);
-        GameManager.Instance.MouseLockedState(true);
+        //hud.SetActive(true);
+        GameManager.Instance.playerHUD.SetActiveHUD(true);
+        GameManager.Instance.playerInput.LockMouseInput(false);
         GameManager.Instance.playerInput.lockedInput = false;
     }
 

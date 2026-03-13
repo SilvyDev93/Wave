@@ -32,6 +32,7 @@ public class PlayerHUD : MonoBehaviour
     public RawImage bloodVignette;
 
     [Header("Other")]
+    public Transform activeHud;
     public Transform weaponSlots;
     public GameObject reloadText;
     public GameObject deathScreen;
@@ -40,6 +41,14 @@ public class PlayerHUD : MonoBehaviour
     [HideInInspector] public Slider rightStaminaSlider;
 
     float playerMessageTime; bool emptyMessage;
+
+    public void SetActiveHUD(bool active)
+    {
+        foreach (Transform t in activeHud)
+        {
+            t.gameObject.SetActive(active);
+        }
+    }
 
     public void ReduceEnemyCounter()
     {
