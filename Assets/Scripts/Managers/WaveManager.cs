@@ -81,7 +81,7 @@ public class WaveManager : MonoBehaviour
         if (wave >= waveCount)
         {
             GameManager.Instance.MouseLockedState(false);
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(2);
         }
         else
         {
