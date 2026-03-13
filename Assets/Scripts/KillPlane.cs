@@ -6,11 +6,14 @@ public class KillPlane : MonoBehaviour
     
     void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.tag == "Player")
+        {
+            other.SendMessage("KillEntity");
+        }
+
         if (other.gameObject.layer == entityLayer)
         {
             other.SendMessage("KillEntity"); 
         }
-
-        other.SendMessage("KillEntity");
     }
 }

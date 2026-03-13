@@ -7,17 +7,18 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: azules
-  m_Shader: {fileID: -6465566751694194690, guid: dac57bbf229427644b4d68a666c04409, type: 3}
-  m_Parent: {fileID: -876546973899608171, guid: dac57bbf229427644b4d68a666c04409, type: 3}
-  m_ModifiedSerializedProperties: 6
+  m_Name: Color rojo_mv
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Parent: {fileID: 2100000, guid: 8434f36138dec0145b730b9144352706, type: 2}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
-  m_EnableInstancingVariants: 1
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses:
   - MOTIONVECTORS
   m_LockedProperties: 
@@ -25,14 +26,13 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Ints: []
-    m_Floats:
-    - _Emissive_Power: 3.25
-    - _QueueControl: 0
+    m_Floats: []
     m_Colors:
-    - _Color: {r: 0.1462264, g: 0.19000874, b: 1, a: 0}
+    - _BaseColor: {r: 0.990566, g: 0.098122105, b: 0.098122105, a: 1}
+    - _Color: {r: 0.99056596, g: 0.09812207, b: 0.09812207, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &6252225512326441715
+--- !u!114 &6663120262073494807
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

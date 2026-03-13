@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Global Parameters")]
     public float globalGravity = -9.81f;
+    public int frameRate;
     public bool gamePaused;
 
     [Header("Managers")]
@@ -203,7 +204,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = frameRate;
         ManagerInstancing();
         GetReferences();
         DontDestroyOnLoad(gameObject);        
