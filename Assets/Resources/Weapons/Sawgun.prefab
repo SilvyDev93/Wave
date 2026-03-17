@@ -6271,7 +6271,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   visualAnimator: {fileID: 0}
-  weaponPortrait: {fileID: 0}
+  weaponPortrait: {fileID: 2800000, guid: 29d0f2b11b884ac469d203cdb14a8c45, type: 3}
   shooting: 0
   reloading: 0
 --- !u!82 &493082639881587825

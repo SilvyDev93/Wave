@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4977798061887113310}
   - component: {fileID: 1639147536618824168}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Shop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -461,7 +461,7 @@ GameObject:
   - component: {fileID: 779207836952898652}
   - component: {fileID: 7655181451455993832}
   - component: {fileID: 2955001087304214885}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}

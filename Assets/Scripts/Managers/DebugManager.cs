@@ -13,6 +13,14 @@ public class DebugManager : MonoBehaviour
         StartCoroutine(FrameRateDisplay());
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            ScreenCapture.CaptureScreenshot("screenshot" + Random.Range(1, 99) + ".png", 0);
+        }
+    }
+
     void Awake()
     {
         StartCoroutine(FrameRateDisplay());
