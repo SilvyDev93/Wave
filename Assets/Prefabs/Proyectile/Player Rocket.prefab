@@ -140,6 +140,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   proyectileSpeed: 1500
   damageParameters: {fileID: 0}
+  ignoresPlayerCollision: 1
+  ignoresNpcCollision: 0
   explosion: {fileID: 776593789594815755, guid: db564871acad86649b4b9c08d68f99a8, type: 3}
   directHitDamage: 20
 --- !u!114 &2722737353793543881
@@ -1122,6 +1124,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6118694322714529207}
     m_Modifications:
+    - target: {fileID: 3725391217418891471, guid: a72f5ef591566d8478bc3cb2c92353ab, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: bebde2c13314d384e8283e09a3a9ae66, type: 2}
     - target: {fileID: 5657179523916768876, guid: a72f5ef591566d8478bc3cb2c92353ab, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

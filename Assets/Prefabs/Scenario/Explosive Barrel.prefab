@@ -298,7 +298,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 44141b5a38ca6cf4696222c0e6c55415, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 367ea271ad0eca84fad2fb9e589d01b8, type: 2}
+      objectReference: {fileID: 2100000, guid: 069a38c2a062a8048953af26fc1e5302, type: 2}
     - target: {fileID: 919132149155446097, guid: 44141b5a38ca6cf4696222c0e6c55415, type: 3}
       propertyPath: m_Name
       value: Barrel

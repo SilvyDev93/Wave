@@ -16,7 +16,7 @@ public class Weapon : MonoBehaviour
     public AmmoMode ammoMode;
     public FireMode fireMode;
     public PointerType pointerType;
-    [SerializeField] bool unlimitedAmmo;
+    public bool unlimitedAmmo;
 
     [Header("Weapon Parameters")]
     [SerializeField] DamageParameters damageParameters;

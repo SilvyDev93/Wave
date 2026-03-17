@@ -137,6 +137,7 @@ MonoBehaviour:
   characterNavigation: {fileID: 0}
   playerTransform: {fileID: 0}
   proyectile: {fileID: 2114620549754147125, guid: 8374ea7ebbfe41749b66df9040f2926f, type: 3}
+  shootOrigin: {fileID: 0}
 --- !u!114 &4214080984310367414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,7 +197,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 96eb009502ccd1e41a4a64571652b6e0, type: 2}
+  - {fileID: 2100000, guid: fcf0db2fd9e118e428d539d92b8bcd5c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

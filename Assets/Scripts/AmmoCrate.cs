@@ -4,12 +4,14 @@ public class AmmoCrate : MonoBehaviour
 {
     [SerializeField] float ammoRecovery;
 
+    Transform weaponHandler;
+
     void TakeAmmo()
     {
-        Transform weaponHandler = GameManager.Instance.weaponHandler.transform;
-        int numberRNG = Random.Range(0, weaponHandler.childCount);
+        weaponHandler = GameManager.Instance.weaponHandler.transform;       
 
-        Weapon weaponToReload = GameManager.Instance.weaponHandler.transform.GetChild(numberRNG).GetComponent<Weapon>();
+        Weapon weaponToReload = GetWeapon();
+
         weaponToReload.AmmoRefill(ammoRecovery);
 
         PlayerHUD hud = GameManager.Instance.playerHUD;
@@ -20,6 +22,21 @@ public class AmmoCrate : MonoBehaviour
         playerSounds.PlayAudio("ammoRefill");
 
         Destroy(transform.parent.gameObject);
+    }
+
+    Weapon GetWeapon()
+    {
+        int numberRNG = Random.Range(0, weaponHandler.childCount);
+        Weapon weapon = GameManager.Instance.weaponHandler.transform.GetChild(numberRNG).GetComponent<Weapon>();
+
+        if (weapon.unlimitedAmmo && weaponHandler.childCount > 1)
+        {
+            return GetWeapon();
+        }
+        else
+        {
+            return weapon;
+        }        
     }
 
     private void OnTriggerEnter(Collider other)
