@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponName: Rifle
-  price: 200
+  price: 500
   weight: 2
   canBeSold: 1
   canBeRefilled: 1

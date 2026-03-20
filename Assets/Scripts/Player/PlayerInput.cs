@@ -242,18 +242,40 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
+    public bool IsPlayerPressingMovement()
+    {
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public Vector3 GetHorizontalAxis()
     {
         if (!GameManager.Instance.gamePaused && !lockedMouse)
-        return controller.characterDirection.forward * Input.GetAxis("Vertical");
-        else return Vector3.zero;
+        {
+            return controller.characterDirection.forward * Input.GetAxis("Vertical");
+        }
+        else 
+        {
+            return Vector3.zero;
+        } 
     }
 
     public Vector3 GetVerticalAxis()
     {
         if (!GameManager.Instance.gamePaused && !lockedMouse)
-        return controller.characterDirection.right * Input.GetAxis("Horizontal");
-        else return Vector3.zero;
+        {
+            return controller.characterDirection.right * Input.GetAxis("Horizontal");
+        }
+        else
+        {
+            return Vector3.zero;
+        }
     }
 
     public Vector3 GetHorizontalInput()

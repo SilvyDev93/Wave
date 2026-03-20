@@ -19,6 +19,7 @@ public class HealthShopRecovery : MonoBehaviour
             {
                 manager.ManagePlayerMoney(-healthPrice);
                 character.RecoverHealth(healthPrice);
+                GameManager.Instance.shopHandling.ShopRefresh();
             }
             else
             {

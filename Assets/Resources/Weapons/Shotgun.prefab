@@ -5079,7 +5079,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponName: Shotgun
-  price: 600
+  price: 500
   weight: 3
   canBeSold: 1
   canBeRefilled: 1

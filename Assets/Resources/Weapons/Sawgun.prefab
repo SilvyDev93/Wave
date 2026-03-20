@@ -6214,7 +6214,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponName: Sawgun
-  price: 1000
+  price: 1750
   weight: 5
   canBeSold: 1
   canBeRefilled: 1

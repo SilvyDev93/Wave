@@ -275,7 +275,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponName: Sniper
-  price: 200
+  price: 1500
   weight: 2
   canBeSold: 1
   canBeRefilled: 1
