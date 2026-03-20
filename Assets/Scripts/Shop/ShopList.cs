@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ShopList : MonoBehaviour
@@ -10,7 +12,8 @@ public class ShopList : MonoBehaviour
         {
             if (transform.GetChild(i) != null)
             {
-                transform.GetChild(i).gameObject.GetComponent<WeaponStore>().DisplayWeaponInfo(weapons[i]);
+                WeaponStore store = transform.GetChild(i).gameObject.GetComponent<WeaponStore>();
+                store.DisplayWeaponInfo(weapons[i]);
             }            
         }
     }

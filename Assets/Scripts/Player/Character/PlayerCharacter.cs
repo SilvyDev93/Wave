@@ -18,9 +18,11 @@ public class PlayerCharacter : MonoBehaviour
     [Header("References")]
     [SerializeField] AudioSource damageSound;   
 
-    float currentHealth; float currentStamina; bool regenStamina;
+    float currentStamina; bool regenStamina;
 
     PlayerController controller; PlayerHUD hud; Rigidbody rb;
+
+    [HideInInspector] public float currentHealth;
 
     [HideInInspector] public int money;
 

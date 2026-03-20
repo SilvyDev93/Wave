@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class ShopHandling : MonoBehaviour
@@ -36,7 +37,9 @@ public class ShopHandling : MonoBehaviour
     {
         ShopList list = shopTransform.GetComponent<ShopList>();
 
-        list.weapons = Resources.LoadAll("Weapons");
+        GameObject[] objs = Resources.LoadAll("Weapons").Cast<GameObject>().ToArray();
+
+        list.weapons = objs.ToList().OrderBy(x => x.GetComponent<Weapon>().price).ToArray();
 
         CreateObjects(weaponStore, shopTransform, list.weapons.Length);
 

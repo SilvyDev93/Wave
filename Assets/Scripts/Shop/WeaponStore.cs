@@ -44,4 +44,9 @@ public class WeaponStore : MonoBehaviour
             Debug.Log("Not enought money to buy: " + weapon.name);
         }
     }
+
+    public Weapon GetWeapon()
+    {
+        return weapon;
+    }
 }
