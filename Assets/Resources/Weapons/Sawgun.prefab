@@ -6217,7 +6217,7 @@ MonoBehaviour:
   price: 1750
   weight: 5
   canBeSold: 1
-  canBeRefilled: 1
+  canBeRefilled: 0
   sellValue: 0
   proyectile: {fileID: 2114620549754147125, guid: 1de7987690d910e4a81e1d87bb07fc13, type: 3}
   ammoMode: 0

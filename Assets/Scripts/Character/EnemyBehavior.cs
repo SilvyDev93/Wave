@@ -8,6 +8,7 @@ public class EnemyBehavior : MonoBehaviour
     public float time;
     public float duration;
     public float cooldown;
+    [SerializeField] bool gizmosActive;
 
     [HideInInspector] public bool attacking;
     [HideInInspector] public CharacterNavigation characterNavigation;
@@ -45,7 +46,10 @@ public class EnemyBehavior : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, range);
+        if (gizmosActive) 
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(transform.position, range);
+        }
     }
 }

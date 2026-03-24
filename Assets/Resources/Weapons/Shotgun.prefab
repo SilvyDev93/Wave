@@ -5082,7 +5082,7 @@ MonoBehaviour:
   price: 500
   weight: 3
   canBeSold: 1
-  canBeRefilled: 1
+  canBeRefilled: 0
   sellValue: 0
   proyectile: {fileID: 0}
   ammoMode: 1
@@ -5136,7 +5136,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   visualAnimator: {fileID: 0}
-  weaponPortrait: {fileID: 0}
+  weaponPortrait: {fileID: 2800000, guid: b8bd5f2f403236d44801724d17fdc7dd, type: 3}
   shooting: 0
   reloading: 0
 --- !u!82 &5939588521494002123

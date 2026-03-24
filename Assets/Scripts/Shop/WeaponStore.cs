@@ -27,6 +27,7 @@ public class WeaponStore : MonoBehaviour
         weaponName.text = weapon.name;
         weaponPrice.text = weapon.price.ToString() + " $";
         weaponWeight.text = weapon.weight.ToString();
+        weaponIcon.texture = weapon.weaponPortrait;
     }
 
     public void BuyWeapon()

@@ -33,6 +33,8 @@ public class WeaponInventory : MonoBehaviour
         weaponWeight.text = weapon.weight.ToString();
         weaponSellValue.text = weapon.sellValue.ToString() + " $";
 
+        weaponIcon.texture = weapon.weaponPortrait;
+
         if (!weapon.canBeSold)
         {
             sellButton.SetActive(false);    
