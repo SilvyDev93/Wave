@@ -66,7 +66,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5430777614144774563}
@@ -90,11 +90,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterName: Kamikaze
-  level: 1
+  level: 4
   baseHealth: 2.5
   baseDamage: 3
   movementSpeed: 16
-  reward: 30
+  reward: 50
   healthBarTime: 6
   explosionCooldown: 0.1
   deathMode: 1
@@ -116,7 +116,7 @@ MonoBehaviour:
     m_Bits: 8
   corpse: {fileID: 4378294567563536508, guid: a269da372105f2a4da22f9555bd53a51, type: 3}
   damageNumbersTransform: {fileID: 1744473158227687534}
-  currentDamage: 0
+  currentDamage: 6
   onExplosionCooldown: 0
 --- !u!114 &5328104392152927659
 MonoBehaviour:

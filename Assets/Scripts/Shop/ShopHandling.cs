@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -5,6 +6,7 @@ public class ShopHandling : MonoBehaviour
 {
     [Header("UI Configuration")]
     [SerializeField] float uiOffset;
+    [SerializeField] bool useUpdateForRefresh;
 
     [Header("References")]
     [SerializeField] Transform inventoryTransform;
@@ -72,6 +74,15 @@ public class ShopHandling : MonoBehaviour
         shopMoneyDisplay.SetPlayerMoney();
     }
 
+    public IEnumerator TempUpdateUse(float time)
+    {
+        useUpdateForRefresh = true;
+        Debug.Log("updating");
+        yield return new WaitForSeconds(time);
+        Debug.Log("stopped updating");
+        useUpdateForRefresh = false;
+    }
+
     private void OnEnable()
     {
         ShopRefresh();
@@ -80,5 +91,13 @@ public class ShopHandling : MonoBehaviour
     private void Start()
     {        
         CreateWeaponShopArray();
+    }
+
+    private void Update()
+    {
+        if (useUpdateForRefresh)
+        {
+            ShopRefresh();
+        }       
     }
 }

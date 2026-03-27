@@ -10,6 +10,7 @@ public class Weapon : MonoBehaviour
     public bool canBeSold;
     public bool canBeRefilled;
     public int sellValue;
+    public int id;
 
     [Header("Weapon Configuration")]
     [SerializeField] GameObject proyectile;

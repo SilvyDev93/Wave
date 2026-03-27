@@ -34,11 +34,19 @@ public class WeaponStore : MonoBehaviour
     {
         if (GameManager.Instance.playerManager.GetPlayerMoney() >= weapon.price)
         {
-            Debug.Log("Bought " + weapon.name);
-            GameManager.Instance.playerManager.ManagePlayerMoney(-weapon.price);
-            GameManager.Instance.GivePlayerWeapon(weaponObject);
-            //StartCoroutine(GameManager.Instance.weaponHandler.DisplayAmmo());
-            //transform.parent.parent.GetComponent<ShopHandling>().ShopRefresh();
+            if (!GameManager.Instance.playerManager.HasWeaponID(weapon.id))
+            {
+                Debug.Log("Bought " + weapon.name);
+                GameManager.Instance.playerManager.ManagePlayerMoney(-weapon.price);
+                GameManager.Instance.GivePlayerWeapon(weaponObject);
+                StartCoroutine(transform.parent.parent.GetComponent<ShopHandling>().TempUpdateUse(0.5f));
+                //StartCoroutine(GameManager.Instance.weaponHandler.DisplayAmmo());
+                //transform.parent.parent.GetComponent<ShopHandling>().ShopRefresh();
+            }
+            else
+            {
+                Debug.Log("Player already has this weapon");
+            }
         }
         else
         {

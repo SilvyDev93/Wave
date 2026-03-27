@@ -153,6 +153,18 @@ public class WaveManager : MonoBehaviour
         return validSpawns.GetChild(Random.Range(0, validSpawns.childCount));
     }
 
+    public bool IsWaveActive()
+    {
+        if (gameStarted == true && startNextWave == false)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     void Update()
     {
         if (enemiesToSpawn == 0 && enemyParent.childCount == 0 && gameStarted)
@@ -167,6 +179,12 @@ public class WaveManager : MonoBehaviour
 
         if (startNextWave)
         {
+            if (wave + 1 == waveCount)
+            {
+                GameManager.Instance.playerInput.LockMouseInput(true);
+                SceneManager.LoadScene(2);
+            }
+
             if (timer < 0)
             {
                 startNextWave = false;

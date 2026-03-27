@@ -14,6 +14,7 @@ public class ShopManager : MonoBehaviour
 
     public void DestroyShop()
     {
+        //GameManager.Instance.shopMenu.ShopInteraction(false);
         Destroy(shopLoaded);
     }
 

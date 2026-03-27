@@ -60,15 +60,18 @@ public class PlayerCharacter : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
-        currentHealth = Mathf.Clamp(currentHealth, 0, health);
-        hud.SetHealthValue((int) currentHealth);
-        GameManager.Instance.audioManager.PlayAudioPitch(damageSound, Random.Range(0.9f, 1.1f));
-
-        if (currentHealth <= 0)
+        if (!GameManager.Instance.playerManager.playerInmortal)
         {
-            KillEntity();
-        }
+            currentHealth -= damage;
+            currentHealth = Mathf.Clamp(currentHealth, 0, health);
+            hud.SetHealthValue((int)currentHealth);
+            GameManager.Instance.audioManager.PlayAudioPitch(damageSound, Random.Range(0.9f, 1.1f));
+
+            if (currentHealth <= 0)
+            {
+                KillEntity();
+            }
+        }       
     }
 
     public void RecoverHealth(int healthRecovery)

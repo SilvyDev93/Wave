@@ -279,7 +279,8 @@ MonoBehaviour:
   weight: 2
   canBeSold: 1
   canBeRefilled: 0
-  sellValue: 0
+  sellValue: 750
+  id: 7
   proyectile: {fileID: 0}
   ammoMode: 1
   fireMode: 1

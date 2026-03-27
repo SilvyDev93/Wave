@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3484025835729113368}
   - component: {fileID: 1676270982455122042}
+  - component: {fileID: -2288029425896359017}
   m_Layer: 0
   m_Name: Blood Splatter Decal Enemy
   m_TagString: Untagged
@@ -56,3 +57,17 @@ MonoBehaviour:
   m_Offset: {x: 0, y: 0, z: 0}
   m_Size: {x: 2, y: 2, z: 0.2}
   m_FadeFactor: 1
+--- !u!114 &-2288029425896359017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2922058503853703424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 792054db5423a7e43915e100bef7268d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifeTime: 20
+  destroyFromStart: 1

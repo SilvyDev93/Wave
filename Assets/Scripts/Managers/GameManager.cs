@@ -113,6 +113,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(weaponHandler.GetWeapons());
         weaponHandler.ChangeWeapon(weaponHandler.playerWeapons.Length - 1);
         weaponSlotHandler.WeaponSlotsReset();
+        playerManager.AddWeaponID(weapon.GetComponent<Weapon>().id);
         shopHandling.ShopRefresh();
     }
 
@@ -120,21 +121,33 @@ public class GameManager : MonoBehaviour
     {
         if (weaponHandler.playerWeapons.Length > 1)
         {
-            foreach (Transform t in weaponHandler.transform)
+            GameObject weaponObject = ReturnPlayerPossesionOfWeapon(weapon);
+
+            if (weaponObject != null)
             {
-                if (t.gameObject == weapon)
-                {
-                    DestroyImmediate(t.gameObject);
-                    StartCoroutine(weaponHandler.GetWeapons());
-                    //weaponHandler.ChangeWeapon(0);
-                    weaponSlotHandler.WeaponSlotsReset();
-                }
+                playerManager.RemoveWeaponID(weapon.GetComponent<Weapon>().id);
+                DestroyImmediate(weaponObject);
+                StartCoroutine(weaponHandler.GetWeapons());                
+                weaponSlotHandler.WeaponSlotsReset();
             }
         }
         else
         {
             Debug.Log("Cant sell with just one weapon");
         }
+    }
+
+    public GameObject ReturnPlayerPossesionOfWeapon(GameObject weaponObject)
+    {
+        foreach (Transform t in weaponHandler.transform)
+        {
+            if (t.gameObject == weaponObject)
+            {
+                return t.gameObject;
+            }
+        }
+
+        return null;
     }
 
     void GetReferences()

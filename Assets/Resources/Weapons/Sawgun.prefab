@@ -6218,7 +6218,8 @@ MonoBehaviour:
   weight: 5
   canBeSold: 1
   canBeRefilled: 0
-  sellValue: 0
+  sellValue: 750
+  id: 5
   proyectile: {fileID: 2114620549754147125, guid: 1de7987690d910e4a81e1d87bb07fc13, type: 3}
   ammoMode: 0
   fireMode: 1
@@ -6271,7 +6272,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   visualAnimator: {fileID: 0}
-  weaponPortrait: {fileID: 2800000, guid: 29d0f2b11b884ac469d203cdb14a8c45, type: 3}
+  weaponPortrait: {fileID: 2800000, guid: 518d2028c5835a843b132140fef76cbd, type: 3}
   shooting: 0
   reloading: 0
 --- !u!82 &493082639881587825

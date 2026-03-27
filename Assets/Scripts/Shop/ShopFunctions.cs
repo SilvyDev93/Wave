@@ -4,6 +4,6 @@ public class ShopFunctions : MonoBehaviour
 {
     public void CloseShopMenu()
     {
-        GameManager.Instance.shopMenu.ShopInteraction();
+        GameManager.Instance.shopMenu.ShopInteraction(false);
     }
 }

@@ -23,6 +23,20 @@ public class ShopMenu : MonoBehaviour
         }            
     }
 
+    public void ShopInteraction(bool setActive)
+    {
+        switch (setActive)
+        {
+            case true:
+                OpenShop();
+                break;
+
+            case false:
+                CloseShop();
+                break;
+        }
+    }
+
     public bool IsShopActive()
     {
         if (shopMenu.activeSelf == true)

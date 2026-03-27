@@ -122,11 +122,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterName: Floater
-  level: 6
+  level: 5
   baseHealth: 5
   baseDamage: 3
   movementSpeed: 10
-  reward: 10
+  reward: 50
   healthBarTime: 6
   explosionCooldown: 0.1
   deathMode: 1
@@ -148,7 +148,7 @@ MonoBehaviour:
     m_Bits: 8
   corpse: {fileID: 4378294567563536508, guid: a269da372105f2a4da22f9555bd53a51, type: 3}
   damageNumbersTransform: {fileID: 1744473158227687534}
-  currentDamage: 7.5
+  currentDamage: 6.75
   onExplosionCooldown: 0
 --- !u!114 &-3268247409891685585
 MonoBehaviour:
@@ -166,6 +166,7 @@ MonoBehaviour:
   time: 0.1
   duration: 0.1
   cooldown: 1
+  gizmosActive: 0
   attacking: 0
   characterNavigation: {fileID: 0}
   playerTransform: {fileID: 0}
@@ -183,7 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca5a52f05a247c748a911d77bc709dc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avaiableFromWave: 2
+  avaiableFromWave: 5
   spawnChance: 20
 --- !u!114 &3411759466510298382
 MonoBehaviour:
