@@ -54,6 +54,7 @@ public class ShopMenu : MonoBehaviour
         GameManager.Instance.playerHUD.SetActiveHUD(false);
         GameManager.Instance.playerInput.LockMouseInput(true);
         GameManager.Instance.playerInput.lockedInput = true;
+        StartCoroutine(GameManager.Instance.shopHandling.TempUpdateUse(0.5f));
     }
 
     void CloseShop()
