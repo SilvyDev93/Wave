@@ -59,7 +59,7 @@ public class FirstPersonCamera : MonoBehaviour
     {
         if (!GameManager.Instance.playerInput.lockedInput)
         {
-            float tiltAroundX = Input.GetAxis("Horizontal") * tiltAngle;
+            float tiltAroundX = GameManager.Instance.playerInput.PlayerPressHorizontal() * tiltAngle;
             Quaternion target = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, -tiltAroundX);
             transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * smooth);
         }            
@@ -150,7 +150,7 @@ public class FirstPersonCamera : MonoBehaviour
 
     void CheckForHeadbobTrigger()
     {
-        float inputMagnitude = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).magnitude;
+        float inputMagnitude = new Vector3(GameManager.Instance.playerInput.PlayerPressHorizontal(), 0f, GameManager.Instance.playerInput.PlayerPressVertical()).magnitude;
 
         if (inputMagnitude > 0 && GameManager.Instance.playerController.OnGround())
         {

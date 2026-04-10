@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4acaa77d7d69c44dae860a8054e6011, type: 3}
   m_Name: Sniper
   m_EditorClassIdentifier: 
-  minDamage: 10
-  maxDamage: 30
+  minDamage: 25
+  maxDamage: 40
   criticalChance: 10

@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public DebugManager debugManager;
     public PlayerManager playerManager;
     public ShopManager shopManager;
+    public VolumeManager volumeManager;
     
     [HideInInspector] public PlayerInput playerInput;
     [HideInInspector] public PlayerCharacter playerCharacter;

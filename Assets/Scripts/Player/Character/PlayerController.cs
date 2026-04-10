@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
 
     public void MovePlayer() // Player inputs handled in FixedUpdate
     {
-        rb.MovePosition(transform.position + (input.GetVerticalAxis() + input.GetHorizontalAxis()).normalized * movementSpeed * Time.fixedDeltaTime);
+        rb.MovePosition(transform.position + (input.GetVerticalAxis().normalized + input.GetHorizontalAxis()).normalized * movementSpeed * Time.fixedDeltaTime);
     }
 
     void PlayerGravity()

@@ -12,8 +12,6 @@ public class PlayerSpeedLimiter : MonoBehaviour
 
     Vector3 lastPosition; Ray ray; Ray ray2; 
 
-    bool updatePostion = true;
-
     [HideInInspector] public bool triggerActive = true;
 
     private void OnTriggerEnter(Collider other)
@@ -22,29 +20,12 @@ public class PlayerSpeedLimiter : MonoBehaviour
         {
             if (other.gameObject.layer == 3)
             {
-                updatePostion = false;
-                lastPosition.y = GameManager.Instance.playerController.transform.position.y;
-
-                if (teleportPlayer)
-                {
-                    GameManager.Instance.playerController.transform.position = lastPosition;
-                }
-                
                 StopCoroutine(GameManager.Instance.playerInput.TempLockedMovement(lockedInputDuration));
                 StartCoroutine(GameManager.Instance.playerInput.TempLockedMovement(lockedInputDuration));
+
+                GameManager.Instance.playerController.rb.AddForce(GetCollisionOutwardDirection(other) * wallPushStrengh, ForceMode.VelocityChange);
             }
         }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (triggerActive)
-        {
-            if (other.gameObject.layer == 3)
-            {
-                GameManager.Instance.playerController.rb.AddForce(GetCollisionOutwardDirection(other) * wallPushStrengh, ForceMode.Impulse);
-            }
-        }       
     }
 
     private void OnTriggerExit(Collider other)
@@ -53,22 +34,12 @@ public class PlayerSpeedLimiter : MonoBehaviour
         {
             if (other.gameObject.layer == 3)
             {
-                updatePostion = true;
                 Vector3 vel = GameManager.Instance.playerController.rb.linearVelocity;
                 vel.x = 0;
                 vel.z = 0;
-                GameManager.Instance.playerController.rb.linearVelocity = vel;
-                
+                GameManager.Instance.playerController.rb.linearVelocity = vel;             
             }
         }    
-    }
-
-    private void Update()
-    {
-        if (updatePostion)
-        {
-            lastPosition = GameManager.Instance.playerController.transform.position;
-        }       
     }
 
     Vector3 GetCollisionOutwardDirection(Collider col)
@@ -83,10 +54,10 @@ public class PlayerSpeedLimiter : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 10, 3, QueryTriggerInteraction.Ignore))
         {
-            normalDirection = transform.InverseTransformDirection(hit.normal);
+            normalDirection = hit.normal;
         }
         
-        return normalDirection;
+        return normalDirection.normalized;
     }
 
     private void OnDrawGizmos()

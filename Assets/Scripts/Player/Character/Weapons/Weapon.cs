@@ -642,7 +642,8 @@ public class Weapon : MonoBehaviour
 
     void CheckForWeaponbobTrigger()
     {
-        float inputMagnitude = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).magnitude;
+        //float inputMagnitude = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).magnitude;
+        float inputMagnitude = new Vector3(GameManager.Instance.playerInput.PlayerPressHorizontal(), 0f, GameManager.Instance.playerInput.PlayerPressVertical()).magnitude;
 
         if (inputMagnitude > 0 && GameManager.Instance.playerController.OnGround())
         {          

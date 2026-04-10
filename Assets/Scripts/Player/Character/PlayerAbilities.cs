@@ -9,7 +9,8 @@ public class PlayerAbilities : MonoBehaviour
     [SerializeField] float dashCooldown;
     [SerializeField] float dashDuration;
     [SerializeField] float dashStaminaCost;
-    [SerializeField] float dashFOVspeed;
+    [SerializeField] float fovIncreaseFactor;
+    [SerializeField] float fovChangeSpeed;
     [SerializeField] bool canDash = true;
 
     [Header("Kick")]
@@ -51,6 +52,8 @@ public class PlayerAbilities : MonoBehaviour
         {
             canDash = false;
 
+            GameManager.Instance.volumeManager.BlurEffect(10, 10);
+
             PlayerSounds playerSounds = GameManager.Instance.audioManager.playerSounds;
             playerSounds.PlayAudio("dashing");
 
@@ -59,7 +62,7 @@ public class PlayerAbilities : MonoBehaviour
             playerSpeedLimiter.triggerActive = false;
 
             firstPersonCamera.StopChangeFov();
-            firstPersonCamera.ChangeFov(firstPersonCamera.fov + 20, 100);
+            firstPersonCamera.ChangeFov(firstPersonCamera.fov + fovIncreaseFactor, fovChangeSpeed);
 
             playerController.gravityEnabled = false;
 
@@ -74,7 +77,12 @@ public class PlayerAbilities : MonoBehaviour
             playerSpeedLimiter.triggerActive = true;
 
             firstPersonCamera.StopChangeFov();
-            firstPersonCamera.ChangeFov(firstPersonCamera.fov, -100);
+            firstPersonCamera.ChangeFov(firstPersonCamera.fov, -fovChangeSpeed);
+
+            Vector3 vel = playerController.rb.linearVelocity;
+            vel.x = 0;
+            vel.z = 0;
+            playerController.rb.linearVelocity = vel;
 
             playerController.gravityEnabled = true;
 

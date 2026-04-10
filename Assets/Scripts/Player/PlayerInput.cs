@@ -242,23 +242,41 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    public bool IsPlayerPressingMovement()
+    public int PlayerPressVertical()
     {
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.W))
         {
-            return true;
+            return 1;
         }
-        else
+
+        if (Input.GetKey(KeyCode.S))
         {
-            return false;
+            return -1;
         }
+
+        return 0;
+    }
+
+    public int PlayerPressHorizontal()
+    {
+        if (Input.GetKey(KeyCode.D))
+        {
+            return 1;
+        }
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            return -1;
+        }
+
+        return 0;
     }
 
     public Vector3 GetHorizontalAxis()
     {
         if (!GameManager.Instance.gamePaused && !lockedMouse)
         {
-            return controller.characterDirection.forward * Input.GetAxis("Vertical");
+            return controller.characterDirection.forward * PlayerPressVertical();
         }
         else 
         {
@@ -270,7 +288,7 @@ public class PlayerInput : MonoBehaviour
     {
         if (!GameManager.Instance.gamePaused && !lockedMouse)
         {
-            return controller.characterDirection.right * Input.GetAxis("Horizontal");
+            return controller.characterDirection.right * PlayerPressHorizontal();
         }
         else
         {

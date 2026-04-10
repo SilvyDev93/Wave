@@ -64,7 +64,7 @@ MonoBehaviour:
   totalAmmo: 20
   range: 30
   recoil: 20
-  numberOfProyectiles: 12
+  numberOfProyectiles: 16
   bulletPenetration: 4
   knockback: 0
   ammoRecovery: 40
@@ -74,8 +74,8 @@ MonoBehaviour:
   numberOfBurstShots: 3
   boltActionTime: 0
   hasSpread: 1
-  baseSpread: 20
-  spreadFireIncrease: 10
+  baseSpread: 30
+  spreadFireIncrease: 15
   spreadFireDecrease: 1
   spreadAirborneIncrease: 5
   spreadAirborneDecrease: 5
