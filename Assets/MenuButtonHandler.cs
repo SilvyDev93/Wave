@@ -17,6 +17,11 @@ public class MenuButtonHandler : MonoBehaviour
         selectionGO.SetActive(false);
     }
 
+    void OnDisable()
+    {
+        selectionGO.SetActive(false);
+    }
+
     void Awake()
     {
         audioHandler = FindAnyObjectByType<MenuAudioHandler>();
