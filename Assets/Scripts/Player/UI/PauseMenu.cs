@@ -47,6 +47,11 @@ public class PauseMenu : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
+    public void Options()
+    {
+
+    }
+
     private void Awake()
     {
         if (pauseMenu != null)
