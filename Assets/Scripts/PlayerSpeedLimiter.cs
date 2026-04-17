@@ -5,12 +5,11 @@ public class PlayerSpeedLimiter : MonoBehaviour
     [Header("Parameters")]
     [SerializeField] float wallPushStrengh;
     [SerializeField] float lockedInputDuration;
-    [SerializeField] bool teleportPlayer;
 
     [Header("References")]
     [SerializeField] GameObject collisionDetector;
 
-    Vector3 lastPosition; Ray ray; Ray ray2; 
+    Ray ray;
 
     [HideInInspector] public bool triggerActive = true;
 

@@ -12,9 +12,13 @@ public class MenuButtonHandler : MonoBehaviour
     }
 
     public void OffButtonHover()
+    {       
+        selectionGO.SetActive(false);
+    }
+
+    public void OnButtonPress()
     {
         audioHandler.PlayPressSound();
-        selectionGO.SetActive(false);
     }
 
     void OnDisable()

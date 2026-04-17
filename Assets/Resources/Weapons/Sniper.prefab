@@ -304,7 +304,7 @@ MonoBehaviour:
   baseSpread: 0
   spreadFireIncrease: 10
   spreadFireDecrease: 2.5
-  spreadAirborneIncrease: 5
+  spreadAirborneIncrease: 0
   spreadAirborneDecrease: 5
   spreadMultiplier: 2
   maxSpread: 100

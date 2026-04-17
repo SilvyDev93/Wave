@@ -3,8 +3,12 @@ using UnityEngine;
 
 public class OptionsArrayTextHandler : MonoBehaviour
 {
+    [Header("Configuration")]
     [SerializeField] string[] optionsStringArray;
     [SerializeField] int[] optionsTextSize;
+    [SerializeField] string saveDataString;
+
+    [Header("References")]
     [SerializeField] TextMeshProUGUI arrayTMP;
 
     int index = 0;
@@ -12,6 +16,9 @@ public class OptionsArrayTextHandler : MonoBehaviour
     public void TextHandling()
     {
         index += 1;
+
+        PlayerPrefs.SetInt(saveDataString, index);
+        PlayerPrefs.Save();
 
         if (index > optionsStringArray.Length - 1) 
         {
@@ -22,9 +29,10 @@ public class OptionsArrayTextHandler : MonoBehaviour
         arrayTMP.fontSize = optionsTextSize[index];
     }
 
-    void Awake()
+    void OnEnable()
     {
-        arrayTMP.text = optionsStringArray[0];
-        arrayTMP.fontSize = optionsTextSize[0];
+        int savedDifficulty = PlayerPrefs.GetInt(saveDataString);
+        arrayTMP.text = optionsStringArray[savedDifficulty];
+        arrayTMP.fontSize = optionsTextSize[savedDifficulty];
     }
 }

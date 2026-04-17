@@ -18,4 +18,9 @@ public class OptionsEnableTextHandler : MonoBehaviour
                 break;
         }
     }
+
+    public void SetText(string text)
+    {
+        enabledTMP.text = text;
+    }
 }

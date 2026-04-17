@@ -15,7 +15,7 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 0, g: 0, b: 0, a: 1}
+  m_FogColor: {r: 0.16966951, g: 0.49056602, b: 0, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.005
   m_LinearFogStart: 0
@@ -368,8 +368,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03fabdedb90cbda409aaa81ed0a108fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallPushStrengh: 0.0005
-  lockedInputDuration: 0.02
+  wallPushStrengh: 0.000001
+  lockedInputDuration: 0.01
   teleportPlayer: 0
   collisionDetector: {fileID: 5443628813363410376, guid: 9cffd846ec020714cbac313685540328, type: 3}
   triggerActive: 1
@@ -24356,6 +24356,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 690925899}
+    - target: {fileID: 239198897880645925, guid: 70edd1dcbb362224f82778a6e0a524de, type: 3}
+      propertyPath: m_Name
+      value: TexturedFog
+      objectReference: {fileID: 0}
     - target: {fileID: 293627494268341644, guid: 70edd1dcbb362224f82778a6e0a524de, type: 3}
       propertyPath: m_Mesh
       value: 
