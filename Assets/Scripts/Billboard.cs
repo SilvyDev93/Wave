@@ -4,6 +4,9 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Billboard : MonoBehaviour
 {
+    [Header("Configuration")]
+    [SerializeField] bool onlyHorizontal;
+
     [Header("Dynamic Scaling")]
     [SerializeField] bool scalingEnabled;
     [SerializeField] float scaleFactor;
@@ -12,8 +15,18 @@ public class Billboard : MonoBehaviour
 
     void BillboardCameraFunc()
     {
-        Vector3 distance = transform.position - Camera.main.transform.position;        
-        transform.rotation = Quaternion.LookRotation(distance);
+        Vector3 distance = transform.position - Camera.main.transform.position;
+        
+        if (!onlyHorizontal)
+        {
+            transform.rotation = Quaternion.LookRotation(distance);
+        }
+        else
+        {
+            Quaternion rotation = Quaternion.LookRotation(distance);
+            Quaternion newRot = new Quaternion(0, rotation.y, 0, rotation.w);
+            transform.rotation = newRot;
+        }
 
         if (scalingEnabled)
         {

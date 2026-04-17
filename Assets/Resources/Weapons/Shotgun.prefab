@@ -3546,6 +3546,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6644582677988858769}
+  - component: {fileID: 5157075469442555659}
   m_Layer: 8
   m_Name: Visuals
   m_TagString: Untagged
@@ -3569,6 +3570,28 @@ Transform:
   - {fileID: 299467446536298184}
   m_Father: {fileID: 3838056656577677348}
   m_LocalEulerAnglesHint: {x: -3, y: 0, z: 0}
+--- !u!95 &5157075469442555659
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3352136046789171067}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7e0a120dc2715a54ea812f11f6b47d0b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3356330258984297715
 GameObject:
   m_ObjectHideFlags: 0
@@ -5136,7 +5159,7 @@ MonoBehaviour:
   terrainLayer:
     serializedVersion: 2
     m_Bits: 8
-  visualAnimator: {fileID: 0}
+  visualAnimator: {fileID: 5157075469442555659}
   weaponPortrait: {fileID: 2800000, guid: b8bd5f2f403236d44801724d17fdc7dd, type: 3}
   shooting: 0
   reloading: 0
