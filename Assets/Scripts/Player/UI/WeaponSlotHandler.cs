@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class WeaponSlotHandler : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] GameObject weaponSlotPrefab;
+    [SerializeField] WeaponHandler weaponHandler;
+
     public void WeaponSlotsCreation()
     {
-        WeaponHandler weaponHandler = GameManager.Instance.weaponHandler;
-
         for (int i = 0; i < weaponHandler.playerWeapons.Length; i++)
         {
             GameObject slot = Instantiate(weaponSlotPrefab, transform);
@@ -21,7 +22,7 @@ public class WeaponSlotHandler : MonoBehaviour
         bool originalActiveState = gameObject.activeSelf;
 
         gameObject.SetActive(true);
-        StartCoroutine(GameManager.Instance.weaponHandler.DisplayAmmo());
+        StartCoroutine(weaponHandler.DisplayAmmo());
         gameObject.SetActive(originalActiveState);
     }
 

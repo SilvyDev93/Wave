@@ -32,7 +32,16 @@ public class OptionsArrayTextHandler : MonoBehaviour
     void OnEnable()
     {
         int savedDifficulty = PlayerPrefs.GetInt(saveDataString);
-        arrayTMP.text = optionsStringArray[savedDifficulty];
-        arrayTMP.fontSize = optionsTextSize[savedDifficulty];
+
+        if (savedDifficulty < optionsStringArray.Length) 
+        {
+            arrayTMP.text = optionsStringArray[savedDifficulty];
+            arrayTMP.fontSize = optionsTextSize[savedDifficulty];
+        }
+        else
+        {
+            arrayTMP.text = optionsStringArray[0];
+            arrayTMP.fontSize = optionsTextSize[0];
+        }        
     }
 }

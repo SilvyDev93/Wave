@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb6fdfec729e9864a9d955808e3b5606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  proyectileSpeed: 1500
+  proyectileSpeed: 3000
   damageParameters: {fileID: 0}
   ignoresPlayerCollision: 1
   ignoresNpcCollision: 0
