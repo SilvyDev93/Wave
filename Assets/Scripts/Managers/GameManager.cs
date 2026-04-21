@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour
     public PlayerManager playerManager;
     public ShopManager shopManager;
     public VolumeManager volumeManager;
+
+    [Header("Other References")]
+    [SerializeField] GameObject starterWeapon;
     
     [HideInInspector] public PlayerInput playerInput;
     [HideInInspector] public PlayerCharacter playerCharacter;
@@ -213,6 +216,7 @@ public class GameManager : MonoBehaviour
         ManagerInstancing();        
         GetReferences();
         UnPauseGame();
+        GivePlayerWeapon(starterWeapon);
         waveManager.StartWaving();
     }
 

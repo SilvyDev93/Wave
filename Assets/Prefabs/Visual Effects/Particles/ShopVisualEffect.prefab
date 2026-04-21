@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1253720914654013756}
   m_Layer: 0
-  m_Name: PortalVisualEffect
+  m_Name: ShopVisualEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9822,7 +9822,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0fca7a9e96aceaf4288741ae536f5ce8, type: 2}
+  - {fileID: 2100000, guid: 5187afc7c0ba08247b6659261f56356b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

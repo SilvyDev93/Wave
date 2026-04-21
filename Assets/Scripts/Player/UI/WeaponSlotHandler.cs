@@ -38,9 +38,4 @@ public class WeaponSlotHandler : MonoBehaviour
 
         WeaponSlotsCreation();
     }
-
-    void Start()
-    {
-        WeaponSlotsCreation();      
-    }
 }

@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class ShopTrigger : MonoBehaviour
 {
+    [SerializeField] bool gizmosActive;
+
     ShopArea shopArea;
 
     void OnTriggerEnter(Collider other)
@@ -22,8 +24,11 @@ public class ShopTrigger : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawCube(transform.position, transform.localScale);
+        if (gizmosActive)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawCube(transform.position, transform.localScale);
+        }       
     }
 
     void Awake()
