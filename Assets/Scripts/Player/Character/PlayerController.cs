@@ -80,7 +80,6 @@ public class PlayerController : MonoBehaviour
 
             if (onAir && lastGravity >= gravityForSound)
             {
-                Debug.Log(lastGravity);
                 PlayerSounds playerSounds = GameManager.Instance.audioManager.playerSounds;
                 playerSounds.PlayAudio("landing");
             }
