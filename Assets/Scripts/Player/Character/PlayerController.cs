@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float fallSpeed;
     [SerializeField] float gravityIncreaseSpeed;
     [SerializeField] float groundCheckDistance;
+    [SerializeField] float gravityForSound;
     [SerializeField] LayerMask groundMask;
     public bool gravityEnabled = true;
 
@@ -64,6 +65,8 @@ public class PlayerController : MonoBehaviour
 
         if (OnGround())
         {
+            float lastGravity = currentGravity;
+
             currentGravity = 0;
             Vector3 velocity = rb.linearVelocity;
 
@@ -75,8 +78,9 @@ public class PlayerController : MonoBehaviour
 
             rb.linearVelocity = velocity;
 
-            if (onAir)
+            if (onAir && lastGravity >= gravityForSound)
             {
+                Debug.Log(lastGravity);
                 PlayerSounds playerSounds = GameManager.Instance.audioManager.playerSounds;
                 playerSounds.PlayAudio("landing");
             }
