@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 3e8bc5155c4c9ed46a63ac64c06408f3, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 5d133deeaa66ed445853e946ff25e073, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -21245,7 +21245,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 1000
+  far clip plane: 2000
   field of view: 90
   orthographic: 0
   orthographic size: 5
@@ -25061,6 +25061,63 @@ PrefabInstance:
       addedObject: {fileID: 770207348}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c3c0fd6da431ba45b26ad213285b2f7, type: 3}
+--- !u!1001 &7818137807323359746
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 181253618273020969, guid: 32820f2f5a7046b449a75ff39df51f11, type: 3}
+      propertyPath: m_Name
+      value: MountainCircle
+      objectReference: {fileID: 0}
+    - target: {fileID: 851890060749713789, guid: 32820f2f5a7046b449a75ff39df51f11, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 851890060749713789, guid: 32820f2f5a7046b449a75ff39df51f11, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 851890060749713789, guid: 32820f2f5a7046b449a75ff39df51f11, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 851890060749713789, guid: 32820f2f5a7046b449a75ff39df51f11, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 851890060749713789, guid: 32820f2f5a7046b449a75ff39df51f11, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 851890060749713789, guid: 32820f2f5a7046b449a75ff39df51f11, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 851890060749713789, guid: 32820f2f5a7046b449a75ff39df51f11, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 851890060749713789, guid: 32820f2f5a7046b449a75ff39df51f11, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 851890060749713789, guid: 32820f2f5a7046b449a75ff39df51f11, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 851890060749713789, guid: 32820f2f5a7046b449a75ff39df51f11, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 32820f2f5a7046b449a75ff39df51f11, type: 3}
 --- !u!114 &9071157450960351984 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4714280943305511002, guid: 5c3c0fd6da431ba45b26ad213285b2f7, type: 3}
@@ -25085,3 +25142,4 @@ SceneRoots:
   - {fileID: 902180800}
   - {fileID: 5177258857215379782}
   - {fileID: 2070821162}
+  - {fileID: 7818137807323359746}
