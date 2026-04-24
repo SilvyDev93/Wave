@@ -52,7 +52,7 @@ public class PlayerAbilities : MonoBehaviour
         {
             canDash = false;
 
-            GameManager.Instance.volumeManager.BlurEffect(10, 10);
+            //GameManager.Instance.volumeManager.BlurEffect(10, 10);
 
             PlayerSounds playerSounds = GameManager.Instance.audioManager.playerSounds;
             playerSounds.PlayAudio("dashing");

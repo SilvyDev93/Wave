@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    public bool playerInmortal = false;
+    public bool godMode = false;
     List<int> weaponIdList = new List<int>();
     PlayerCharacter playerCharacter;
 
@@ -40,14 +40,6 @@ public class PlayerManager : MonoBehaviour
             return true;
         }
         else { return false; }
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            playerInmortal = true;
-        }       
     }
 
     private void Start()

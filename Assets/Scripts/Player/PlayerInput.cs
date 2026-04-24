@@ -37,12 +37,41 @@ public class PlayerInput : MonoBehaviour
             KickInput();
 
             StompInput();
+
+            CheatsInput();
         }
 
         ShopInput();
 
         EscapeInput();
-    }   
+    }
+    
+    void CheatsInput()
+    {
+        if (PlayerPrefs.GetInt("cheats") == 1)
+        {
+            if (Input.GetKeyDown(KeyCode.F1))
+            {
+                GameManager.Instance.cheatManager.CheatPlayerAllWeapons();
+            }
+
+            if (Input.GetKeyDown(KeyCode.F2))
+            {
+                bool godModeActive = GameManager.Instance.playerManager.godMode;
+
+                switch (godModeActive)
+                {
+                    case true:
+                        GameManager.Instance.playerManager.godMode = false;
+                        break;
+
+                    case false:
+                        GameManager.Instance.playerManager.godMode = true;
+                        break;
+                }
+            }
+        }       
+    }
 
     void MoveInput()
     {

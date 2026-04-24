@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     public PlayerManager playerManager;
     public ShopManager shopManager;
     public VolumeManager volumeManager;
+    public CheatManager cheatManager;
 
     [Header("Other References")]
     [SerializeField] GameObject starterWeapon;

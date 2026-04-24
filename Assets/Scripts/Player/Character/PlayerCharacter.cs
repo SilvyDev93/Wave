@@ -60,7 +60,7 @@ public class PlayerCharacter : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (!GameManager.Instance.playerManager.playerInmortal)
+        if (!GameManager.Instance.playerManager.godMode)
         {
             currentHealth -= damage;
             currentHealth = Mathf.Clamp(currentHealth, 0, health);
