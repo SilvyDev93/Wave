@@ -8,7 +8,7 @@ public class AwakeSetActive : MonoBehaviour
 
     private void Awake()
     {
-        if (Time.timeSinceLevelLoad < 1) 
+        if (Time.timeSinceLevelLoad < 0.1f) 
         {
             if (otherGameObject == null)
             {

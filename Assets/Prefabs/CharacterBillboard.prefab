@@ -602,6 +602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f651f8ed71c27f41b512643a99a171f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onlyHorizontal: 0
   scalingEnabled: 1
   scaleFactor: 0.05
 --- !u!223 &5986126380280394174
@@ -649,7 +650,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &3815452853305651720
 MonoBehaviour:
   m_ObjectHideFlags: 0
