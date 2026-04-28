@@ -5,12 +5,17 @@ using UnityEngine.UI;
 
 public class AudioVolumeSlider : MonoBehaviour
 {
-    [SerializeField] AudioMixer mixer;
-    [SerializeField] Slider slider;
-    [SerializeField] TextMeshProUGUI titleTMP;
-    [SerializeField] TextMeshProUGUI percentageTMP;
+    [Header("Configuration")]
     [SerializeField] MixerGroups groupSelection;
 
+    [Header("References (Global)")]
+    [SerializeField] AudioMixer mixer;
+
+    [Header("References (Local)")]
+    [SerializeField] TextMeshProUGUI titleTMP;
+    [SerializeField] TextMeshProUGUI percentageTMP;   
+    [SerializeField] Slider slider;
+    
     float value;
 
     enum MixerGroups
@@ -24,14 +29,28 @@ public class AudioVolumeSlider : MonoBehaviour
     public void VolumeValueChange()
     {
         mixer.SetFloat(groupSelection.ToString(), slider.value);
+        PlayerPrefs.SetFloat(groupSelection.ToString(), slider.value);
         PercentageDisplay();
     }
 
     void SliderSetUp()
     {
         titleTMP.text = groupSelection.ToString();
+
         slider.minValue = -80;
         slider.maxValue = 20;
+
+        float savedVolume = PlayerPrefs.GetFloat(groupSelection.ToString());
+
+        if (savedVolume == 0)
+        {
+            mixer.SetFloat(groupSelection.ToString(), 20);
+        }
+        else
+        {
+            mixer.SetFloat(groupSelection.ToString(), PlayerPrefs.GetFloat(groupSelection.ToString()));
+        }
+
         mixer.GetFloat(groupSelection.ToString(), out value);
         slider.value = value;
         PercentageDisplay();
