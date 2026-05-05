@@ -334,7 +334,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.9323271, g: 0.9529412, b: 0.26666668, a: 1}
+      maxColor: {r: 0.378471, g: 0.990566, b: 0.6435765, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -5000,7 +5000,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6f694ccf5d206f6458a153deaaeb2e70, type: 2}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5022,7 +5022,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 08fbc9572740b3a40bca3ceb0ff92442, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.4764151, g: 1, b: 0.8383186, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -5090,9 +5090,9 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 2
-  m_Color: {r: 0.8666667, g: 0.8635682, b: 0, a: 1}
-  m_Intensity: 100
-  m_Range: 100
+  m_Color: {r: 0.08235292, g: 0.4099753, b: 0.69803923, a: 1}
+  m_Intensity: 104.5
+  m_Range: 397.7
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
