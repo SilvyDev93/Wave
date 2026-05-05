@@ -81,7 +81,7 @@ public class WaveManager : MonoBehaviour
         if (wave >= waveCount)
         {
             GameManager.Instance.playerInput.LockMouseInput(true);
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(0);
         }
         else
         {
@@ -182,7 +182,7 @@ public class WaveManager : MonoBehaviour
             if (wave + 1 == waveCount)
             {
                 GameManager.Instance.playerInput.LockMouseInput(true);
-                SceneManager.LoadScene(2);
+                SceneManager.LoadScene(0);
             }
 
             if (timer < 0)

@@ -256,7 +256,7 @@ public class CharacterNPC : MonoBehaviour
 
     public void ChangeLevel(int newLevel)
     {
-        level = newLevel;
+        level = newLevel + PlayerPrefs.GetInt("difficulty");
         SetCharacterParametersByLevel();
     }
 

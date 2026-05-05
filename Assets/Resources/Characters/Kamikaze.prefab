@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterName: Kamikaze
-  level: 4
+  level: 9
   baseHealth: 2.5
   baseDamage: 3
   movementSpeed: 16
@@ -116,7 +116,7 @@ MonoBehaviour:
     m_Bits: 8
   corpse: {fileID: 4378294567563536508, guid: a269da372105f2a4da22f9555bd53a51, type: 3}
   damageNumbersTransform: {fileID: 1744473158227687534}
-  currentDamage: 6
+  currentDamage: 9.75
   onExplosionCooldown: 0
 --- !u!114 &5328104392152927659
 MonoBehaviour:
@@ -130,7 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca5a52f05a247c748a911d77bc709dc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avaiableFromWave: 3
+  avaiableFromWave: 2
   spawnChance: 30
 --- !u!114 &4033319188231598521
 MonoBehaviour:
