@@ -85,9 +85,12 @@ public class PlayerCharacter : MonoBehaviour
     {
         isDead = true;
         GameManager.Instance.MouseLockedState(false);
+        SceneManager.LoadScene(0);
+        /*
         GameManager.Instance.playerInput.SetAllPlayerInput(true);
         GameManager.Instance.playerHUD.deathScreen.SetActive(true);
         GameManager.Instance.PauseGame();
+        */
     }
 
     public void ConsumeStamina(float consumption)

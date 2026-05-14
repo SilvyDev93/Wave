@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.ProBuilder;
 using UnityEngine.UIElements;
 using static UnityEngine.GraphicsBuffer;
 
 public class Billboard : MonoBehaviour
 {
     [Header("Configuration")]
+    [SerializeField] BillboardAccuracy billboardAccuracy;
     [SerializeField] bool onlyHorizontal;
 
     [Header("Dynamic Scaling")]
@@ -12,6 +14,13 @@ public class Billboard : MonoBehaviour
     [SerializeField] float scaleFactor;
 
     Vector3 originalScale;
+
+    enum BillboardAccuracy
+    {
+        Realtime,
+        Delayed,
+        Lazy
+    }
 
     void BillboardCameraFunc()
     {
@@ -43,11 +52,19 @@ public class Billboard : MonoBehaviour
 
     void Update()
     {
-        BillboardCameraFunc();
+        if (billboardAccuracy == BillboardAccuracy.Realtime)
+        {
+            BillboardCameraFunc();
+        }
     }
 
     void Start()
     {
         originalScale = transform.localScale;
+
+        if (billboardAccuracy != BillboardAccuracy.Realtime)
+        {
+            InvokeRepeating(nameof(BillboardCameraFunc), 0, (float)billboardAccuracy / 3);
+        }        
     }
 }

@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f651f8ed71c27f41b512643a99a171f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  billboardAccuracy: 1
   onlyHorizontal: 1
   scalingEnabled: 0
   scaleFactor: 0
